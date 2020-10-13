@@ -67,7 +67,7 @@ return MicroArrData;
 }
 
 (async () => {
-    console.log(await parseData('./toyige.xlsx'));
+    console.log(await parseData('./ige.xlsx'));
   })()
 
 
