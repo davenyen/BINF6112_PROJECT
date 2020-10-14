@@ -7,7 +7,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+<<<<<<< HEAD:client/package.json
     "axios": "^0.20.0",
+=======
+>>>>>>> 6cce2868d37e04c1bd08151b10ff582b7265ce50:package.json
     "bootstrap": "^4.5.3",
     "font-awesome": "^4.7.0",
     "gh-pages": "^3.1.0",
