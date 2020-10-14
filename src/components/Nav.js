@@ -9,7 +9,7 @@ export default function Nav() {
                     Microarray Project
                 </Link>
                 <li className='nav-item'>
-                    <Link to='/'>
+                    <Link to='/results'>
                         Results
                     </Link>
                 </li>
