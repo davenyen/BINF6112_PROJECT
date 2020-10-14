@@ -1,13 +1,13 @@
 const fs = require('fs');
-const Parse = require('../src/parse#2');
+// const Parse = require('./parseTwo');
 
-async function mapData(filePath) {
+exports.mapData = async function mapData(ma_json, pdbFileHandle) {
 
-    var dssp_json = JSON.parse(fs.readFileSync('./dssp.json'));
+    var dssp_json = JSON.parse(fs.readFileSync('./components/dssp.json'));
     // console.log(dssp_json);
     let sequence = dssp_json.sequence;
 
-    let ma_json = await Parse.parse(filePath);
+    // let ma_json = await Parse.parse(filePath);
     
     let mappedData = [];
     for (let peptide of ma_json) {
@@ -19,6 +19,7 @@ async function mapData(filePath) {
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
             peptide.asa = asa.reduce((a, b) => a + b, 0);
             peptide.ss = mode(ss);
+            peptide.snr = Math.log2(peptide.rawMean) - Math.log2(peptide.backgroundMean);
             // console.log(o.asa);
             // console.log(ss);
             // console.log(o.ss);
@@ -26,7 +27,7 @@ async function mapData(filePath) {
             mappedData.push(peptide);
         }
     }
-    console.log(mappedData);
+    // console.log(mappedData);
     return mappedData;
 }
 
@@ -41,7 +42,3 @@ function mode(array) {
     let max = Object.keys(map).reduce((a, b) => (map[a] > map[b] ? a : b));
     return max;
 }
-
-(async function() {
-    mapData('./ige.xlsx');
-})();

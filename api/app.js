@@ -18,6 +18,9 @@ var usersRouter = require('./routes/users');
 // MOVE TO DIFFERENT FILE LATER (PARSE ONE METHOD)
 const xlsxFile = require('read-excel-file/node');
 
+const parse = require('./components/parseTwo');
+const map = require('./components/map');
+
 var app = express();
 
 // view engine setup
@@ -80,44 +83,48 @@ app.use(function(err, req, res, next) {
 // CURRENTLY HARDCODED
 var fileHandler = './public/ige.xlsx'; // MAKE THIS = TO WHATEVER FILE GOT MADE IN ./public
 
-xlsxFile(fileHandler).then((rows) => {
-  parsedObject = {
-      peptideSeq:[],
-      proteinId:[],
-      rawMean:[],
-      backgroundMean:[],
-      foregroundMedian:[]
-  }
-  parsedData = parsedObject;
+// xlsxFile(fileHandler).then((rows) => {
+//   parsedObject = {
+//       peptideSeq:[],
+//       proteinId:[],
+//       rawMean:[],
+//       backgroundMean:[],
+//       foregroundMedian:[]
+//   }
+//   parsedData = parsedObject;
 
-  for(i in rows){
-      for(j in rows[i]){
-          if(rows[i][j]!=null){
-              if(String(rows[i][j]) == "Peptide"){
-                  for(let row=Number(i)+1;row<rows.length; row++){
-                     parsedObject.peptideSeq.push(rows[row][j]);
-                  }
-              }else if(String(rows[i][j]) == "Antigen/Protein ID"){
-                  for(let row=Number(i)+1;row<rows.length; row++){
-                      parsedObject.proteinId.push(rows[row][j]);
-                   }
-              }else if(String(rows[i][j]).match(/Raw Mean/g)){
-                  for(let row=Number(i)+1;row<rows.length; row++){
-                      parsedObject.rawMean.push(rows[row][j]);
-                   }
-              }else if(String(rows[i][j]).match(/Background Mean/g)){
-                  for(let row=Number(i)+1;row<rows.length; row++){
-                      parsedObject.backgroundMean.push(rows[row][j]);
-                   }
-              }else if(String(rows[i][j]).match(/Foreground Median/g)){
-                  for(let row=Number(i)+1;row<rows.length; row++){
-                      parsedObject.foregroundMedian.push(rows[row][j]);
-                   }
-              }
-          }
-      }
-  }
-  console.log(parsedObject);
-})
+//   for(i in rows){
+//       for(j in rows[i]){
+//           if(rows[i][j]!=null){
+//               if(String(rows[i][j]) == "Peptide"){
+//                   for(let row=Number(i)+1;row<rows.length; row++){
+//                      parsedObject.peptideSeq.push(rows[row][j]);
+//                   }
+//               }else if(String(rows[i][j]) == "Antigen/Protein ID"){
+//                   for(let row=Number(i)+1;row<rows.length; row++){
+//                       parsedObject.proteinId.push(rows[row][j]);
+//                    }
+//               }else if(String(rows[i][j]).match(/Raw Mean/g)){
+//                   for(let row=Number(i)+1;row<rows.length; row++){
+//                       parsedObject.rawMean.push(rows[row][j]);
+//                    }
+//               }else if(String(rows[i][j]).match(/Background Mean/g)){
+//                   for(let row=Number(i)+1;row<rows.length; row++){
+//                       parsedObject.backgroundMean.push(rows[row][j]);
+//                    }
+//               }else if(String(rows[i][j]).match(/Foreground Median/g)){
+//                   for(let row=Number(i)+1;row<rows.length; row++){
+//                       parsedObject.foregroundMedian.push(rows[row][j]);
+//                    }
+//               }
+//           }
+//       }
+//   }
+//   console.log(parsedObject);
+// })
+
+parse.parse(fileHandler)
+      .then(json => map.mapData(json))
+      .then(json => console.log(json, './components/3s7i.pdb'));
 
 module.exports = app;
