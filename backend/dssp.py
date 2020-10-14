@@ -28,6 +28,10 @@ sequence = ""
 # sequenceA = ""
 # sequenceB = ""
 dssp_array = []
+# accessible surface area
+asa = []
+# secondary structure
+ss = []
 for i in range(len(list(dssp.keys()))):
     key = list(dssp.keys())[i]
     sequence += dssp[key][0]
@@ -37,6 +41,9 @@ for i in range(len(list(dssp.keys()))):
     #     sequenceA += dssp[key][0]
     # else:
     #     sequenceB += dssp[key][0]
+    asa.append(dssp[key][2])
+    ss.append(dssp[key][1])
+
 
 # print(sequence)
 # print(sequenceA)
@@ -48,11 +55,13 @@ print(dssp[('B', (' ', 173, ' '))])
 
 load = {
     "sequence": sequence,
-    "dssp": dssp_array
+    # "dssp": dssp_array
+    "asa": asa,
+    "ss": ss
 }
 
 json_o = json.dumps(load)
 print(json_o)
 
-with open("../public/dssp.json",'w') as f:
+with open("./dssp.json",'w') as f:
     f.write(json_o)
