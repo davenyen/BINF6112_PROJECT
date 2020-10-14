@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade, FormFeedback, Container, Card } from 'reactstrap';
+import axios from 'axios';
 import Navbar from './components/Navbar';
 
 // todo: 
@@ -16,7 +17,7 @@ export default class App extends Component {
         isOpen: false,
         dataLoaded: false,
         isFormInvalid: false,
-        selectedFile: false,
+        fileObject: null,
         rows: null,
         cols: null
     }
@@ -38,42 +39,59 @@ export default class App extends Component {
         this.callAPI();
     }
 
-  renderFile = (fileObj) => {
-      //just pass the fileObj as parameter
-      ExcelRenderer(fileObj, (err, resp) => {
+    // Loads and renders file to client
+    renderFile = (fileObj) => {
+        //just pass the fileObj as parameter
+        ExcelRenderer(fileObj, (err, resp) => {
         if(err){
-          console.log(err);            
+            console.log(err);            
         }
         else{
-          this.setState({
+            this.setState({
             dataLoaded: true,
             cols: resp.cols,
             rows: resp.rows
-          });
+            });
         }
-      }); 
-  }
+        }); 
+    }
 
+    // Checks if file is valid
   fileHandler = (event) => {    
     if(event.target.files.length){
-      let fileObj = event.target.files[0];
-      let fileName = fileObj.name;
-
-      //check for file extension and pass only if it is .xlsx and display error message otherwise
-      if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
         this.setState({
-          uploadedFileName: fileName,
-          isFormInvalid: false
+            fileObject: event.target.files[0]
         });
-        this.renderFile(fileObj)
-      }    
-      else{
-        this.setState({
-          isFormInvalid: true,
-          uploadedFileName: ""
-        })
-      }
+        let fileObj = event.target.files[0];
+        let fileName = fileObj.name;
+
+        //check for file extension and pass only if it is .xlsx and display error message otherwise
+        if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
+            this.setState({
+                uploadedFileName: fileName,
+                isFormInvalid: false
+            });
+            this.renderFile(fileObj)
+        } else{
+            this.setState({
+                isFormInvalid: true,
+                uploadedFileName: ""
+            })
+        }
     }               
+  }
+
+
+  // Backend incorporation
+  onClickHandler = () => {
+    const data = new FormData();
+    data.append('file', this.state.fileObject)
+    axios.post('http://localhost:8000/upload', data, {
+        
+    }).then(res => {
+        console.log(res);
+        
+    }).catch(err => console.log(err))
   }
 
   toggle() {
@@ -97,8 +115,14 @@ export default class App extends Component {
             <Col xs={4} sm={8} lg={10}>                                                     
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
-                  <Button color="info" style={{color: "white", zIndex: 0}} onClick={this.openFileBrowser.bind(this)}><i className="cui-file"></i> Browse&hellip;</Button>
-                  <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />                                
+                    <Button color="info" style={{color: "white", zIndex: 0}} onClick={this.openFileBrowser.bind(this)}>
+                        <i className="cui-file"></i>
+                        Browse&hellip;
+                    </Button>
+                  <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />      
+                  <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>
+                      Upload
+                  </button>
                 </InputGroupAddon>
                 <Input type="text" className="form-control" value={this.state.uploadedFileName} readOnly invalid={this.state.isFormInvalid} />                                              
                 <FormFeedback>    
@@ -108,7 +132,7 @@ export default class App extends Component {
                 </FormFeedback>
               </InputGroup>     
             </Col>                                                   
-          </FormGroup>   
+            </FormGroup>
         </form>
 
         {this.state.dataLoaded && 
@@ -118,9 +142,6 @@ export default class App extends Component {
           </Card>  
         </div>}
         </Container>
-        <div className="description">
-            <h1 className="test-h1">: {this.state.apiResponse}</h1>
-        </div>
       </div>
     );
   }
