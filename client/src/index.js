@@ -6,13 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
-<<<<<<< HEAD:client/src/index.js
-ReactDOM.render(
-    <App />, document.getElementById('root')
-);
-=======
 ReactDOM.render(<App />, document.getElementById('root'));
->>>>>>> 6cce2868d37e04c1bd08151b10ff582b7265ce50:src/index.js
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
