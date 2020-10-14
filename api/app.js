@@ -125,6 +125,6 @@ var fileHandler = './public/ige.xlsx'; // MAKE THIS = TO WHATEVER FILE GOT MADE 
 
 parse.parse(fileHandler)
       .then(json => map.mapData(json))
-      .then(json => console.log(json, './components/3s7i.pdb'));
+      .then(json => console.log(json));
 
 module.exports = app;
