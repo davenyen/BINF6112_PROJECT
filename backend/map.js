@@ -25,4 +25,4 @@ function mapSurfaceData(filePath) {
     
 }
 
-mapSurfaceData('../src/ige.xlsx')
+mapSurfaceData('./ige.xlsx')
