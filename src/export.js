@@ -1,6 +1,6 @@
-const parse = require('./parse#2');
+const Parse = require('./parse#2');
 
 
-(async () => {
-    console.log(await parse('./ige.xlsx'));
+(async function() {
+    console.log(await Parse.parse('./ige.xlsx'));
   })()

@@ -1,6 +1,6 @@
 const xlsxFile = require('read-excel-file/node');
 
-module.exports = async function parseData(file_path){
+exports.parse = async function parseData(file_path){
 
 const rows = await xlsxFile(file_path);
 MicroArrData = new Array();
