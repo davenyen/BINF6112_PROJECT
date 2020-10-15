@@ -46,7 +46,7 @@ filename: function (req, file, cb) {
 }
 })
 
-var upload = multer({ storage: storage }).single('file')
+var upload = multer({ storage: storage }).array('file')
 
 app.post('/upload',function(req, res) {
   upload(req, res, function (err) {
