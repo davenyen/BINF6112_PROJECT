@@ -64,24 +64,30 @@ export default class App extends Component {
   fileHandler = (event) => {    
     if(event.target.files.length){
         this.setState({
-            fileObject: event.target.files[0]
+            fileObject: event.target.files
         });
-        let fileObj = event.target.files[0];
-        let fileName = fileObj.name;
+        let fileObj = event.target.files;
+       
+        for (var i = 0; i < fileObj.length; i++) {
+            let fileName = fileObj[i].name;
+            if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
+              this.setState({
+                  uploadedFileName: fileName,
+                  isFormInvalid: false
+              });
+              this.renderFile(fileObj[i])
+            } else{
+              this.setState({
+                  isFormInvalid: true,
+                  uploadedFileName: ""
+              })
+              break;
+            }
+              
 
-        //check for file extension and pass only if it is .xlsx and display error message otherwise
-        if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
-            this.setState({
-                uploadedFileName: fileName,
-                isFormInvalid: false
-            });
-            this.renderFile(fileObj)
-        } else{
-            this.setState({
-                isFormInvalid: true,
-                uploadedFileName: ""
-            })
         }
+        //check for file extension and pass only if it is .xlsx and display error message otherwise
+        
     }               
   }
 
@@ -89,7 +95,9 @@ export default class App extends Component {
   // Backend incorporation
   onClickHandler = () => {
     const data = new FormData();
-    data.append('file', this.state.fileObject)
+    for(var x = 0; x<this.state.fileObject.length; x++) {
+      data.append('file', this.state.fileObject[x])
+    }
     axios.post(apiURL + '/upload', data, {
         
     }).then(res => {
@@ -133,7 +141,7 @@ export default class App extends Component {
                         <i className="cui-file"></i>
                         Browse&hellip;
                     </Button>
-                  <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />      
+                  <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} multiple onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />      
                   <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>
                       Upload
                   </button>
