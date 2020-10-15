@@ -5,6 +5,7 @@ import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade
 import axios from 'axios';
 import Navbar from './components/Navbar';
 import Table from './components/Table';
+import UploadForm from './components/UploadForm';
 
 // todo: 
 // - convert to hooks 
@@ -13,8 +14,8 @@ import Table from './components/Table';
 const apiURL = "http://localhost:8000";
 
 export default class App extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     this.state={
         apiResponse: "",
         isOpen: false,
@@ -60,7 +61,7 @@ export default class App extends Component {
         }); 
     }
 
-    // Checks if file is valid
+  // Checks if file is valid
   fileHandler = (event) => {    
     if(event.target.files.length){
         this.setState({
@@ -86,8 +87,8 @@ export default class App extends Component {
             }    
 
         }
+
         //check for file extension and pass only if it is .xlsx and display error message otherwise
-        
         if (uploadedFileNames.length > 0) {
           this.setState({
             uploadedFileNames: uploadedFileNames.join(", ")
@@ -136,9 +137,9 @@ export default class App extends Component {
       <div>
         <Navbar />
         <Container>
-        <form className="input-form">
+        <form className="xlsx-form">
           <FormGroup row>
-            <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload</Label>          
+            <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload xlsx</Label>          
             <Col xs={4} sm={8} lg={10}>                                                     
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -161,7 +162,7 @@ export default class App extends Component {
             </Col>                                                   
             </FormGroup>
         </form>
-
+        <UploadForm/>
         {this.state.dataLoaded && 
         <div className="output-table">
           <Card body outline color="secondary" className="restrict-card">
