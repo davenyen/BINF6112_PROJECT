@@ -4,6 +4,7 @@ import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade, FormFeedback, Container, Card } from 'reactstrap';
 import axios from 'axios';
 import Navbar from './components/Navbar';
+import Table from './components/Table';
 
 // todo: 
 // - convert to hooks 
@@ -22,7 +23,7 @@ export default class App extends Component {
         fileObject: null,
         rows: null,
         cols: null,
-        processedDataLoaded: false
+        processedData: null
     }
     this.fileHandler = this.fileHandler.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -96,7 +97,13 @@ export default class App extends Component {
         if (res.status === 200) {
           axios.get(apiURL+"/process")
               .then(rsp => rsp.data)
-              .then(json => console.log(json));
+              .then(json => {
+                console.log(json);
+                this.setState({
+                  processedData: json,
+                  dataLoaded: false
+                });
+              });
         }
     }).catch(err => console.log(err))
   }
@@ -148,6 +155,9 @@ export default class App extends Component {
               <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />
           </Card>  
         </div>}
+        {this.state.processedData && 
+          <Table data={this.state.processedData} />
+        }
         </Container>
       </div>
     );
