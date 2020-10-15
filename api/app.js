@@ -19,7 +19,7 @@ var usersRouter = require('./routes/users');
 const xlsxFile = require('read-excel-file/node');
 const parse = require('./components/parseTwo');
 const map = require('./components/map');
-var fileHandler;
+var fileHandler = [];
 
 var app = express();
 
@@ -43,7 +43,7 @@ var storage = multer.diskStorage({
 },
 filename: function (req, file, cb) {
   cb(null, file.originalname )
-  fileHandler = './public/' + file.originalname;
+  fileHandler.push('./public/' + file.originalname);
 }
 })
 
@@ -62,17 +62,28 @@ app.post('/upload',function(req, res) {
 });
 
 app.get('/process', function(req, res, next) {
-  var fileHandler = './public/ige.xlsx';
-  parse.parse(fileHandler)
-        .then(json => map.mapData(json))
-        .then(json => {
-          return res.status(200).json(json)
-        });
-  if (fileHandler) {
-    parse.parse(fileHandler)
+  // var fileHandler = './public/ige.xlsx';
+  // parse.parse(fileHandler)
+  //       .then(json => map.mapData(json))
+  //       .then(json => {
+  //         return res.status(200).json(json)
+  //       });
+  let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
+  // let pdbFile = fileHandler.filter
+  console.log(fileHandler);
+  console.log(xlFiles);
+  if (xlFiles.length === 1) {
+    parse.parse(xlFiles[0])
           .then(json => map.mapData(json))
-          .then(json => console.log(json));
+          .then(json => {
+            console.log(json);
+            return res.status(200).json(json);
+          });
+  } else if (xlFiles.length > 1) {
+    console.log('multiple parse');
+    // parse.parseMultiple(fileHandler[0], fileHandler[1])
   }
+  fileHandler = [];
 });
 
 app.listen(8000, function() {

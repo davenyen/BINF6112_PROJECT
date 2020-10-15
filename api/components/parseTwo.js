@@ -94,6 +94,13 @@ return tripleAveragedData;
 }
 
 
+exports.parseMutliple = async function parseMultiple(file_path1, file_path2){ 
+    let json1 = parseData(file_path1);
+    let json2 = parseData(file_path2);
+    
+}
+
+
 
 
 
