@@ -11,10 +11,10 @@ export default function Navbar() {
     return (
         <div className="nav-bar">
           <Jumbotron className="jumbotron-background">          
-              <h1 className="title">Microarray Project</h1>
-              <p className="title-description">Welcome to the platform of Microarray Data Analysis.</p>  
+              <h1 className="title">Epitope Microarray Analysis Platform</h1>
+              <p className="title-description">Integrating structural information with microarray data analysis.</p>  
               <hr className="my-2" />
-              <p>Developed with <span className="fa fa-heart"></span> by Team Lee</p>
+              <p>Developed by Team Lee 2020</p>
           </Jumbotron>
         </div>
     )
