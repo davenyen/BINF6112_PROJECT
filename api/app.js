@@ -59,6 +59,15 @@ app.post('/upload',function(req, res) {
   })
 });
 
+app.get('/process', function(req, res, next) {
+  var fileHandler = './public/ige.xlsx';
+  parse.parse(fileHandler)
+        .then(json => map.mapData(json))
+        .then(json => {
+          return res.status(200).json(json)
+        });
+});
+
 app.listen(8000, function() {
   console.log('App running on port 8000');
 });

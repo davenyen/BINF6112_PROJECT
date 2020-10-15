@@ -9,6 +9,8 @@ import Navbar from './components/Navbar';
 // - convert to hooks 
 // - split into different components
 
+const apiURL = "http://localhost:8000";
+
 export default class App extends Component {
   constructor(props){
     super(props);
@@ -19,7 +21,8 @@ export default class App extends Component {
         isFormInvalid: false,
         fileObject: null,
         rows: null,
-        cols: null
+        cols: null,
+        processedDataLoaded: false
     }
     this.fileHandler = this.fileHandler.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -28,16 +31,16 @@ export default class App extends Component {
     this.fileInput = React.createRef();
   }
 
-    callAPI() {
-    fetch("http://localhost:9000/testAPI")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }))
-        .catch(err => err);
-    }
+    // callAPI() {
+    // fetch("http://localhost:9000/testAPI")
+    //     .then(res => res.text())
+    //     .then(res => this.setState({ apiResponse: res }))
+    //     .catch(err => err);
+    // }
 
-    componentDidMount() {
-        this.callAPI();
-    }
+    // componentDidMount() {
+    //     this.callAPI();
+    // }
 
     // Loads and renders file to client
     renderFile = (fileObj) => {
@@ -86,11 +89,15 @@ export default class App extends Component {
   onClickHandler = () => {
     const data = new FormData();
     data.append('file', this.state.fileObject)
-    axios.post('http://localhost:8000/upload', data, {
+    axios.post(apiURL + '/upload', data, {
         
     }).then(res => {
         console.log(res);
-        
+        if (res.status === 200) {
+          axios.get(apiURL+"/process")
+              .then(rsp => rsp.data)
+              .then(json => console.log(json));
+        }
     }).catch(err => console.log(err))
   }
 
