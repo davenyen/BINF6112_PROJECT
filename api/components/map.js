@@ -12,6 +12,7 @@ exports.mapData = async function mapData(ma_json) {
     let mappedData = [];
     for (let peptide of ma_json) {
         let start = sequence.indexOf(peptide.peptideSeq);
+        if (peptide.peptideSeq.length < 5) continue;
         if (start >= 0) {
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
