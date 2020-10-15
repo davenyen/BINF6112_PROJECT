@@ -81,6 +81,7 @@ export default class App extends Component {
                   isFormInvalid: true,
                   uploadedFileName: ""
               })
+              break;
             }
               
 
