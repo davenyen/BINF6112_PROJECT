@@ -15,11 +15,11 @@ var multer = require('multer')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-// MOVE TO DIFFERENT FILE LATER (PARSE ONE METHOD)
+// MOVE TO DIFFERENT FILE LATER
 const xlsxFile = require('read-excel-file/node');
-
 const parse = require('./components/parseTwo');
 const map = require('./components/map');
+var fileHandler;
 
 var app = express();
 
@@ -43,6 +43,7 @@ var storage = multer.diskStorage({
 },
 filename: function (req, file, cb) {
   cb(null, file.originalname )
+  fileHandler = './public/' + file.originalname;
 }
 })
 
@@ -57,6 +58,7 @@ app.post('/upload',function(req, res) {
          }
     return res.status(200).send(req.file)
   })
+  
 });
 
 app.get('/process', function(req, res, next) {
@@ -66,6 +68,11 @@ app.get('/process', function(req, res, next) {
         .then(json => {
           return res.status(200).json(json)
         });
+  if (fileHandler) {
+    parse.parse(fileHandler)
+          .then(json => map.mapData(json))
+          .then(json => console.log(json));
+  }
 });
 
 app.listen(8000, function() {
@@ -89,51 +96,51 @@ app.use(function(err, req, res, next) {
 });
 
 // PARSE ONE METHOD MOVE TO DIFFERENT FILE LATER 
-// CURRENTLY HARDCODED
-var fileHandler = './public/ige.xlsx'; // MAKE THIS = TO WHATEVER FILE GOT MADE IN ./public
 
-// xlsxFile(fileHandler).then((rows) => {
-//   parsedObject = {
-//       peptideSeq:[],
-//       proteinId:[],
-//       rawMean:[],
-//       backgroundMean:[],
-//       foregroundMedian:[]
-//   }
-//   parsedData = parsedObject;
+/*xlsxFile(fileHandler).then((rows) => {
+   parsedObject = {
+       peptideSeq:[],
+       proteinId:[],
+       rawMean:[],
+       backgroundMean:[],
+       foregroundMedian:[]
+   }
+   parsedData = parsedObject;
 
-//   for(i in rows){
-//       for(j in rows[i]){
-//           if(rows[i][j]!=null){
-//               if(String(rows[i][j]) == "Peptide"){
-//                   for(let row=Number(i)+1;row<rows.length; row++){
-//                      parsedObject.peptideSeq.push(rows[row][j]);
-//                   }
-//               }else if(String(rows[i][j]) == "Antigen/Protein ID"){
-//                   for(let row=Number(i)+1;row<rows.length; row++){
-//                       parsedObject.proteinId.push(rows[row][j]);
-//                    }
-//               }else if(String(rows[i][j]).match(/Raw Mean/g)){
-//                   for(let row=Number(i)+1;row<rows.length; row++){
-//                       parsedObject.rawMean.push(rows[row][j]);
-//                    }
-//               }else if(String(rows[i][j]).match(/Background Mean/g)){
-//                   for(let row=Number(i)+1;row<rows.length; row++){
-//                       parsedObject.backgroundMean.push(rows[row][j]);
-//                    }
-//               }else if(String(rows[i][j]).match(/Foreground Median/g)){
-//                   for(let row=Number(i)+1;row<rows.length; row++){
-//                       parsedObject.foregroundMedian.push(rows[row][j]);
-//                    }
-//               }
-//           }
-//       }
-//   }
-//   console.log(parsedObject);
-// })
+   for(i in rows){
+       for(j in rows[i]){
+           if(rows[i][j]!=null){
+               if(String(rows[i][j]) == "Peptide"){
+                   for(let row=Number(i)+1;row<rows.length; row++){
+                      parsedObject.peptideSeq.push(rows[row][j]);
+                   }
+               }else if(String(rows[i][j]) == "Antigen/Protein ID"){
+                   for(let row=Number(i)+1;row<rows.length; row++){
+                       parsedObject.proteinId.push(rows[row][j]);
+                    }
+               }else if(String(rows[i][j]).match(/Raw Mean/g)){
+                   for(let row=Number(i)+1;row<rows.length; row++){
+                       parsedObject.rawMean.push(rows[row][j]);
+                    }
+               }else if(String(rows[i][j]).match(/Background Mean/g)){
+                   for(let row=Number(i)+1;row<rows.length; row++){
+                       parsedObject.backgroundMean.push(rows[row][j]);
+                    }
+               }else if(String(rows[i][j]).match(/Foreground Median/g)){
+                   for(let row=Number(i)+1;row<rows.length; row++){
+                       parsedObject.foregroundMedian.push(rows[row][j]);
+                    }
+               }
+           }
+       }
+   }
+   console.log(parsedObject);
+ })
 
-parse.parse(fileHandler)
-      .then(json => map.mapData(json))
-      .then(json => console.log(json));
+
+  parse.parse('./public/ige.xlsx')
+        .then(json => map.mapData(json))
+        .then(json => console.log(json));*/
+
 
 module.exports = app;
