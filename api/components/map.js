@@ -16,7 +16,8 @@ exports.mapData = async function mapData(ma_json) {
         if (start >= 0) {
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
-            peptide.asa = asa.reduce((a, b) => a + b, 0);
+            peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
+            // peptide.asa = rsa(asa, peptide.peptideSeq);
             peptide.ss = mode(ss);
             peptide.snr = Math.log2(peptide.rawMean) - Math.log2(peptide.backgroundMean);
             mappedData.push(peptide);
@@ -45,6 +46,15 @@ function getMaxASA(peptideSeq) {
     }
     return sum
 }
+
+// function rsa(asa, peptideSeq) {
+//     let sum = 0;
+//     for (let i = 0; i < peptideSeq.length; i++) {
+//         sum += asa[i]/maxASA[peptideSeq[i]];
+//     }
+//     // average rsa over residues 
+//     return sum/peptideSeq.length;
+// }
 
 
 // Sander and Rost 1994 (same as biopython default)
