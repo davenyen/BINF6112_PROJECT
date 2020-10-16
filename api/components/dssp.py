@@ -2,6 +2,7 @@ from Bio.PDB import PDBParser
 from Bio.PDB.DSSP import DSSP
 from Bio.PDB.DSSP import dssp_dict_from_pdb_file
 import json
+import sys
 
 # p = PDBParser()
 # structure = p.get_structure("3S7I", "./3s7i.pdb")
@@ -9,8 +10,9 @@ import json
 # dssp = DSSP(model, "./3s7i.pdb", acc_array="Miller")
 
 # print(dssp['A', (' ', 173, ' ')])
+pdbFile = sys.argv[1]
 
-dssp_tup = dssp_dict_from_pdb_file('./3s7i.pdb')
+dssp_tup = dssp_dict_from_pdb_file(pdbFile)
 dssp = dssp_tup[0]
 # print(dssp_tup[0][('B', (' ', 576, ' '))])
 # print(list(dssp.keys()))
@@ -50,8 +52,8 @@ for i in range(len(list(dssp.keys()))):
 # print(sequenceB)
 # print(sequenceA == sequenceB)
 # print()
-print(dssp[('A', (' ', 173, ' '))])
-print(dssp[('B', (' ', 173, ' '))])
+# print(dssp[('A', (' ', 173, ' '))])
+# print(dssp[('B', (' ', 173, ' '))])
 
 load = {
     "sequence": sequence,
@@ -61,7 +63,12 @@ load = {
 }
 
 json_o = json.dumps(load)
-print(json_o)
+# print(json_o)
 
-with open("./dssp.json",'w') as f:
-    f.write(json_o)
+# with open("./dssp.json",'w') as f:
+#     f.write(json_o)
+
+
+# send back to node
+print(json_o)
+sys.stdout.flush()

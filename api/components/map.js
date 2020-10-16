@@ -1,9 +1,20 @@
 const fs = require('fs');
-// const Parse = require('./parseTwo');
+const Parse = require('./parseTwo');
 
-exports.mapData = async function mapData(ma_json) {
+exports.mapData = async function mapData(ma_json, pdbFile) {
 
-    var dssp_json = JSON.parse(fs.readFileSync('./components/dssp.json'));
+    // const spawn = require("child_process").spawn;
+    // var pythonProcess = spawn('python',['./dssp.py', pdbFile]);
+    const exec = require('child_process').execSync;
+
+    // pythonProcess.stdout.on('data', function(data) {
+    //     console.log('here');
+    // })
+    let data = exec('python3 ./components/dssp.py '+pdbFile)
+    console.log(data.toString());
+
+    var dssp_json = JSON.parse(data.toString());
+    // var dssp_json = JSON.parse(fs.readFileSync('./components/dssp.json'));
     // console.log(dssp_json);
     let sequence = dssp_json.sequence;
 
@@ -83,3 +94,7 @@ maxASA = {
     "Y": 222,
     "Z": 196
 }
+
+// Parse.parse('./ige.xlsx').then(json => {
+//     this.mapData(json, '../public/3s7i.pdb');
+// });

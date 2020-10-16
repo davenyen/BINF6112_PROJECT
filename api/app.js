@@ -69,14 +69,14 @@ app.get('/process', function(req, res, next) {
   //         return res.status(200).json(json)
   //       });
   let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
-  // let pdbFile = fileHandler.filter
+  let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
   console.log(fileHandler);
   console.log(xlFiles);
   if (xlFiles.length === 1) {
     parse.parse(xlFiles[0])
-          .then(json => map.mapData(json))
+          .then(json => map.mapData(json, pdbFile))
           .then(json => {
-            console.log(json);
+            // console.log(json);
             return res.status(200).json(json);
           });
   } else if (xlFiles.length > 1) {
