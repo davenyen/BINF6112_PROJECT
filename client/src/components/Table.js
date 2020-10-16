@@ -17,7 +17,7 @@ export default class Table extends React.Component {
             <th>Peptide Sequence</th>
             <th>Foreground Median</th>
             <th>SNR</th>
-            <th>Accessible Surface Area (Å<sup>2</sup>)</th>
+            <th>Relative Accessible Surface Area</th>
             <th>Secondary Structure</th>
         </tr>
         );
