@@ -111,7 +111,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-parse.parseMultiple(["./public/ige.xlsx", "./public/SC008 IgG4 .xlsx"]).then(m => console.log(m));
+// parse.parseMultiple(["./public/ige.xlsx", "./public/SC008 IgG4 .xlsx"]).then(m => console.log(m));
 
 
 module.exports = app;

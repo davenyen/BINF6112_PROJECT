@@ -31,8 +31,19 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
             // peptide.asa = rsa(asa, peptide.peptideSeq);
             peptide.ss = mode(ss);
-            peptide.data[0].snr = Math.log2(peptide.data[0].rawMean) - Math.log2(peptide.data[0].backgroundMean);
-            peptide.data[1].snr = Math.log2(peptide.data[1].rawMean) - Math.log2(peptide.data[1].backgroundMean);
+
+            for (let d in peptide.data) {
+                peptide.data[d].snr = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
+            }
+            // peptide.data[1].snr = Math.log2(peptide.data[1].rawMean) - Math.log2(peptide.data[1].backgroundMean);
+            if (peptide.data.length == 2) {
+                peptide.fmratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
+                peptide.fmratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
+                peptide.snrratio1 = peptide.data[0].snr/peptide.data[1].snr;
+                peptide.snrratio2 = peptide.data[1].snr/peptide.data[0].snr;
+            }
+            
+            
             mappedData.push(peptide);
         }
     }
