@@ -81,7 +81,7 @@ app.get('/process', function(req, res, next) {
           });
   } else if (xlFiles.length > 1) {
     console.log('multiple parse');
-    // parse.parseMultiple(fileHandler[0], fileHandler[1])
+    parse.parseMultiple(xlFiles);
   }
   fileHandler = [];
 });
@@ -105,5 +105,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+parse.parseMultiple(["./public/ige.xlsx", "./public/SC008 IgG4 .xlsx"]).then(m => console.log(m));
+
 
 module.exports = app;
