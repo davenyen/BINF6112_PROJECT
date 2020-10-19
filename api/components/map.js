@@ -30,7 +30,8 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
             peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
             // peptide.asa = rsa(asa, peptide.peptideSeq);
-            peptide.ss = mode(ss);
+            let mode_ss = mode(ss);
+            peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
 
             for (let d in peptide.data) {
                 peptide.data[d].snr = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
@@ -106,6 +107,17 @@ maxASA = {
     "X": 180,
     "Y": 222,
     "Z": 196
+}
+
+ssNames = {
+    "-": "-",
+    "H": "α-helix",
+    "B": "Residues in isolated β-bridge",
+    "E": "β-ladder",
+    "G": "3-helix",
+    "I": "5-helix",
+    "T": "H-bonded turn",
+    "S": "Bend"
 }
 
 // Parse.parse('./ige.xlsx').then(json => {
