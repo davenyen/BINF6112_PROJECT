@@ -82,6 +82,7 @@ Object.keys(duplicatesort).forEach(key =>{
         peptideSeq: ps,
         proteinId: pi,
         data: [ {
+            file: file_path,
             rawMean: rm,
             backgroundMean: bm,
             foregroundMedian: fm
@@ -108,70 +109,35 @@ exports.parseMultiple = async function parse_multiple(file_paths) {
 
         json.forEach(function(pepA) {
             if (m.has(pepA.proteinId)) {
-                let data = m.get(pepA.proteinId)[0].data;
-                data.push({
-                    file: file_paths[1],
-                    rawMean: pepA.rawMean,
-                    backgroundMean: pepA.backgroundMean,
-                    foregroundMedian: pepA.foregroundMedian
-                });
+                let pep = m.get(pepA.proteinId);
+                let data = pep.data;
+                data.push(pepA.data[0]);
+                console.log(pep);
+                // console.log(data);
+                // pep.data.push({
+                //     file: file_paths[1],
+                //     rawMean: pepA.rawMean,
+                //     backgroundMean: pepA.backgroundMean,
+                //     foregroundMedian: pepA.foregroundMedian
+                // });
+                // console.log(pep.data);
+                
                 // m.set(pepA.proteinId, data);
             } else {
-                pep = {
-                    peptideSeq: pepA.peptideSeq,
-                    proteinId: pepA.proteinId,
-                    data: [{
-                        file: file_paths[0],
-                        rawMean: pepA.rawMean,
-                        backgroundMean: pepA.backgroundMean,
-                        foregroundMedian: pepA.foregroundMedian
-                    }]
-                }
-                m.set(pepA.proteinId, [pep]);
+                // pep = {
+                //     peptideSeq: pepA.peptideSeq,
+                //     proteinId: pepA.proteinId,
+                //     data: [{
+                //         file: file_paths[0],
+                //         rawMean: pepA.rawMean,
+                //         backgroundMean: pepA.backgroundMean,
+                //         foregroundMedian: pepA.foregroundMedian
+                //     }]
+                // }
+                m.set(pepA.proteinId, pepA);
             }
         });
     }
-    
-
-    // json1.forEach(function(pepA) {
-    //     pep = {
-    //         peptideSeq: pepA.peptideSeq,
-    //         proteinId: pepA.proteinId,
-    //         data: [{
-    //             file: file_paths[0],
-    //             rawMean: pepA.rawMean,
-    //             backgroundMean: pepA.backgroundMean,
-    //             foregroundMedian: pepA.foregroundMedian
-    //         }]
-    //     }
-    //     m.set(pepA.proteinId, [pep])
-    // });
-
-    // json2.forEach(function(pepB) {
-    //     if (m.has(pepB.proteinId)) {
-    //         let data = m.get(pepB.proteinId)[0].data;
-    //         data.push({
-    //             file: file_paths[1],
-    //             rawMean: pepB.rawMean,
-    //             backgroundMean: pepB.backgroundMean,
-    //             foregroundMedian: pepB.foregroundMedian
-    //         });
-    //         m.set(pepB.proteinId, data);
-    //     } else {
-    //         m.set(pepB.proteinId, [pepB]);
-    //         pep = {
-    //             peptideSeq: pepA.peptideSeq,
-    //             proteinId: pepA.proteinId,
-    //             data: [{
-    //                 file: file_paths[0],
-    //                 rawMean: pepA.rawMean,
-    //                 backgroundMean: pepA.backgroundMean,
-    //                 foregroundMedian: pepA.foregroundMedian
-    //             }]
-    //         }
-    //         m.set(pepA.proteinId, [pep])
-    //     }
-    // });
 
     return Array.from(m.values());
 }

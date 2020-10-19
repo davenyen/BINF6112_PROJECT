@@ -81,7 +81,11 @@ app.get('/process', function(req, res, next) {
           });
   } else if (xlFiles.length > 1) {
     console.log('multiple parse');
-    parse.parseMultiple(xlFiles);
+    parse.parseMultiple(xlFiles)
+          .then(json => map.mapData(json, pdbFile))
+          .then(json => {
+            return res.status(200).json(json);
+          });
   }
   fileHandler = [];
 });

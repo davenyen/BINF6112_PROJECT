@@ -107,12 +107,11 @@ export default class App extends Component {
     axios.post(apiURL + '/upload', data, {
         
     }).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           axios.get(apiURL+"/process")
               .then(rsp => rsp.data)
               .then(json => {
-                console.log(json);
                 this.setState({
                   processedData: json,
                   dataLoaded: false
