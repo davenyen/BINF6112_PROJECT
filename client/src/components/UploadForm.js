@@ -14,6 +14,7 @@ export default class UploadForm extends Component {
             dataLoaded: false,
             isFormInvalid: false,
             fileObject: null,
+            fileLimitExceeded: false,
             rows: null,
             cols: null,
             processedData: null
@@ -61,23 +62,30 @@ export default class UploadForm extends Component {
             });
             let fileObj = event.target.files;
             let uploadedFileNames = [];
-            for (var i = 0; i < fileObj.length; i++) {
-                let fileName = fileObj[i].name;
-                if(fileName.slice(fileName.lastIndexOf('.')+1) === "pdb"){
-                  uploadedFileNames.push(fileName);
-                  this.setState({
-                      // uploadedFileNames: uploadedFileNames,
-                      isFormInvalid: false
-                  });
-                  this.renderFile(fileObj[i])
-                } else{
-                  this.setState({
-                      isFormInvalid: true,
-                      uploadedFileNames: []
-                  })
-                  break;
-                }    
-    
+            if(fileObj.length === 1){
+              for (var i = 0; i < fileObj.length; i++) {
+                  let fileName = fileObj[i].name;
+                  if(fileName.slice(fileName.lastIndexOf('.')+1) === "pdb"){
+                    uploadedFileNames.push(fileName);
+                    this.setState({
+                        // uploadedFileNames: uploadedFileNames,
+                        isFormInvalid: false
+                    });
+                    this.renderFile(fileObj[i])
+                  } else{
+                    this.setState({
+                        isFormInvalid: true,
+                        uploadedFileNames: []
+                    })
+                    break;
+                  }    
+      
+              }
+            }else{
+              this.setState({
+                fileLimitExceeded: true,
+                uploadedFileNames: []
+              })
             }
     
             //check for file extension and pass only if it is .xlsx and display error message otherwise
@@ -127,11 +135,14 @@ export default class UploadForm extends Component {
                     Upload
                     </button>
                     </InputGroupAddon>
-                    <Input type="text" className="form-control" value={this.state.uploadedFileNames} readOnly invalid={this.state.isFormInvalid} />                                              
+                    <Input type="text" className="form-control" value={this.state.uploadedFileNames} readOnly invalid={this.state.isFormInvalid || this.state.fileLimitExceeded} />                                              
                     <FormFeedback>    
                     <Fade in={this.state.isFormInvalid} tag="h6" style={{fontStyle: "italic"}}>
                         Please select a pdb file only !
-                    </Fade>                                                                
+                    </Fade> 
+                    <Fade in={this.state.fileLimitExceeded} tag="h6" style={{fontStyle: "italic"}}>
+                    Only 1 pdb file allowed!
+                  </Fade>                                                                       
                     </FormFeedback>
                 </InputGroup>     
                 </Col>                                                   
