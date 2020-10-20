@@ -6,7 +6,7 @@ import axios from 'axios';
 import Navbar from './components/Navbar';
 import Table from './components/Table';
 import UploadForm from './components/UploadForm';
-
+import Tabs from "./components/Tabs"; 
 // todo: 
 // - convert to hooks 
 // - split into different components
@@ -144,6 +144,20 @@ export default class App extends Component {
       <div>
         <Navbar />
         <Container>
+        <div>
+        <h2>Plase choose your analysis modes</h2>
+        <Tabs> 
+          <div label="Single Sample"> 
+            Single Sample
+          </div> 
+          <div label="Compare multiple samples"> 
+            Compare multiple samples
+          </div> 
+          <div label="Temporal Data Analysis"> 
+            Temporal Data Analysis
+          </div> 
+        </Tabs> 
+        </div>
         <form className="xlsx/gpr-form">
           <FormGroup row>
             <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload xlsx/gpr</Label>          
@@ -182,6 +196,7 @@ export default class App extends Component {
         {this.state.processedData && 
           <Table data={this.state.processedData} />
         }
+        
         </Container>
       </div>
     );

@@ -43,19 +43,51 @@ export default class Table extends React.Component {
         
         let dataHeaders = [];
         this.props.data[0].data.forEach(d => dataHeaders.push(
-            <th key={"foreground med"+d.file}>Foreground Median</th>,
-            <th key={"snr"+d.file}>SNR</th>
+            <th key={"foreground med"+d.file}>
+                <button type="button">
+                Foreground Median
+                </button>
+            </th>,
+            <th key={"snr"+d.file}>
+                <button type="button">
+                SNR
+                </button>
+            </th>
         ));
 
         return (
-        <tr>
-            <th>Protein ID</th>
-            <th>Peptide Sequence</th>
-            <th>Relative ASA</th>
-            <th>Secondary Structure</th>
-            {ratioHeaders}
-            {dataHeaders}
-        </tr>
+            <tr>
+                <th>
+                    <button
+                        type="button"
+                        >
+                    Protein ID
+                    </button>
+                </th>
+                <th>
+                    <button
+                        type="button"
+                    >
+                    Peptide Sequence
+                    </button>
+                </th>
+                <th>
+                    <button
+                        type="button"
+                        >
+                    Relative ASA
+                    </button>
+                </th>
+                <th>
+                    <button
+                        type="button"
+                    >
+                    Secondary Structure
+                    </button>
+                </th>
+                {ratioHeaders}
+                {dataHeaders}                
+            </tr>
         );
     }
     
@@ -90,7 +122,7 @@ export default class Table extends React.Component {
             )
         });
     }
-    
+
     render() {
         return (
             <div>
