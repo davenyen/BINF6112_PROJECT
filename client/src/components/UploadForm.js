@@ -25,18 +25,7 @@ export default class UploadForm extends Component {
         this.renderFile = this.renderFile.bind(this);
         this.fileInput = React.createRef();
       }
-    
-        // callAPI() {
-        // fetch("http://localhost:9000/testAPI")
-        //     .then(res => res.text())
-        //     .then(res => this.setState({ apiResponse: res }))
-        //     .catch(err => err);
-        // }
-    
-        // componentDidMount() {
-        //     this.callAPI();
-        // }
-    
+  
         // Loads and renders file to client
         renderFile = (fileObj) => {
             //just pass the fileObj as parameter
@@ -101,6 +90,7 @@ export default class UploadForm extends Component {
       // Backend incorporation (basic pdb upload for now)
       onClickHandler = () => {
         const data = new FormData();
+        if (this.fileObject == null) return;
         for(var x = 0; x<this.state.fileObject.length; x++) {
           data.append('file', this.state.fileObject[x])
         }
@@ -131,7 +121,7 @@ export default class UploadForm extends Component {
                             Browse&hellip;
                         </Button>
                     <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} multiple onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}} />      
-                    <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>
+                    <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>
                     Upload
                     </button>
                     </InputGroupAddon>
