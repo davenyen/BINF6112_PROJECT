@@ -145,7 +145,7 @@ export default class App extends Component {
         <Navbar />
         <Container>
         <div>
-        <h2>Plase choose your analysis modes</h2>
+        <h2>Please choose your analysis modes</h2>
         <Tabs> 
           <div label="Single Sample"> 
             Single Sample
