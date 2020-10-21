@@ -49,7 +49,7 @@ filename: function (req, file, cb) {
 
 var upload = multer({ storage: storage }).array('file')
 
-app.post('/upload',function(req, res) {
+app.post('/submit',function(req, res) {
   upload(req, res, function (err) {
          if (err instanceof multer.MulterError) {
              return res.status(500).json(err)
@@ -110,8 +110,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
 // parse.parseMultiple(["./public/ige.xlsx", "./public/SC008 IgG4 .xlsx"]).then(m => console.log(m));
-
 
 module.exports = app;

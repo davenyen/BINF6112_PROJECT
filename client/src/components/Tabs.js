@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tab from './Tab';
 
-class Tabs extends Component {
+export default class Tabs extends Component {
     static propTypes = {
       children: PropTypes.instanceOf(Array).isRequired,
     }
@@ -31,11 +31,10 @@ class Tabs extends Component {
         } = this;
     
         return (
-          <div className="tabs">
+          <div className="tabs-container">
             <ol className="tab-list">
               {children.map((child) => {
                 const { label } = child.props;
-    
                 return (
                   <Tab
                     activeTab={activeTab}
@@ -56,5 +55,3 @@ class Tabs extends Component {
         );
       }
     }
-    
-    export default Tabs;
