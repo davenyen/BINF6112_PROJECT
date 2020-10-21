@@ -33,13 +33,8 @@ export default class App extends Component {
       <div>
         <Navbar />
         <Container>
-<<<<<<< HEAD
-        <div>
-        <h2>Please choose your analysis modes</h2>
-=======
         <div className="analysis-tabs">
         <h2>Plase choose your analysis modes</h2>
->>>>>>> David
         <Tabs> 
           <div label="Single Sample"> 
             Single Sample
@@ -66,6 +61,7 @@ export default class App extends Component {
           fileTypeTwo=""
           warningOne="Please select a pdb file only!" 
           warningTwo="Only 1 pdb file allowed!"
+          handleSubmit={null}
         />
         {this.state.dataLoaded && 
         <div className="output-table">

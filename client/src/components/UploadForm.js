@@ -96,7 +96,7 @@ export default class UploadForm extends Component {
         var processedData = this.state.processedData;
         var rows = this.state.rows;
         var cols = this.state.cols;
-        this.props.handleSubmit(dataLoaded, rows, cols, processedData);
+        if (typeof this.props.handleSubmit === "function") this.props.handleSubmit(dataLoaded, rows, cols, processedData);
 
         const data = new FormData();
         for(var x = 0; x<this.state.fileObject.length; x++) {
