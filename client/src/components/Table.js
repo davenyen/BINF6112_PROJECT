@@ -1,7 +1,18 @@
 import React from 'react';
+import {BootstrapTable, TableHeaderColumn} 
+       from 'react-bootstrap-table'
+let order = 'desc';
 
 export default class Table extends React.Component {
- 
+    handleBtnClick = () => {
+        if (order === 'desc') {
+          this.refs.table.handleSort('asc', 'name');
+          order = 'asc';
+        } else {
+          this.refs.table.handleSort('desc', 'name');
+          order = 'desc';
+        }
+      }
     constructor(props){
     super(props);
     this.getHeader = this.getHeader.bind(this);
@@ -43,51 +54,19 @@ export default class Table extends React.Component {
         
         let dataHeaders = [];
         this.props.data[0].data.forEach(d => dataHeaders.push(
-            <th key={"foreground med"+d.file}>
-                <button type="button">
-                Foreground Median
-                </button>
-            </th>,
-            <th key={"snr"+d.file}>
-                <button type="button">
-                SNR
-                </button>
-            </th>
+            <th key={"foreground med"+d.file}>Foreground Median</th>,
+            <th key={"snr"+d.file}>SNR</th>
         ));
 
         return (
-            <tr>
-                <th>
-                    <button
-                        type="button"
-                        >
-                    Protein ID
-                    </button>
-                </th>
-                <th>
-                    <button
-                        type="button"
-                    >
-                    Peptide Sequence
-                    </button>
-                </th>
-                <th>
-                    <button
-                        type="button"
-                        >
-                    Relative ASA
-                    </button>
-                </th>
-                <th>
-                    <button
-                        type="button"
-                    >
-                    Secondary Structure
-                    </button>
-                </th>
-                {ratioHeaders}
-                {dataHeaders}                
-            </tr>
+        <tr>
+            <th>Protein ID</th>
+            <th>Peptide Sequence</th>
+            <th>Relative ASA</th>
+            <th>Secondary Structure</th>
+            {ratioHeaders}
+            {dataHeaders}
+        </tr>
         );
     }
     
@@ -122,20 +101,25 @@ export default class Table extends React.Component {
             )
         });
     }
-
+    
     render() {
         return (
             <div>
-                <table>
-                    <thead>
-                        {this.getFileHeader()}
-                        {this.getHeader()}
-                    </thead>
-                    <tbody>
-                        {this.getRowsData()}
-                    </tbody>
-                </table>
-            </div>
+                    <p style={ { color: 'red' } }>You cam click header to sort or click following button to perform a sorting by expose API</p>
+
+            <BootstrapTable ref='table' data={ this.props.data }>
+                <TableHeaderColumn dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
+                <TableHeaderColumn dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
+                <TableHeaderColumn dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
+                <TableHeaderColumn dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
+                <TableHeaderColumn dataField='foreground med' dataSort={ true }>Foreground Median</TableHeaderColumn>
+                <TableHeaderColumn dataField='snr' dataSort={ true }>SNR</TableHeaderColumn>
+            </BootstrapTable>
+          </div>
         );
+
+
+        
     }
+
 }
