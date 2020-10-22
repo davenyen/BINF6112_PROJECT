@@ -104,14 +104,13 @@ export default class Table extends React.Component {
     render() {
         return (
             <div>
-                    <p style={ { color: 'red' } }>You cam click header to sort or click following button to perform a sorting by expose API</p>
-
+            <p style={ { color: 'red' } }>You cam click header to sort</p>
             <BootstrapTable ref='table' data={ this.props.data }>
                 <TableHeaderColumn dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
                 <TableHeaderColumn dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
                 <TableHeaderColumn dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
                 <TableHeaderColumn dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
-                <TableHeaderColumn dataField='foreground med' dataSort={ true }>Foreground Median</TableHeaderColumn>
+                <TableHeaderColumn dataField='foregroundmedian' dataSort={ true }>Foreground Median</TableHeaderColumn>
                 <TableHeaderColumn dataField='snr' dataSort={ true }>SNR</TableHeaderColumn>
             </BootstrapTable>
           </div>
