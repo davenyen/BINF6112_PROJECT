@@ -17,7 +17,10 @@ export default class Table extends React.Component {
     this.getHeader = this.getHeader.bind(this);
     this.getFileHeader = this.getFileHeader.bind(this);
     this.getRowsData = this.getRowsData.bind(this);
-    this.state = {ratio: this.props.data[0].hasOwnProperty("fmratio1")};
+    console.log(this.props.data[0])
+    console.log(this.props.data)
+    if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
+    else this.state = {ratio: null}
     }
     
     getFileHeader = function() {
@@ -38,6 +41,8 @@ export default class Table extends React.Component {
     }
     
     getHeader = function(){
+
+        // doesn't work for single files
         
         let ratioHeaders=[];
         if (this.state.ratio) {
@@ -56,6 +61,9 @@ export default class Table extends React.Component {
             <th key={"foreground med"+d.file}>Foreground Median</th>,
             <th key={"snr"+d.file}>SNR</th>
         ));
+
+        console.log(ratioHeaders)
+        console.log(dataHeaders)
 
         return (
         <tr>
@@ -100,18 +108,60 @@ export default class Table extends React.Component {
             )
         });
     }
+
+    // DataFormat => displays foregroundMedian
+    displayFM = function(cell, row) {
+        return cell[0].foregroundMedian;
+    }
+
+    // DataFormat => displays SNR
+    displaySNR = function(cell, row) {
+        return cell[0].snr;
+    }
+
+    // Manually sorts SNR
+    sortSNR = function(a, b, sortOrder) {
+        if (sortOrder === 'desc') {
+            return a.data[0].snr > b.data[0].snr ? -1 : 1;
+        } else {
+            return a.data[0].snr > b.data[0].snr ? 1 : -1; 
+        }
+    }
+
+    // Manually sorts foregroundMedian
+    sortFM = function(a, b, sortOrder) {
+        if (sortOrder === 'desc') {
+            return a.data[0].foregroundMedian > b.data[0].foregroundMedian ? -1 : 1;
+        } else {
+            return a.data[0].foregroundMedian > b.data[0].foregroundMedian ? 1 : -1; 
+        }
+    }
     
     render() {
         return (
             <div>
             <p style={ { color: 'red' } }>You can click header to sort</p>
             <BootstrapTable ref='table' data={ this.props.data }>
-                <TableHeaderColumn dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
-                <TableHeaderColumn dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
-                <TableHeaderColumn dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
-                <TableHeaderColumn dataField='fm'  dataSort={ true }>Foreground Median</TableHeaderColumn>
-                <TableHeaderColumn dataField='snr' dataSort={ true }>SNR</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
+                <TableHeaderColumn 
+                    width="20%" 
+                    dataField='data' 
+                    dataSort={true}
+                    dataFormat={this.displayFM}
+                    sortFunc={this.sortFM}>
+                    Foreground Median
+                </TableHeaderColumn>
+                <TableHeaderColumn 
+                    width="20%" 
+                    dataField='data' 
+                    dataSort
+                    dataFormat={this.displaySNR}
+                    sortFunc={this.sortSNR}>
+                    SNR
+                </TableHeaderColumn>
             </BootstrapTable>
           </div>
         );
