@@ -1,7 +1,17 @@
 import React from 'react';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
+let order = 'desc';
 
 export default class Table extends React.Component {
- 
+    handleBtnClick = () => {
+        if (order === 'desc') {
+          this.refs.table.handleSort('asc', 'name');
+          order = 'asc';
+        } else {
+          this.refs.table.handleSort('desc', 'name');
+          order = 'desc';
+        }
+      }
     constructor(props){
     super(props);
     this.getHeader = this.getHeader.bind(this);
@@ -94,16 +104,16 @@ export default class Table extends React.Component {
     render() {
         return (
             <div>
-                <table>
-                    <thead>
-                        {this.getFileHeader()}
-                        {this.getHeader()}
-                    </thead>
-                    <tbody>
-                        {this.getRowsData()}
-                    </tbody>
-                </table>
-            </div>
+            <p style={ { color: 'red' } }>You can click header to sort</p>
+            <BootstrapTable ref='table' data={ this.props.data }>
+                <TableHeaderColumn dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
+                <TableHeaderColumn dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
+                <TableHeaderColumn dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
+                <TableHeaderColumn dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
+                <TableHeaderColumn dataField='fm'  dataSort={ true }>Foreground Median</TableHeaderColumn>
+                <TableHeaderColumn dataField='snr' dataSort={ true }>SNR</TableHeaderColumn>
+            </BootstrapTable>
+          </div>
         );
     }
 }

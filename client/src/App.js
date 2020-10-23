@@ -4,8 +4,10 @@ import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade, FormFeedback, Container, Card } from 'reactstrap';
 import axios from 'axios';
 import Navbar from './components/Navbar';
+import Tabs from "./components/Tabs"; 
 import Table from './components/Table';
 import UploadForm from './components/UploadForm';
+import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 
 // todo: 
 // - convert to hooks 
@@ -71,7 +73,7 @@ export default class App extends Component {
         let uploadedFileNames = [];
         for (var i = 0; i < fileObj.length; i++) {
             let fileName = fileObj[i].name;
-            if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"){
+            if(fileName.slice(fileName.lastIndexOf('.')+1) === "xlsx"|| fileName.slice(fileName.lastIndexOf('.')+1) === "gpr" ){
               uploadedFileNames.push(fileName);
               this.setState({
                   // uploadedFileNames: uploadedFileNames,
@@ -88,7 +90,7 @@ export default class App extends Component {
 
         }
 
-        //check for file extension and pass only if it is .xlsx and display error message otherwise
+        //check for file extension and pass only if it is .xlsx/gpr and display error message otherwise
         if (uploadedFileNames.length > 0) {
           this.setState({
             uploadedFileNames: uploadedFileNames.join(", ")
@@ -136,9 +138,23 @@ export default class App extends Component {
       <div>
         <Navbar />
         <Container>
-        <form className="xlsx-form">
+        <div className="analysis-tabs">
+        <h2>Please choose your analysis modes</h2>
+        <Tabs> 
+          <div label="Single Sample"> 
+            Single Sample
+          </div> 
+          <div label="Compare multiple samples"> 
+            Compare multiple samples
+          </div> 
+          <div label="Temporal Data Analysis"> 
+            Temporal Data Analysis
+          </div> 
+        </Tabs> 
+        </div>
+        <form className="xlsx/gpr-form">
           <FormGroup row>
-            <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload xlsx</Label>          
+            <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload xlsx/gpr</Label>          
             <Col xs={4} sm={8} lg={10}>                                                     
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -154,7 +170,7 @@ export default class App extends Component {
                 <Input type="text" className="form-control" value={this.state.uploadedFileNames} readOnly invalid={this.state.isFormInvalid} />                                              
                 <FormFeedback>    
                   <Fade in={this.state.isFormInvalid} tag="h6" style={{fontStyle: "italic"}}>
-                    Please select a .xlsx file only !
+                    Please select a .xlsx/.gpr file only !
                   </Fade>                                                                
                 </FormFeedback>
               </InputGroup>     
