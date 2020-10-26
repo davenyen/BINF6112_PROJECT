@@ -51,7 +51,7 @@ export default class UploadForm extends Component {
             });
             let fileObj = event.target.files;
             let uploadedFileNames = [];
-            if(fileObj.length === 1){
+            if(fileObj.length <= 2){
               for (var i = 0; i < fileObj.length; i++) {
                   let fileName = fileObj[i].name;
                   if (fileName.slice(fileName.lastIndexOf('.')+1) === this.props.fileTypeOne ||
