@@ -11,18 +11,12 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     //     console.log('here');
     // })
     let data = exec('python3 ./components/dssp.py '+pdbFile)
-    // console.log(data.toString());
 
     var dssp_json = JSON.parse(data.toString());
-    // var dssp_json = JSON.parse(fs.readFileSync('./components/dssp.json'));
-    // console.log(dssp_json);
     let sequence = dssp_json.sequence;
-
-    // let ma_json = await Parse.parse(filePath);
     
     let mappedData = [];
     for (let peptide of ma_json) {
-        // console.log(peptide);
         if (peptide.peptideSeq.length < 5) continue;
         let start = sequence.indexOf(peptide.peptideSeq);
         if (start >= 0) {
@@ -50,7 +44,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             
             
             mappedData.push(peptide);
-            console.log(peptide);
+            // console.log(peptide);
         }
     }
     // console.log(mappedData);

@@ -43,6 +43,7 @@ export default class UploadForm extends Component {
                       dataLoaded: false
                     });
                     this.props.handleSubmit(json);
+                    axios.post(apiURL+"/clear")
                   })
             }
         }).catch(err => console.log(err))
