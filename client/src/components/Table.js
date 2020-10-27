@@ -137,21 +137,28 @@ export default class Table extends React.Component {
         }
     }
     
+    // csv export
+    csvFormatter(cell) {
+        return `${cell}`;
+    }
+
     render() {
         return (
             <div>
             <p style={ { color: 'red' } }>You can click header to sort</p>
-            <BootstrapTable ref='table' data={ this.props.data }>
-                <TableHeaderColumn width="20%" dataField='proteinId' isKey={ true } dataSort={ true }>Protein ID</TableHeaderColumn>
-                <TableHeaderColumn width="20%" dataField='peptideSeq' dataSort={ true }>Peptide Sequence</TableHeaderColumn>
-                <TableHeaderColumn width="20%" dataField='asa' dataSort={ true }>Relative ASA</TableHeaderColumn>
-                <TableHeaderColumn width="20%" dataField='ss' dataSort={ true }>Secondary Structure</TableHeaderColumn>
+            <BootstrapTable ref='table' data={ this.props.data } exportCSV={ true }>
+                <TableHeaderColumn width="20%" dataField='proteinId' isKey={ true } dataSort={ true } csvHeader='Protein Id'>Protein ID</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='peptideSeq' dataSort={ true } csvHeader='Peptide Sequence' >Peptide Sequence</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='asa' dataSort={ true } csvHeader='Relative ASA'>Relative ASA</TableHeaderColumn>
+                <TableHeaderColumn width="20%" dataField='ss' dataSort={ true } csvHeader='Secondary Structure' >Secondary Structure</TableHeaderColumn>
                 <TableHeaderColumn 
                     width="20%" 
                     dataField='data' 
                     dataSort={true}
                     dataFormat={this.displayFM}
-                    sortFunc={this.sortFM}>
+                    sortFunc={this.sortFM}
+                    csvHeader='Foreground Median'
+                    csvFormat={ this.displayFM }>
                     Foreground Median
                 </TableHeaderColumn>
                 <TableHeaderColumn 
@@ -159,7 +166,9 @@ export default class Table extends React.Component {
                     dataField='data' 
                     dataSort
                     dataFormat={this.displaySNR}
-                    sortFunc={this.sortSNR}>
+                    sortFunc={this.sortSNR}
+                    csvHeader='SNR'
+                    csvFormat={ this.displaySNR }>
                     SNR
                 </TableHeaderColumn>
             </BootstrapTable>
