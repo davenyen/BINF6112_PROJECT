@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade, FormFeedback } from 'reactstrap';
-import { ExcelRenderer } from 'react-excel-renderer';
 
-const apiURL = "http://localhost:8000";
 
 export default class UploadField extends Component {
 
@@ -22,26 +19,8 @@ export default class UploadField extends Component {
         this.fileHandler = this.fileHandler.bind(this);
         this.toggle = this.toggle.bind(this);
         this.openFileBrowser = this.openFileBrowser.bind(this);
-        this.renderFile = this.renderFile.bind(this);
         this.fileInput = React.createRef();
       }
-  
-        // Loads and renders file to client
-        renderFile = (fileObj) => {
-            //just pass the fileObj as parameter
-            ExcelRenderer(fileObj, (err, resp) => {
-            if(err){
-                console.log(err);            
-            }
-            else{
-                this.setState({
-                dataLoaded: true,
-                cols: resp.cols,
-                rows: resp.rows
-                });
-            }
-            }); 
-        }
     
       // Checks if file is valid
       fileHandler = (event) => {    
@@ -60,7 +39,10 @@ export default class UploadField extends Component {
                     this.setState({
                         isFormInvalid: false
                     });
-                    this.renderFile(fileObj[i])
+
+                    if (typeof this.props.renderFile === "function") {
+                      this.props.renderFile(fileObj[i]);
+                    }
                     this.props.addFile(fileObj[i]);
                   } else{
                     this.setState({
@@ -86,37 +68,6 @@ export default class UploadField extends Component {
         }               
       }
     
-      // // Backend incorporation (basic pdb upload for now)
-      // onClickHandler = () => {
-      //   // If file doesn't exist returns
-      //   if (this.state.fileObject == null) return; 
-
-      //   // Vars passed to update App.js state, changes parent state to child state
-      //   var dataLoaded = this.state.dataLoaded;
-      //   var processedData = this.state.processedData;
-      //   var rows = this.state.rows;
-      //   var cols = this.state.cols;
-      //   if (typeof this.props.handleSubmit === "function") this.props.handleSubmit(dataLoaded, rows, cols, processedData);
-
-      //   const data = new FormData();
-      //   for(var x = 0; x<this.state.fileObject.length; x++) {
-      //     data.append('file', this.state.fileObject[x])
-      //   }
-      //   axios.post(apiURL + '/submit', data, {
-      //   }).then(res => {
-      //       if (res.status === 200) {
-      //         axios.get(apiURL+"/process")
-      //             .then(rsp => rsp.data)
-      //             .then(json => {
-      //               this.setState({
-      //                 processedData: json,
-      //                 dataLoaded: false
-      //               });
-      //             });
-      //       }
-      //   }).catch(err => console.log(err))
-      // }
-    
       toggle() {
         this.setState({
           isOpen: !this.state.isOpen
@@ -140,9 +91,6 @@ export default class UploadField extends Component {
                             Browse&hellip;
                         </Button>
                     <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} multiple onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}}/>    
-                    {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>
-                    Submit
-                    </button> */}
                     </InputGroupAddon>
                     <Input type="text" className="form-control" value={this.state.uploadedFileNames} readOnly invalid={this.state.isFormInvalid || this.state.fileLimitExceeded} />                                              
                     <FormFeedback>    

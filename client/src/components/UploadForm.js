@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UploadField from './UploadField';
 import axios from 'axios';
 import { Card } from 'reactstrap';
-import { OutTable } from 'react-excel-renderer';
+import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 
 const apiURL = "http://localhost:8000";
 
@@ -16,28 +16,18 @@ export default class UploadForm extends Component {
             isFormInvalid: false,
             fileObjects: [],
             rows: null,
-            cols: null,
-            processedData: null
+            cols: null
         }
-        // this.fileHandler = this.fileHandler.bind(this);
-        // this.toggle = this.toggle.bind(this);
-        // this.openFileBrowser = this.openFileBrowser.bind(this);
-        // this.renderFile = this.renderFile.bind(this);
-        this.fileInput = React.createRef();
         this.onSubmit = this.onSubmit.bind(this);
         this.addFile = this.addFile.bind(this);
+        this.renderFile = this.renderFile.bind(this);
       }
 
     // Backend incorporation (basic pdb upload for now)
     onSubmit = () => {
         // If file doesn't exist returns
-        if (this.state.fileObjects == []) return; 
+        if (this.state.fileObjects.length === 0) return; 
 
-        // Vars passed to update App.js state, changes parent state to child state
-        var dataLoaded = this.state.dataLoaded;
-        var processedData = this.state.processedData;
-        var rows = this.state.rows;
-        var cols = this.state.cols;
         const data = new FormData();
         for(var x = 0; x<this.state.fileObjects.length; x++) {
           data.append('file', this.state.fileObjects[x])
@@ -65,8 +55,26 @@ export default class UploadForm extends Component {
       }));
     }
 
+    // Loads and renders file to client
+    renderFile = (fileObj) => {
+        //just pass the fileObj as parameter
+        ExcelRenderer(fileObj, (err, resp) => {
+        if(err){
+            console.log(err);            
+        }
+        else{
+            this.setState({
+            dataLoaded: true,
+            cols: resp.cols,
+            rows: resp.rows
+            });
+        }
+        }); 
+    }
+
     render() {
         return(
+        <div>
         <div className="form">
             <div className="uploadFields">
               <UploadField 
@@ -75,7 +83,7 @@ export default class UploadForm extends Component {
                 fileTypeTwo="gpr"
                 warningOne="Please select a .xlsx/.gpr file only!" 
                 warningTwo="Maximum of 2 microarray data files allowed!"
-                handleSubmit={this.props.handleSubmit}
+                renderFile={this.renderFile}
                 addFile={this.addFile}
               />
               <UploadField 
@@ -84,26 +92,25 @@ export default class UploadForm extends Component {
                 fileTypeTwo=""
                 warningOne="Please select a pdb file only!" 
                 warningTwo="Only 1 pdb file allowed!"
-                handleSubmit={null}
+                renderFile={null}
                 addFile={this.addFile}
               />
             </div>
             <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>
                   Submit
             </button>
-
-
+        </div>
           {this.state.dataLoaded && 
-          <div className="output-table">
-            <Card body outline color="secondary" className="restrict-card">
-                <OutTable 
-                  data={this.state.rows} 
-                  columns={this.state.cols} 
-                  tableClassName="ExcelTable2007" 
-                  tableHeaderRowClass="heading" 
-                />
-            </Card>  
-          </div>}
+            <div className="output-table">
+              <Card body outline color="secondary" className="restrict-card">
+                  <OutTable 
+                    data={this.state.rows} 
+                    columns={this.state.cols} 
+                    tableClassName="ExcelTable2007" 
+                    tableHeaderRowClass="heading" 
+                  />
+              </Card>  
+            </div>}
         </div>
         )
     }

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Container, Card } from 'reactstrap';
+import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
 import UploadForm from './components/UploadForm';
 import Tabs from "./components/Tabs"; 
-import { OutTable } from 'react-excel-renderer';
 import Table from './components/Table';
 
 export default class App extends Component {
@@ -19,15 +18,6 @@ export default class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // Passed as a method to child in order for child to update parent state
-  // handleSubmit = (dataLoaded, rows, cols, processedData) => {
-  //   this.setState({
-  //       dataLoaded: dataLoaded,
-  //       rows: rows,
-  //       cols: cols,
-  //       processedData: processedData
-  //   })
-  // };
   handleSubmit = (processedData) => {
     this.setState({
       processedData: processedData
