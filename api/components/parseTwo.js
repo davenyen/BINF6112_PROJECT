@@ -118,19 +118,19 @@ var start = exports.parse = async function parseData(file_path){
         tripleAveragedData.push({
             peptideSeq: ps,
             proteinId: pi,
-           // data: [ {
+            data: [ {
                 file: file_path,
                 rawMean: rm,
                 backgroundMean: bm,
                 foregroundMedian: fm,
                 snr:sr 
-            //} ]
+            } ]
         })
 
 
     })
-    console.log(tripleAveragedData)
-    //return tripleAveragedData;
+    //console.log(tripleAveragedData)
+    return tripleAveragedData;
 }
 
 
