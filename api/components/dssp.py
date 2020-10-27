@@ -34,17 +34,20 @@ dssp_array = []
 asa = []
 # secondary structure
 ss = []
+# residue ids
+res_id = []
 for i in range(len(list(dssp.keys()))):
     key = list(dssp.keys())[i]
     sequence += dssp[key][0]
     # position in sequence from pdb
-    dssp_array.append([dssp[key][0], dssp[key][1], dssp[key][2]])
+    # dssp_array.append([dssp[key][0], dssp[key][1], dssp[key][2]])
     # if (key[0] == "A"):
     #     sequenceA += dssp[key][0]
     # else:
     #     sequenceB += dssp[key][0]
     asa.append(dssp[key][2])
     ss.append(dssp[key][1])
+    res_id.append(key[1][1])
 
 
 # print(sequence)
@@ -59,7 +62,8 @@ load = {
     "sequence": sequence,
     # "dssp": dssp_array
     "asa": asa,
-    "ss": ss
+    "ss": ss,
+    "res_id": res_id
 }
 
 json_o = json.dumps(load)
