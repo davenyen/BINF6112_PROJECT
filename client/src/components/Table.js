@@ -52,13 +52,15 @@ const columns = [{
     text: 'Foreground Median',
     sort: true,
     formatter: displayFM,
-    sortFunc: sortFM
+    sortFunc: sortFM,
+    csvFormatter:displayFM
   },{
     dataField: 'data',
     text: 'SNR',
     sort: true,
     formatter: displaySNR,
-    sortFunc: sortSNR
+    sortFunc: sortSNR,
+    csvFormatter: displaySNR
   }];
 
 const MyExportCSV = (props) => {
