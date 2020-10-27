@@ -13,6 +13,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     let data = exec('python3 ./components/dssp.py '+pdbFile)
 
     var dssp_json = JSON.parse(data.toString());
+    console.log(dssp_json);
     let sequence = dssp_json.sequence;
     
     let mappedData = [];
@@ -22,6 +23,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
         if (start >= 0) {
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
+            peptide.res_id = dssp_json.res_id[start];
             peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
             // peptide.asa = rsa(asa, peptide.peptideSeq);
             let mode_ss = mode(ss);
@@ -44,7 +46,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             
             
             mappedData.push(peptide);
-            // console.log(peptide);
+            console.log(peptide);
         }
     }
     // console.log(mappedData);
