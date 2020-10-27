@@ -22,7 +22,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     
     let mappedData = [];
     for (let peptide of ma_json) {
-        console.log(peptide);
+        // console.log(peptide);
         if (peptide.peptideSeq.length < 5) continue;
         let start = sequence.indexOf(peptide.peptideSeq);
         if (start >= 0) {

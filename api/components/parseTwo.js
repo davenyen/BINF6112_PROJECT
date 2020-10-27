@@ -134,7 +134,7 @@ var start = exports.parse = async function parseData(file_path){
 
 
 
-start("./ige.gpr");
+// start("./ige.gpr");
 
 
 
