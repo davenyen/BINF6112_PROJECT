@@ -16,6 +16,7 @@ export default class App extends Component {
         cols: null,
         processedData: null
     }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // Passed as a method to child in order for child to update parent state

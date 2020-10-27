@@ -24,6 +24,8 @@ export default class UploadForm extends Component {
         // this.openFileBrowser = this.openFileBrowser.bind(this);
         // this.renderFile = this.renderFile.bind(this);
         this.fileInput = React.createRef();
+        this.onSubmit = this.onSubmit.bind(this);
+        this.addFile = this.addFile.bind(this);
       }
 
     // Backend incorporation (basic pdb upload for now)
