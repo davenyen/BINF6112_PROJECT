@@ -33,6 +33,10 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             let mode_ss = mode(ss);
             peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
 
+            let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ peptide.peptideSeq).toString());
+            peptide.pI = chemprops_json.pI;
+            peptide.gravy = chemprops_json.gravy;
+
             for (let d in peptide.data) {
                 peptide.data[d].snr = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
             }
@@ -46,6 +50,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             
             
             mappedData.push(peptide);
+            console.log(peptide);
         }
     }
     // console.log(mappedData);
