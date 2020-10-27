@@ -7,8 +7,7 @@ import Navbar from './components/Navbar';
 import Tabs from "./components/Tabs"; 
 import Table from './components/Table';
 import UploadForm from './components/UploadForm';
-import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
-
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 // todo: 
 // - convert to hooks 
 // - split into different components
