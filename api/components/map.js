@@ -11,27 +11,27 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     //     console.log('here');
     // })
     let data = exec('python3 ./components/dssp.py '+pdbFile)
-    // console.log(data.toString());
 
     var dssp_json = JSON.parse(data.toString());
-    // var dssp_json = JSON.parse(fs.readFileSync('./components/dssp.json'));
-    // console.log(dssp_json);
+    console.log(dssp_json);
     let sequence = dssp_json.sequence;
-
-    // let ma_json = await Parse.parse(filePath);
     
     let mappedData = [];
     for (let peptide of ma_json) {
-        console.log(peptide);
         if (peptide.peptideSeq.length < 5) continue;
         let start = sequence.indexOf(peptide.peptideSeq);
         if (start >= 0) {
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
+            peptide.res_id = dssp_json.res_id[start];
             peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
             // peptide.asa = rsa(asa, peptide.peptideSeq);
             let mode_ss = mode(ss);
             peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
+
+            let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ peptide.peptideSeq).toString());
+            peptide.pI = chemprops_json.pI;
+            peptide.gravy = chemprops_json.gravy;
 
             for (let d in peptide.data) {
                 peptide.data[d].snr = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
@@ -46,6 +46,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             
             
             mappedData.push(peptide);
+            console.log(peptide);
         }
     }
     // console.log(mappedData);

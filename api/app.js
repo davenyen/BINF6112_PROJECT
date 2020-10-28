@@ -19,7 +19,8 @@ var usersRouter = require('./routes/users');
 const xlsxFile = require('read-excel-file/node');
 const parse = require('./components/parseTwo');
 const map = require('./components/map');
-var fileHandler = [];
+const fs = require('fs');
+let fileHandler = [];
 
 var app = express();
 
@@ -49,16 +50,16 @@ filename: function (req, file, cb) {
 
 var upload = multer({ storage: storage }).array('file')
 
-app.post('/upload',function(req, res) {
+app.post('/submit',function(req, res) {
+  console.log(fileHandler);
   upload(req, res, function (err) {
-         if (err instanceof multer.MulterError) {
-             return res.status(500).json(err)
-         } else if (err) {
-             return res.status(500).json(err)
-         }
-    return res.status(200).send(req.file)
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+  return res.status(200).send(req.file)
   })
-  
 });
 
 app.get('/process', function(req, res, next) {
@@ -68,6 +69,7 @@ app.get('/process', function(req, res, next) {
   //       .then(json => {
   //         return res.status(200).json(json)
   //       });
+  console.log('processing');
   let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
   let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
   console.log(fileHandler);
@@ -87,8 +89,25 @@ app.get('/process', function(req, res, next) {
             return res.status(200).json(json);
           });
   }
-  fileHandler = [];
 });
+
+app.post('/clear', function(req, res) {
+  console.log('clearing');
+  while (fileHandler.length > 0) { fileHandler.pop() }
+  console.log(fileHandler);
+
+  fs.readdir('./public', (err, files) => {
+    files.forEach(f => {
+      if (f.match(/.gpr$/) || f.match(/.xlsx$/) || f.match(/.pdb$/)) {
+        console.log('heaya'+f);
+        fs.unlink('./public/'+f, (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+
+  })
+})
 
 app.listen(8000, function() {
   console.log('App running on port 8000');
@@ -109,9 +128,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
-// parse.parseMultiple(["./public/ige.xlsx", "./public/SC008 IgG4 .xlsx"]).then(m => console.log(m));
-
 
 module.exports = app;

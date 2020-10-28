@@ -1,3 +1,4 @@
+
 .ExcelTable2007 {
 	border: 1px solid #B0CBEF;
 	border-width: 1px 0px 0px 1px;
@@ -54,7 +55,10 @@ TH {
 .jumbotron-background {
 	background-image: url(https://arborbiosci.com/wp-content/uploads/2017/10/banner-myArray.jpg);
 	border-radius: 0rem !important;
-	color: white
+	color: white;
+	margin-bottom: 1rem !important;
+	padding-top: 3rem !important;
+	padding-bottom: 3rem !important;
 }
 
 .jumbotron-button {
@@ -75,8 +79,13 @@ TH {
 }
 
 .tab-list {  border-bottom: 1px solid #ccc;
+<<<<<<< HEAD
    padding-left: 0;
  }
+=======
+	padding-left: 0;
+  }
+>>>>>>> 909886c36906178e7b9871822042f7bb2798b599
 
 .tab-list-item {
 display: inline-block;
@@ -89,4 +98,23 @@ padding: 0.5rem 0.75rem;
 background-color: white;
 border: solid #ccc;
 border-width: 1px 1px 0 1px;
+<<<<<<< HEAD
 } 		 
+=======
+}
+
+.form {
+	display: flex;
+	justify-content: space-between;
+}
+
+.form .uploadFields {
+	display: inline-block;
+	min-width: 85%;
+}
+
+.form .formSubmit {
+	max-height: 3rem;
+	max-width: 10%;
+}
+>>>>>>> 909886c36906178e7b9871822042f7bb2798b599

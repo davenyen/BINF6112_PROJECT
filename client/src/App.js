@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { OutTable, ExcelRenderer } from 'react-excel-renderer';
-import { Col, Input, InputGroup, InputGroupAddon, FormGroup, Label, Button, Fade, FormFeedback, Container, Card } from 'reactstrap';
-import axios from 'axios';
+import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
 import Tabs from "./components/Tabs"; 
 import Table from './components/Table';
@@ -18,20 +16,12 @@ export default class App extends Component {
   constructor(){
     super();
     this.state={
-        apiResponse: "",
-        isOpen: false,
         dataLoaded: false,
-        isFormInvalid: false,
-        fileObject: null,
         rows: null,
         cols: null,
         processedData: null
     }
-    this.fileHandler = this.fileHandler.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.openFileBrowser = this.openFileBrowser.bind(this);
-    this.renderFile = this.renderFile.bind(this);
-    this.fileInput = React.createRef();
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
     // callAPI() {
@@ -124,12 +114,9 @@ export default class App extends Component {
 
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      processedData: processedData
     });
-  }
-
-  openFileBrowser = () => {
-    this.fileInput.current.click();
+    console.log(this.state.processedData);
   }
 
   render() {
@@ -191,11 +178,3 @@ export default class App extends Component {
     );
   }
 }
-
-/*
-<Switch>
-        <Nav />
-        <Route path='/home'/>
-        <Route path='/results'/>
-      </Switch>
-*/
