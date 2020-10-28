@@ -1,66 +1,106 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { ColumnToggle } from 'react-bootstrap-table2-toolkit';
-// DataFormat => displays foregroundMedian
-function displayFM(cell, row) {
-    return cell[0].foregroundMedian;
-}
+import _ from 'lodash';
+import '../App.css';
 
-// DataFormat => displays SNR
-function displaySNR(cell, row) {
-    return cell[0].snr;
-}
+// sort numerically (instead of lexicographically)
+// (as using toFixed() in map.js converts to string)
+function sortNumerical(a, b, sortOrder) {
+    a = parseFloat(a);
+    b = parseFloat(b);
 
-// Manually sorts SNR
-function sortSNR(a, b, sortOrder) {
+    if (!isFinite(a)) return 1;
+    if (!isFinite(b)) return -1;
+
     if (sortOrder === 'desc') {
-        return a[0].snr > b[0].snr ? -1 : 1;
+        return a > b ? -1 : 1;
     } else {
-        return a[0].snr > b[0].snr ? 1 : -1; 
+        return a > b ? 1 : -1; 
     }
 }
 
-// Manually sorts foregroundMedian
-function sortFM(a, b, sortOrder) {
-    if (sortOrder === 'desc') {
-        return a[0].foregroundMedian > b[0].foregroundMedian ? -1 : 1;
-    } else {
-        return a[0].foregroundMedian > b[0].foregroundMedian ? 1 : -1; 
+// const { ToggleList } = ColumnToggle;
+
+const CustomToggleList = ({
+    columns,
+    onColumnToggle,
+    toggles
+  }) => (
+    <div className="btn-group btn-group-toggle btn-group-vertical" data-toggle="buttons" className="toggle-bar">
+      {
+        columns
+          .map(column => ({
+            ...column,
+            toggle: toggles[column.dataField]
+          }))
+          .map(column => (
+            <button
+              type="button"
+              key={ column.dataField }
+              className={ `btn btn-warning ${column.toggle ? 'active' : ''}` }
+              data-toggle="button"
+              aria-pressed={ column.toggle ? 'true' : 'false' }
+              onClick={ () => onColumnToggle(column.dataField) }
+            >
+              { column.text }
+            </button>
+          ))
+      }
+    </div>
+  );
+
+let columns = [{
+    dataField: 'res_id',
+    text: 'ID',
+    sort: true,
+    sortFunc: sortNumerical,
+    headerAlign: "center",
+    headerStyle: {
+        width: "3rem"
     }
-}
-
-const { ToggleList } = ColumnToggle;
-
-const columns = [{
+  }, {
     dataField: 'proteinId',
-    text: 'Protein ID',
-    sort: true
+    text: 'Peptide Name',
+    sort: true,
+    headerStyle: {
+        width: "12rem",
+    },
+    style: {
+        width: "15em",
+        wordBreak: "break-all"
+    }
   }, {
     dataField: 'peptideSeq',
-    text: 'Peptide Sequence',
-    sort: true
+    text: 'Sequence',
+    sort: true,
+    headerStyle: {
+        width: "12rem",
+    },
+    style: {
+        wordBreak: "break-all"
+    }
   },{
     dataField: 'asa',
     text: 'Relative ASA',
-    sort: true
-  }, {
+    sort: true,
+    sortFunc: sortNumerical
+  },  {
     dataField: 'ss',
     text: 'Secondary Structure',
     sort: true
   },{
-    dataField: 'data',
-    text: 'Foreground Median',
+    dataField: 'gravy',
+    text: 'GRAVY',
+    hidden: true,
     sort: true,
-    formatter: displayFM,
-    sortFunc: sortFM,
-    csvFormatter:displayFM
-  },{
-    dataField: 'data',
-    text: 'SNR',
+    sortFunc: sortNumerical
+  }, {
+    dataField: 'pI',
+    text: 'Isoelectric Point',
+    hidden: true,
     sort: true,
-    formatter: displaySNR,
-    sortFunc: sortSNR,
-    csvFormatter: displaySNR
+    sortFunc: sortNumerical
   }];
 
 const MyExportCSV = (props) => {
@@ -77,11 +117,69 @@ const MyExportCSV = (props) => {
 
 export default class Table extends React.Component {
     constructor(props){
-    super(props);
-    console.log(this.props.data[0])
-    console.log(this.props.data)
-    if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
-    else this.state = {ratio: null}
+        super(props);
+        console.log(this.props.data[0])
+        console.log(this.props.data)
+        if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
+        else this.state = {ratio: null}
+
+        let file_data = this.props.data[0].data;
+        if (file_data.length > 1) {
+            let ratios = this.props.data[0].ratios
+            let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
+            let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
+            for(let key in ratios) {
+                columns.push({
+                    dataField: 'ratios.'+key+'[0]',
+                    text: _.startCase(key) + ' Ratio '+fileName0+" : "+fileName1,
+                    sort: true,
+                    sortFunc: sortNumerical
+                  },{
+                    dataField: 'ratios.'+key+'[1]',
+                    text: _.startCase(key) + ' Ratio '+fileName1+" : "+fileName0,
+                    hidden: true,
+                    sort: true,
+                    sortFunc: sortNumerical
+                  }
+                )   
+            }
+
+            // file data, default state is hidden in table
+            for (let i in file_data) {
+                let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
+                columns.push({
+                        dataField: 'data['+i+'].foregroundMedian',
+                        text: fileName+'Foreground Median',
+                        hidden: true,
+                        sort: true,
+                        sortFunc: sortNumerical
+                      },{
+                        dataField: 'data['+i+'].SNR_Calculated',
+                        text: fileName+'SNR Calculated',
+                        hidden: true,
+                        sort: true,
+                        sortFunc: sortNumerical
+                      }
+                )
+            }
+
+        } else {
+            for (let i in file_data) {
+                let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
+                columns.push({
+                        dataField: 'data['+i+'].foregroundMedian',
+                        text: fileName+'Foreground Median',
+                        sort: true,
+                        sortFunc: sortNumerical
+                      },{
+                        dataField: 'data['+i+'].SNR_Calculated',
+                        text: fileName+'SNR Calculated',
+                        sort: true,
+                        sortFunc: sortNumerical
+                      }
+                )
+            }
+        }
     }
 
     render() {
@@ -98,7 +196,7 @@ export default class Table extends React.Component {
                         <div>
                             <MyExportCSV { ...props.csvProps } />
                             <hr />
-                            <ToggleList { ...props.columnToggleProps } />
+                            <CustomToggleList { ...props.columnToggleProps }  />
                             <hr />
                             <BootstrapTable { ...props.baseProps } />
                         </div>

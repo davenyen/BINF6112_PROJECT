@@ -86,6 +86,7 @@ export default class UploadForm extends Component {
                 warningTwo="Maximum of 2 microarray data files allowed!"
                 renderFile={this.renderFile}
                 addFile={this.addFile}
+                name=".xlsx/.gpr"
               />
               <UploadField 
                 className="pdb-form" 
@@ -95,6 +96,7 @@ export default class UploadForm extends Component {
                 warningTwo="Only 1 pdb file allowed!"
                 renderFile={null}
                 addFile={this.addFile}
+                name=".pdb"
               />
             </div>
             <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>

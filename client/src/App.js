@@ -33,17 +33,10 @@ export default class App extends Component {
         <Navbar />
         <Container>
         <div className="analysis-tabs">
-        <h2>Please choose your analysis modes</h2>
         <Tabs> 
-          <div label="Single Sample"> 
-            Single Sample
-          </div> 
-          <div label="Compare multiple samples"> 
-            Compare multiple samples
-          </div> 
-          <div label="Temporal Data Analysis"> 
-            Temporal Data Analysis
-          </div> 
+          <div label="Single Sample"></div> 
+          <div label="Multiple Sample Analysis"></div> 
+          <div label="Temporal Data Analysis"></div> 
         </Tabs> 
         </div>
         <UploadForm handleSubmit={this.handleSubmit}/>

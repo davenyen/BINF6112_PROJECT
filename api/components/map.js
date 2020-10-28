@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Parse = require('./parseTwo');
+const dps = 3;
 
 exports.mapData = async function mapData(ma_json, pdbFile) {
 
@@ -18,30 +19,54 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     
     let mappedData = [];
     for (let peptide of ma_json) {
-        if (peptide.peptideSeq.length < 5) continue;
+        if (peptide.peptideSeq.length < 3) continue;
         let start = sequence.indexOf(peptide.peptideSeq);
         if (start >= 0) {
+            // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
             let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
+            // Residue ID from dssp output
             peptide.res_id = dssp_json.res_id[start];
-            peptide.asa = asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq);
-            // peptide.asa = rsa(asa, peptide.peptideSeq);
+
+            // secondary structure - get mode of residue assignments
+            peptide.asa = (asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq)).toFixed(dps);
             let mode_ss = mode(ss);
             peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
 
+            // gravy and isoelectric point
             let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ peptide.peptideSeq).toString());
-            peptide.pI = chemprops_json.pI;
-            peptide.gravy = chemprops_json.gravy;
+            peptide.pI = chemprops_json.pI.toFixed(dps);
+            peptide.gravy = chemprops_json.gravy.toFixed(dps);
 
+            // calculate SNR
             for (let d in peptide.data) {
-                peptide.data[d].snr = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
+                peptide.data[d].SNR_Calculated = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
+                peptide.data[d].SNR_Calculated = peptide.data[d].SNR_Calculated.toFixed(dps);
             }
-            // peptide.data[1].snr = Math.log2(peptide.data[1].rawMean) - Math.log2(peptide.data[1].backgroundMean);
+
+            // Calculate ratios if two files provided
             if (peptide.data.length == 2) {
-                peptide.fmratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
-                peptide.fmratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
-                peptide.snrratio1 = peptide.data[0].snr/peptide.data[1].snr;
-                peptide.snrratio2 = peptide.data[1].snr/peptide.data[0].snr;
+                peptide.ratios = {};
+
+                let ratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
+                ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
+                let ratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
+                ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
+                peptide.ratios.foregroundMedian = [
+                    ratio1,
+                    ratio2
+                ]
+
+
+                ratio1 = peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated;
+                ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
+                ratio2 = peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated;
+                ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
+
+                peptide.ratios.SNR_Calculated = [
+                    (peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated).toFixed(dps),
+                    (peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated).toFixed(dps)
+                ]
             }
             
             

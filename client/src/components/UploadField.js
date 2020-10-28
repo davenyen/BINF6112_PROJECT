@@ -82,7 +82,7 @@ export default class UploadField extends Component {
         return (
         <form className={this.props.className}>
             <FormGroup row>
-                <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg">Upload {this.props.fileType}</Label>          
+                <Label for="exampleFile" xs={6} sm={4} lg={2} size="lg" style={{fontSize: "1em"}}>Upload {this.props.name}</Label>          
                 <Col xs={4} sm={8} lg={10}>                                                     
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
