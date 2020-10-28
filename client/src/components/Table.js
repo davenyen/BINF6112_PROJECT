@@ -1,6 +1,6 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { ColumnToggle } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
 import '../App.css';
 
@@ -27,7 +27,8 @@ const CustomToggleList = ({
     onColumnToggle,
     toggles
   }) => (
-    <div className="btn-group btn-group-toggle btn-group-vertical" data-toggle="buttons" className="toggle-bar">
+    // btn-group btn-group-toggle btn-group-vertical
+    <div className="toggle-bar" data-toggle="buttons">
       {
         columns
           .map(column => ({
