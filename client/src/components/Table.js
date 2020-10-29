@@ -61,17 +61,6 @@ let columns = [{
         width: "3rem"
     }
   }, {
-    dataField: 'proteinId',
-    text: 'Peptide Name',
-    sort: true,
-    headerStyle: {
-        width: "12rem",
-    },
-    style: {
-        width: "15em",
-        wordBreak: "break-all"
-    }
-  }, {
     dataField: 'peptideSeq',
     text: 'Sequence',
     sort: true,
@@ -124,6 +113,24 @@ export default class Table extends React.Component {
         if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
         else this.state = {ratio: null}
 
+        if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
+          let nameCol = {
+            dataField: 'proteinId',
+            text: 'Peptide Name',
+            sort: true,
+            headerStyle: {
+                width: "12rem",
+            },
+            style: {
+                width: "15em",
+                wordBreak: "break-all"
+            }
+          }
+
+          // insert at index 1
+          columns.splice(1, 0, nameCol)
+        }
+
         let file_data = this.props.data[0].data;
         if (file_data.length > 1) {
             let ratios = this.props.data[0].ratios
@@ -162,6 +169,17 @@ export default class Table extends React.Component {
                         sortFunc: sortNumerical
                       }
                 )
+
+
+                if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                  columns.push({
+                    dataField: 'data['+i+'].snr',
+                    text: fileName+'SNR',
+                    hidden: true,
+                    sort: true,
+                    sortFunc: sortNumerical
+                  });
+                }
             }
 
         } else {
@@ -179,6 +197,14 @@ export default class Table extends React.Component {
                         sortFunc: sortNumerical
                       }
                 )
+                if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                  columns.push({
+                    dataField: 'data['+i+'].snr',
+                    text: fileName+'SNR',
+                    sort: true,
+                    sortFunc: sortNumerical
+                  });
+                }
             }
         }
     }

@@ -42,6 +42,9 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             for (let d in peptide.data) {
                 peptide.data[d].SNR_Calculated = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
                 peptide.data[d].SNR_Calculated = peptide.data[d].SNR_Calculated.toFixed(dps);
+                if (peptide.data[d].hasOwnProperty("snr")) {
+                    peptide.data[d].snr = peptide.data[d].snr.toFixed(3)
+                }
             }
 
             // Calculate ratios if two files provided
