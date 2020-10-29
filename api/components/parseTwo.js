@@ -1,6 +1,7 @@
 let config = require('./Config.json')
 const xlsxFile = require('read-excel-file/node');
 
+
 var start = exports.parse = async function parseData(file_path){
     MicroArrData = new Array();
     let file_type = ""
@@ -19,10 +20,10 @@ var start = exports.parse = async function parseData(file_path){
             MicroArrData.push({ 
                 peptideSeq: data[JSON.parse(JSON.stringify(config.gpr.sequence))],
                 proteinId:data[JSON.parse(JSON.stringify(config.gpr.name))] || "",
-                rawMean:data[JSON.parse(JSON.stringify(config.gpr.rawMean))],
-                backgroundMean:data[JSON.parse(JSON.stringify(config.gpr.backgroundMean))],
-                foregroundMedian:data[JSON.parse(JSON.stringify(config.gpr.foregroundMedian))],
-                snr:data[JSON.parse(JSON.stringify(config.gpr.snr))]
+                rawMean:keyMatch(data,new RegExp(config.gpr.rawMean)),
+                backgroundMean:keyMatch(data,new RegExp(config.gpr.backgroundMean)),
+                foregroundMedian:keyMatch(data,new RegExp(config.gpr.foregroundMedian)),
+                snr:keyMatch(data,new RegExp(config.gpr.snr))
             })
         })
     }else{
@@ -41,37 +42,37 @@ var start = exports.parse = async function parseData(file_path){
         for(i in rows){
             for(j in rows[i]){
                 if(rows[i][j]!=null){
-                    if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.sequence)),'ig'))){
+                    if(String(rows[i][j]).match(new RegExp(config.excel.sequence,'ig'))){
                         let iter = 0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].peptideSeq = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.name)),'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.name,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].proteinId = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.rawMean)),'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.rawMean,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].rawMean = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.backgroundMean)),'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.backgroundMean,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].backgroundMean = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.foregroundMedian)),'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.foregroundMedian,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].foregroundMedian = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(JSON.parse(JSON.stringify(config.excel.snr)),'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.snr,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].snr = rows[row][j]
@@ -134,9 +135,21 @@ var start = exports.parse = async function parseData(file_path){
 }
 
 
-//start("./ige.gpr") -> for debugging purposes
+function keyMatch(o,r){
+    let returner = "";
+    let regex = new RegExp(r);
+    Object.keys(o).forEach(function(k){
+        let parsedString = JSON.parse(JSON.stringify(k))
+        if(parsedString.match(r)){
+            returner =  o[k]
+        }       
+    });
+    return returner;   
+};
 
 
+
+//start("./toyige.xlsx") //-> for debugging purposes
 
 exports.parseMultiple = async function parse_multiple(file_paths) { 
     

@@ -4,7 +4,7 @@
     "Under excel and gpr, you can specify column header names for each category listed",
     "For GPR files, the number of rows to skip from the beginning of file should be specified",
     "Parameter options in parameter section can be modified to suit user",
-    "Excel headers should be named in regex format (escape backslash needed for special characters",
+    "Headers should be named in regex format (escape backslash needed for special characters)",
     "More parameters can be passed below! [REMOVE THIS COMMENT AT FINAL ITERATION"
     ],
     
@@ -25,10 +25,10 @@
 
         "sequence": "ID",
         "name":  "",
-        "rawMean" : "F532 Mean",
-        "backgroundMean":"B532 Mean",
-        "foregroundMedian": "F532 Median - B532",
-        "snr": "SNR 532",
+        "rawMean" : "F(\\d)* Mean",
+        "backgroundMean":"B(\\d)* Mean",
+        "foregroundMedian": "F(\\d)* Median - B(\\d)*",
+        "snr": "SNR",
         "rowsToSkip" : 11,
         "Optional Params (For User Reference)": "[SNR]"
 
