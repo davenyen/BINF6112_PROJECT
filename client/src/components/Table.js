@@ -74,7 +74,14 @@ let columns = [{
     dataField: 'asa',
     text: 'Relative ASA',
     sort: true,
-    sortFunc: sortNumerical
+    sortFunc: sortNumerical,
+    style: (cell, row, rowIndex, colIndex) => {
+      if (parseFloat(cell) < 0.2) {
+        return {
+          backgroundColor: "#cfcfcf"
+        }
+      }
+    }
   },  {
     dataField: 'ss',
     text: 'Secondary Structure',
