@@ -15,8 +15,7 @@ export default class UploadForm extends Component {
             dataLoaded: false,
             isFormInvalid: false,
             fileObjects: [],
-            rows: null,
-            cols: null
+            rowsncols: []
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.addFile = this.addFile.bind(this);
@@ -24,7 +23,21 @@ export default class UploadForm extends Component {
       }
 
     // Backend incorporation (basic pdb upload for now)
+    getReq = () =>{
+      if(this.props.multiple ===  0){
+          return axios.get(apiURL+"/process") 
+      }else if(this.props.multiple === 1){
+          return axios.get(apiURL+"/processMult") 
+      }else if(this.props.multiple === 2){
+          return axios.get(apiURL+"/processTemp") 
+      }
+    
+    }
     onSubmit = () => {
+      this.setState({ 
+        rowsncols : [],
+        dataLoaded: false
+      })
         // If file doesn't exist returns
         if (this.state.fileObjects.length === 0) return; 
 
@@ -35,16 +48,16 @@ export default class UploadForm extends Component {
         axios.post(apiURL + '/submit', data, {
         }).then(res => {
             if (res.status === 200) {
-              axios.get(apiURL+"/process")
-                  .then(rsp => rsp.data)
-                  .then(json => {
-                    this.setState({
-                      processedData: json,
-                      dataLoaded: false
-                    });
-                    this.props.handleSubmit(json);
-                    axios.post(apiURL+"/clear")
-                  })
+              this.getReq()
+              .then(rsp => rsp.data)
+              .then(json => {
+                this.setState({
+                  processedData: json,
+                  dataLoaded: false
+                });
+                this.props.handleSubmit(json);
+                axios.post(apiURL+"/clear")
+              })
             }
         }).catch(err => console.log(err))
       }
@@ -64,16 +77,27 @@ export default class UploadForm extends Component {
             console.log(err);            
         }
         else{
-            this.setState({
+            this.setState(prevState => ({
             dataLoaded: true,
-            cols: resp.cols,
-            rows: resp.rows
-            });
+            rowsncols : [...prevState.rowsncols,{rows:resp.rows, cols:resp.cols,name:fileObj.name}]
+            }));
         }
         }); 
     }
-
     render() {
+        const renderedCards = this.state.rowsncols.map(rowncol => {
+          return (<div className="output-table">
+            <h6>{rowncol.name}</h6>
+            <Card body outline color="secondary" className="restrict-card">
+                  <OutTable 
+                    data={rowncol.rows} 
+                    columns={rowncol.cols} 
+                    tableClassName="ExcelTable2007" 
+                    tableHeaderRowClass="heading" 
+                  />
+              </Card>  
+          </div>)
+        })
         return(
         <div>
         <div className="form">
@@ -84,6 +108,7 @@ export default class UploadForm extends Component {
                 fileTypeTwo="gpr"
                 warningOne="Please select a .xlsx/.gpr file only!" 
                 warningTwo="Maximum of 2 microarray data files allowed!"
+                multipleFiles = {this.props.multiple}
                 renderFile={this.renderFile}
                 addFile={this.addFile}
                 name=".xlsx/.gpr"
@@ -103,19 +128,17 @@ export default class UploadForm extends Component {
                   Submit
             </button>
         </div>
-          {this.state.dataLoaded && 
-            <div className="output-table">
-              <Card body outline color="secondary" className="restrict-card">
-                  <OutTable 
-                    data={this.state.rows} 
-                    columns={this.state.cols} 
-                    tableClassName="ExcelTable2007" 
-                    tableHeaderRowClass="heading" 
-                  />
-              </Card>  
-            </div>}
+        {this.state.dataLoaded && 
+          <div> 
+            {renderedCards}
+          </div>
+        }
         </div>
         )
     }
+    
 
 }
+
+
+

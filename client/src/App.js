@@ -32,17 +32,23 @@ export default class App extends Component {
       <div>
         <Navbar />
         <Container>
-        <div className="analysis-tabs">
-        <Tabs> 
-          <div label="Single Sample"></div> 
-          <div label="Multiple Sample Analysis"></div> 
-          <div label="Temporal Data Analysis"></div> 
-        </Tabs> 
-        </div>
-        <UploadForm handleSubmit={this.handleSubmit}/>
-        {this.state.processedData && 
-          <Table data={this.state.processedData} />
-        }
+          <div className="analysis-tabs">
+          <Tabs> 
+            <div label="Single Sample">
+              <UploadForm multiple={0} handleSubmit={this.handleSubmit}/>  
+            </div> 
+            <div label="Multiple Sample Analysis">
+              <UploadForm multiple={1} handleSubmit={this.handleSubmit}/>  
+            </div> 
+            <div label="Temporal Data Analysis">
+              <UploadForm multiple={2} handleSubmit={this.handleSubmit}/>  
+            </div> 
+          </Tabs> 
+          </div>
+          
+          {this.state.processedData && 
+            <Table data={this.state.processedData} />
+          }
         </Container>
       </div>
     );

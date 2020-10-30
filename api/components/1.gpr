@@ -1,0 +1,15 @@
+ATF	1																							
+9	25																							
+Type=GenePix Results 3																								
+DateTime=Tue Oct 20 2020 12:45:45																								
+"GalFile=C:\Users\z5234855\OneDrive - UNSW\UNSW PhD\Experimental Data\Epitope\PePperCHIP\2020-04-03 Sydney, Lee (AUS)\2020-04-03 Sydney, Lee (AUS)\Lee UNSW Sydney (PEP20205021558).psf"																								
+PixelSize=21																								
+Wavelengths=532																								
+ImageFiles=C:\Users\z5234855\OneDrive - UNSW\UNSW PhD\Experimental Data\Epitope\PePperCHIP\My Experiments\Li Cor\SC008 OPIA 100920 1_500 reincubation\0002073_01\0002073_01_700.ome.tiff 0																								
+NormalizationMethod=None																								
+BackgroundSubtraction=LocalFeature																								
+Creator=PepSlide Analyzer 2.2.8																								
+Block	Column	Row	Name	ID	X	Y	Dia.	F532 Median	F532 Mean	F532 SD	B532 Median	B532 Mean	B532 SD	% > B532 + 1 SD	% > B532 + 2 SD	F532 % Sat.	F Pixels	B Pixels	Flags	Normalize	F532 Median - B532	F532 Mean - B532	SNR 532	F532 Total Intensity
+Lee UNSW Sydney (PEP20205021558)	1	1		GSGSGSGMRGRVSPL	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5	5
+Lee UNSW Sydney (PEP20205021558)	2	1		SGSGMRGRVSPLMLL	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11
+Lee UNSW Sydney (PEP20205021558)	1	1		GSGSGSGMRGRVSPL	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11	11
