@@ -3,6 +3,9 @@ import UploadField from './UploadField';
 import axios from 'axios';
 import { Card } from 'reactstrap';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
+import './css/Upform.css'
+
+
 
 const apiURL = "http://localhost:8000";
 
@@ -15,11 +18,14 @@ export default class UploadForm extends Component {
             dataLoaded: false,
             isFormInvalid: false,
             fileObjects: [],
-            rowsncols: []
+            rowsncols: [],
+            cardTorender: "",
+            chosenFileName : ""
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.addFile = this.addFile.bind(this);
         this.renderFile = this.renderFile.bind(this);
+        this.renderExcel = this.renderExcel.bind(this);
       }
 
     // Backend incorporation (basic pdb upload for now)
@@ -36,7 +42,8 @@ export default class UploadForm extends Component {
     onSubmit = () => {
       this.setState({ 
         rowsncols : [],
-        dataLoaded: false
+        dataLoaded: false,
+        cardTorender: ""
       })
         // If file doesn't exist returns
         if (this.state.fileObjects.length === 0) return; 
@@ -84,20 +91,44 @@ export default class UploadForm extends Component {
         }
         }); 
     }
-    render() {
-        const renderedCards = this.state.rowsncols.map(rowncol => {
-          return (<div className="output-table">
-            <h6>{rowncol.name}</h6>
-            <Card body outline color="secondary" className="restrict-card">
-                  <OutTable 
-                    data={rowncol.rows} 
-                    columns={rowncol.cols} 
-                    tableClassName="ExcelTable2007" 
-                    tableHeaderRowClass="heading" 
-                  />
-              </Card>  
-          </div>)
+    renderExcel(name){
+      this.setState({chosenFileName:name})
+    }
+
+      
+
+    componentDidUpdate(props,prevState) {
+      let rows,cols;
+      this.state.rowsncols.forEach(rowncol => {
+        if(rowncol.name === this.state.chosenFileName){
+          rows = rowncol.rows
+          cols = rowncol.cols
+          console.log(this.state.chosenFileName,"EXCEL RENDER")
+        }
+      })
+      
+      if(prevState.chosenFileName !== this.state.chosenFileName){
+        this.setState({
+          cardTorender: <Card body outline color="secondary" className="restrict-card">
+                          <OutTable 
+                            data={rows} 
+                            columns={cols} 
+                            tableClassName="ExcelTable2007" 
+                            tableHeaderRowClass="heading" 
+                          />
+                      </Card>  
         })
+      }
+    }
+
+    render() {
+        const renderedButtons = this.state.rowsncols.map(rowncol => {
+          let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
+          return (
+            <button className={claname} onClick={() => {this.renderExcel(rowncol.name)}}>{rowncol.name}</button>
+          )
+        })
+
         return(
         <div>
         <div className="form">
@@ -130,7 +161,9 @@ export default class UploadForm extends Component {
         </div>
         {this.state.dataLoaded && 
           <div> 
-            {renderedCards}
+
+            {renderedButtons}<br></br>
+            {this.state.cardTorender}
           </div>
         }
         </div>
