@@ -34,6 +34,10 @@ export default class UploadField extends Component {
                   let fileName = fileObj[i].name;
                   if (fileName.slice(fileName.lastIndexOf('.')+1) === this.props.fileTypeOne ||
                     fileName.slice(fileName.lastIndexOf('.')+1) === this.props.fileTypeTwo ){
+                    if (i == 0) {
+                      this.props.clearFiles(this.props.fileTypeOne);
+                      this.props.clearFiles(this.props.fileTypeTwo);
+                    }
                     uploadedFileNames.push(fileName);
                     this.setState({
                         isFormInvalid: false

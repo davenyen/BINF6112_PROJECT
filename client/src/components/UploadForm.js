@@ -26,6 +26,7 @@ export default class UploadForm extends Component {
         this.addFile = this.addFile.bind(this);
         this.renderFile = this.renderFile.bind(this);
         this.renderExcel = this.renderExcel.bind(this);
+        this.clearFiles = this.clearFiles.bind(this);
       }
 
     // Backend incorporation (basic pdb upload for now)
@@ -73,6 +74,14 @@ export default class UploadForm extends Component {
       console.log(fileObj.name);
       this.setState(prevState => ({
         fileObjects: [...prevState.fileObjects, fileObj]
+      }));
+    }
+
+    clearFiles = (fileType) => {
+      if (!fileType || fileType.length == 0) return;
+      var regex = new RegExp(fileType+"$");
+      this.setState(prevState => ({
+        fileObjects: prevState.fileObjects.filter(f => !f.name.match(regex))
       }));
     }
 
@@ -142,6 +151,7 @@ export default class UploadForm extends Component {
                 multipleFiles = {this.props.multiple}
                 renderFile={this.renderFile}
                 addFile={this.addFile}
+                clearFiles={this.clearFiles}
                 name=".xlsx/.gpr"
               />
               <UploadField 
@@ -152,6 +162,7 @@ export default class UploadForm extends Component {
                 warningTwo="Only 1 pdb file allowed!"
                 renderFile={null}
                 addFile={this.addFile}
+                clearFiles={this.clearFiles}
                 name=".pdb"
               />
             </div>
