@@ -59,8 +59,8 @@ export default class UploadForm extends Component {
               this.getReq()
               .then(rsp => rsp.data)
               .then(json => {
+                console.log(json);
                 this.setState({
-                  processedData: json,
                   dataLoaded: false
                 });
                 this.props.handleSubmit(json);
@@ -77,11 +77,17 @@ export default class UploadForm extends Component {
       }));
     }
 
-    clearFiles = (fileType) => {
-      if (!fileType || fileType.length == 0) return;
-      var regex = new RegExp(fileType+"$");
+    clearFiles = (fileType1, fileType2) => {
+      if (!fileType1 || fileType1.length === 0) return;
+      var regex1 = new RegExp(fileType1+"$");
       this.setState(prevState => ({
-        fileObjects: prevState.fileObjects.filter(f => !f.name.match(regex))
+        fileObjects: prevState.fileObjects.filter(f => !f.name.match(regex1))
+      }));
+
+      if (!fileType2 || fileType2.length === 0) return;
+      var regex2 = new RegExp(fileType2+"$");
+      this.setState(prevState => ({
+        fileObjects: prevState.fileObjects.filter(f => !f.name.match(regex2))
       }));
     }
 
