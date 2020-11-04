@@ -106,7 +106,7 @@ export default class UploadField extends Component {
       }
     
       openFileBrowser = () => {
-        this.props.refreshPreview()
+        if(this.props.name === ".xlsx/.gpr"){this.props.refreshPreview()}
         this.fileInput.current.click();
       }
 
