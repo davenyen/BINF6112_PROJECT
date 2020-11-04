@@ -75,6 +75,7 @@ export default class UploadField extends Component {
       }
     
       openFileBrowser = () => {
+        this.props.refreshPreview()
         this.fileInput.current.click();
       }
 

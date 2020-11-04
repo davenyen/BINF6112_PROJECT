@@ -25,6 +25,7 @@ export default class UploadForm extends Component {
 
     // Backend incorporation (basic pdb upload for now)
     onSubmit = () => {
+        this.refreshFilePreviews()
         // If file doesn't exist returns
         if (this.state.fileObjects.length === 0) return; 
 
@@ -73,6 +74,41 @@ export default class UploadForm extends Component {
         }); 
     }
 
+    renderExcel(name){
+      this.setState({chosenFileName:name})
+    }
+
+    componentDidUpdate(props,prevState) {
+      let rows,cols;
+      this.state.rowsncols.forEach(rowncol => {
+        if(rowncol.name === this.state.chosenFileName){
+          rows = rowncol.rows
+          cols = rowncol.cols
+          console.log(this.state.chosenFileName,"EXCEL RENDER")
+        }
+      })
+      
+      if(prevState.chosenFileName !== this.state.chosenFileName){
+        this.setState({
+          cardTorender: <Card body outline color="secondary" className="restrict-card">
+                          <OutTable 
+                            data={rows} 
+                            columns={cols} 
+                            tableClassName="ExcelTable2007" 
+                            tableHeaderRowClass="heading" 
+                          />
+                      </Card>  
+        })
+      }
+    }
+    refreshFilePreviews = () => {
+      this.setState({ 
+        rowsncols : [],
+        dataLoaded: false,
+        cardTorender: ""
+      })
+    }
+
     render() {
         return(
         <div>
@@ -86,6 +122,8 @@ export default class UploadForm extends Component {
                 warningTwo="Maximum of 2 microarray data files allowed!"
                 renderFile={this.renderFile}
                 addFile={this.addFile}
+                clearFiles={this.clearFiles}
+                refreshPreview= {this.refreshFilePreviews}
                 name=".xlsx/.gpr"
               />
               <UploadField 
@@ -96,6 +134,8 @@ export default class UploadForm extends Component {
                 warningTwo="Only 1 pdb file allowed!"
                 renderFile={null}
                 addFile={this.addFile}
+                clearFiles={this.clearFiles}
+                refreshPreview= {this.refreshFilePreviews}
                 name=".pdb"
               />
             </div>
