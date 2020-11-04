@@ -23,15 +23,18 @@ export default class UploadField extends Component {
       }
     
       // Checks if file is valid
-      fileHandler = (event) => {    
+      fileHandler = (event) => {  
+        let uploadedFileNames = [];  
+        let fileObj = event.target.files;
         if(event.target.files.length){
             this.setState({
                 fileObject: event.target.files
             });
-            let fileObj = event.target.files;
-            let uploadedFileNames = [];
-            if(fileObj.length <= 2){
+
+            this.props.clearFiles(this.props.fileTypeOne, this.props.fileTypeTwo);
               for (var i = 0; i < fileObj.length; i++) {
+                if (i === 0) {
+                }
                   let fileName = fileObj[i].name;
                   if (fileName.slice(fileName.lastIndexOf('.')+1) === this.props.fileTypeOne ||
                     fileName.slice(fileName.lastIndexOf('.')+1) === this.props.fileTypeTwo ){
@@ -39,34 +42,62 @@ export default class UploadField extends Component {
                     this.setState({
                         isFormInvalid: false
                     });
-
-                    if (typeof this.props.renderFile === "function") {
-                      this.props.renderFile(fileObj[i]);
-                    }
                     this.props.addFile(fileObj[i]);
                   } else{
+                    uploadedFileNames = []
                     this.setState({
                         isFormInvalid: true,
-                        uploadedFileNames: []
+                        fileNames: []
                     })
                     break;
                   }    
               }
-            } else {
-              this.setState({
-                fileLimitExceeded: true,
-                uploadedFileNames: []
-              })
-            }
-    
-            //check for file extension and pass only if it is .xlsx and display error message otherwise
+              if(this.props.name === ".pdb"){
+               
+                if(event.target.files.length > 1){
+                  uploadedFileNames = []
+                  this.setState({
+                    fileLimitExceeded: true,
+                    fileNames: []
+                  })
+                }else{
+                  this.setState({
+                    fileLimitExceeded: false,
+                  })
+                }
+              }else if(this.props.name === ".xlsx/.gpr"){
+                if(this.props.multipleFiles === 0){
+                  if(event.target.files.length > 2){
+                    uploadedFileNames = []
+                    this.setState({
+                      fileLimitExceeded: true,
+                      fileNames: []
+                    })
+                  }else{
+                    this.setState({
+                      fileLimitExceeded: false,
+                    })
+                  }
+                }
+              }
+            } 
+            //File length check
+            
+            //If no errors, setstate and render if available
             if (uploadedFileNames.length > 0) {
+              //console.log(this.state.fileLimitExceeded,this.state.isFormInvalid)
               this.setState({
-                uploadedFileNames: uploadedFileNames.join(", ")
+                fileNames: uploadedFileNames.join(", ")
               })
+              if (typeof this.props.renderFile === "function") {
+                for(let iter=0; iter < fileObj.length;iter++){
+                  this.props.renderFile(fileObj[iter]);
+                }
+                
+              }
             }
-        }               
-      }
+        }   
+                
     
       toggle() {
         this.setState({
@@ -93,7 +124,7 @@ export default class UploadField extends Component {
                         </Button>
                     <input type="file" hidden onChange={this.fileHandler.bind(this)} ref={this.fileInput} multiple onClick={(event)=> { event.target.value = null }} style={{"padding":"10px"}}/>    
                     </InputGroupAddon>
-                    <Input type="text" className="form-control" value={this.state.uploadedFileNames} readOnly invalid={this.state.isFormInvalid || this.state.fileLimitExceeded} />                                              
+                    <Input type="text" className="form-control" value={this.state.fileNames} readOnly invalid={this.state.isFormInvalid || this.state.fileLimitExceeded} />                                              
                     <FormFeedback>    
                       <Fade in={this.state.isFormInvalid} tag="h6" style={{fontStyle: "italic"}}>
                         {this.props.warningOne}

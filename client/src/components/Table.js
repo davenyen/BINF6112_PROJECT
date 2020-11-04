@@ -4,6 +4,8 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
 import '../App.css';
 
+let config = require('../frontend_config.json');
+
 // sort numerically (instead of lexicographically)
 // (as using toFixed() in map.js converts to string)
 function sortNumerical(a, b, sortOrder) {
@@ -76,7 +78,7 @@ let columns = [{
     sort: true,
     sortFunc: sortNumerical,
     style: (cell, row, rowIndex, colIndex) => {
-      if (parseFloat(cell) < 0.2) {
+      if (parseFloat(cell) < parseFloat(config.bury_threshold)) {
         return {
           backgroundColor: "#cfcfcf"
         }
@@ -126,7 +128,7 @@ export default class Table extends React.Component {
             text: 'Peptide Name',
             sort: true,
             headerStyle: {
-                width: "12rem",
+                width: "13rem",
             },
             style: {
                 width: "15em",

@@ -91,6 +91,30 @@ app.get('/process', function(req, res, next) {
   }
 });
 
+app.get('/processMult', function(req, res, next) {
+  console.log('processingMult');
+  let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
+  let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
+    console.log('multiple parse in mult');
+    parse.parseMultiple(xlFiles)
+          .then(json => map.mapData(json, pdbFile))
+          .then(json => {
+            return res.status(200).json(json);
+          });
+});
+
+app.get('/processTemp', function(req, res, next) {
+  console.log('processingTemp');
+  let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
+  let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
+    console.log('multiple parse in temp');
+    parse.parseMultiple(xlFiles)
+          .then(json => map.mapData(json, pdbFile))
+          .then(json => {
+            return res.status(200).json(json);
+          });
+});
+
 app.post('/clear', function(req, res) {
   console.log('clearing');
   while (fileHandler.length > 0) { fileHandler.pop() }
