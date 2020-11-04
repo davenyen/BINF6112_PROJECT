@@ -49,46 +49,58 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             peptide.pI = chemprops_json.pI[start].toFixed(dps);
             peptide.gravy = chemprops_json.gravy[start].toFixed(dps);
 
-            // calculate SNR
-            for (let d in peptide.data) {
-                peptide.data[d].SNR_Calculated = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
-                peptide.data[d].SNR_Calculated = peptide.data[d].SNR_Calculated.toFixed(dps);
-                if (peptide.data[d].hasOwnProperty("snr")) {
-                    peptide.data[d].snr = peptide.data[d].snr.toFixed(3)
-                }
-            }
-
-            // Calculate ratios if two files provided
-            if (peptide.data.length == 2) {
-                peptide.ratios = {};
-
-                let ratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
-                ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
-                let ratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
-                ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-                peptide.ratios.foregroundMedian = [
-                    ratio1,
-                    ratio2
-                ]
-
-
-                ratio1 = peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated;
-                ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
-                ratio2 = peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated;
-                ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-
-                peptide.ratios.SNR_Calculated = [
-                    (peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated).toFixed(dps),
-                    (peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated).toFixed(dps)
-                ]
-            }
-            
             
             mappedData.push(peptide);
-            console.log(peptide);
+            // console.log(peptide);
         }
     }
+
+    mappedData = calculateRatios(mappedData);
     // console.log(mappedData);
+    return mappedData;
+}
+
+function calculateRatios(mappedData) {
+
+    mappedData = mappedData.map(peptide => {
+        // calculate SNR
+        for (let d in peptide.data) {
+            peptide.data[d].SNR_Calculated = Math.log2(peptide.data[d].rawMean) - Math.log2(peptide.data[d].backgroundMean);
+            peptide.data[d].SNR_Calculated = peptide.data[d].SNR_Calculated.toFixed(dps);
+            if (peptide.data[d].hasOwnProperty("snr")) {
+                peptide.data[d].snr = peptide.data[d].snr.toFixed(3)
+            }
+        }
+
+        // Calculate ratios if two files provided
+        if (peptide.data.length == 2) {
+            peptide.ratios = {};
+
+            let ratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
+            ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
+            let ratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
+            ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
+            peptide.ratios.foregroundMedian = [
+                ratio1,
+                ratio2
+            ]
+
+
+            ratio1 = peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated;
+            ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
+            ratio2 = peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated;
+            ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
+
+            peptide.ratios.SNR_Calculated = [
+                (peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated).toFixed(dps),
+                (peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated).toFixed(dps)
+            ]
+        }
+
+        return peptide;
+    });
+
+    console.log(mappedData[0]);
     return mappedData;
 }
 
