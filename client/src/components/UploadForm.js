@@ -55,10 +55,11 @@ export default class UploadForm extends Component {
               this.getReq()
               .then(rsp => rsp.data)
               .then(json => {
-                console.log(json);
+                //console.log(json);
                 this.setState({
                   dataLoaded: false
                 });
+                json.mode = this.props.multiple;
                 this.props.handleSubmit(json);
                 axios.post(apiURL+"/clear")
               })

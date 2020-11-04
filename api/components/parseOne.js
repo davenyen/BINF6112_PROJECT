@@ -46,3 +46,44 @@ xlsxFile(fileHandler).then((rows) => {
 }))
 
 exports.parseMethod = parseMethod;
+
+
+//commented version of multiple parse from V2
+/*var starm = exports.parseMultiple = async function parse_multiple(file_paths) { 
+    
+    // let json1 = await this.parse(file_paths[0]);
+    // let json2 = await this.parse(file_paths[1]);
+    
+    console.log(this,"ARAPRA2312")
+    let m = new Map();
+
+    for (let file of file_paths) {
+        //let json = await this.parse(file);
+        let json = await start(file)
+//the gpr files dont have Id (as in name) so I changed your proteinId to  peptideSequece
+        json.forEach(function(pepA) {
+            if (m.has(pepA.peptideSeq)) {
+                //let pep = m.get(pepA.peptideSeq);
+                //let data = pep.data;
+                //data.push(pepA.data[0]);
+                m.get(pepA.peptideSeq).data.push(pepA.data[0])
+                //------------------------------------------
+                //console.log(pep);
+                // console.log(data);
+                // pep.data.push({
+                //     file: file_paths[1],
+                //     rawMean: pepA.rawMean,
+                //     backgroundMean: pepA.backgroundMean,
+                //     foregroundMedian: pepA.foregroundMedian
+                // });
+                // console.log(pep.data);
+                
+                // m.set(pepA.proteinId, data);
+            } else {
+                m.set(pepA.peptideSeq, pepA);
+            }
+        });
+    }
+    //console.log(Array.from(m.values()))
+    return Array.from(m.values());
+}*/

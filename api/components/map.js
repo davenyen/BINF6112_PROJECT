@@ -3,7 +3,6 @@ const Parse = require('./parseTwo');
 const dps = 3;
 
 exports.mapData = async function mapData(ma_json, pdbFile) {
-
     // const spawn = require("child_process").spawn;
     // var pythonProcess = spawn('python',['./dssp.py', pdbFile]);
     const exec = require('child_process').execSync;
