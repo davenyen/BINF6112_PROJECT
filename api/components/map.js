@@ -14,8 +14,20 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     let data = exec('python3 ./components/dssp.py '+pdbFile)
 
     var dssp_json = JSON.parse(data.toString());
-    console.log(dssp_json);
     let sequence = dssp_json.sequence;
+    // replace ambiguous aa codes so GRAVY won't throw key error
+    sequence = sequence.replace(/[a-z]/g, "C");
+    // Asp or Asn -> 
+    sequence = sequence.replace(/B/g, "N");
+    sequence = sequence.replace(/Z/g, "Q");
+    sequence = sequence.replace(/J/g, "L");
+
+    let pep_length = 0;
+    for (let peptide of ma_json) {
+        pep_length = peptide.peptideSeq.length;
+        if (pep_length > 3) break;
+    }
+    let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ sequence.toUpperCase() + " "+pep_length).toString());
     
     let mappedData = [];
     for (let peptide of ma_json) {
@@ -34,9 +46,8 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
 
             // gravy and isoelectric point
-            let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ peptide.peptideSeq).toString());
-            peptide.pI = chemprops_json.pI.toFixed(dps);
-            peptide.gravy = chemprops_json.gravy.toFixed(dps);
+            peptide.pI = chemprops_json.pI[start].toFixed(dps);
+            peptide.gravy = chemprops_json.gravy[start].toFixed(dps);
 
             // calculate SNR
             for (let d in peptide.data) {
