@@ -3,12 +3,21 @@ import json
 import sys
 
 seq = sys.argv[1]
+pep_length = (int) (sys.argv[2])
 
-X = ProteinAnalysis(seq)
+pI = []
+gravy = []
+
+for i in range(len(seq) - pep_length + 1):
+    pep = seq[i: i+pep_length]
+    X = ProteinAnalysis(pep)
+    pI.append(X.isoelectric_point())
+    gravy.append(X.gravy())
+
 
 load = {
-    "pI": X.isoelectric_point(),
-    "gravy": X.gravy()
+    "pI": pI,
+    "gravy": gravy
 }
 
 json_o = json.dumps(load)
