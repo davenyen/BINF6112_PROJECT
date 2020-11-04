@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card } from 'reactstrap';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import './css/Upform.css'
+import ProteinStructure from './ProteinStructure'
 
 const apiURL = "http://localhost:8000";
 
@@ -19,7 +20,8 @@ export default class UploadForm extends Component {
             fileObjects: [],
             rowsncols: [],
             cardTorender: "",
-            chosenFileName : ""
+            chosenFileName : "",
+            pdbFile: null,
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.addFile = this.addFile.bind(this);
@@ -66,10 +68,12 @@ export default class UploadForm extends Component {
         }).catch(err => console.log(err))
       }
 
+    // appends files to objects state
     addFile = (fileObj) => {
-      console.log(fileObj.name);
+      //console.log(fileObj.name);
       this.setState(prevState => ({
-        fileObjects: [...prevState.fileObjects, fileObj]
+        fileObjects: [...prevState.fileObjects, fileObj],
+        pdbFile: fileObj
       }));
     }
 
@@ -201,6 +205,7 @@ export default class UploadForm extends Component {
             {this.state.excelPreview && this.state.cardTorender}
           </div>
         }
+        <ProteinStructure pdbFile={this.state.pdbFile} test="test"/>
         </div>
         )
     }

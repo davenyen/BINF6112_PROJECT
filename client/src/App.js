@@ -7,9 +7,6 @@ import Table from './components/Table';
 import MultTable from './components/MultTable.js';
 import UploadForm from './components/UploadForm';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-// todo: 
-// - convert to hooks 
-// - split into different components
 
 // const apiURL = "http://localhost:8000";
 
@@ -27,6 +24,7 @@ export default class App extends Component {
       processedData: json
     })
   }
+
   render() {
     const TableMode = () => {
       if(this.state.processedData && this.state.processedData.mode === 0) {
