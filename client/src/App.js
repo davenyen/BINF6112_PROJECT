@@ -29,11 +29,11 @@ export default class App extends Component {
   }
   render() {
     const TableMode = () => {
-      if(this.state.processedData && this.state.processedData.mode == 0) {
+      if(this.state.processedData && this.state.processedData.mode === 0) {
         return <Table data={this.state.processedData} />
-      }else if (this.state.processedData && this.state.processedData.mode == 1){
+      }else if (this.state.processedData && this.state.processedData.mode === 1){
         return <MultTable data={this.state.processedData} /> 
-      }else if(this.state.processedData && this.state.processedData.mode == 2){
+      }else if(this.state.processedData && this.state.processedData.mode === 2){
         return <h1>To Do</h1>
       }
     }
@@ -54,7 +54,6 @@ export default class App extends Component {
             </div> 
           </Tabs> 
           </div>
-          
           {TableMode()}
         </Container>
       </div>

@@ -5,8 +5,6 @@ import { Card } from 'reactstrap';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import './css/Upform.css'
 
-
-
 const apiURL = "http://localhost:8000";
 
 export default class UploadForm extends Component {
@@ -17,6 +15,7 @@ export default class UploadForm extends Component {
             isOpen: false,
             dataLoaded: false,
             isFormInvalid: false,
+            excelPreview: false,
             fileObjects: [],
             rowsncols: [],
             cardTorender: "",
@@ -103,35 +102,6 @@ export default class UploadForm extends Component {
         }
         }); 
     }
-    renderExcel(name){
-      this.setState({chosenFileName:name})
-    }
-
-      
-
-    componentDidUpdate(props,prevState) {
-      let rows,cols;
-      this.state.rowsncols.forEach(rowncol => {
-        if(rowncol.name === this.state.chosenFileName){
-          rows = rowncol.rows
-          cols = rowncol.cols
-          console.log(this.state.chosenFileName,"EXCEL RENDER")
-        }
-      })
-      
-      if(prevState.chosenFileName !== this.state.chosenFileName){
-        this.setState({
-          cardTorender: <Card body outline color="secondary" className="restrict-card">
-                          <OutTable 
-                            data={rows} 
-                            columns={cols} 
-                            tableClassName="ExcelTable2007" 
-                            tableHeaderRowClass="heading" 
-                          />
-                      </Card>  
-        })
-      }
-    }
 
     renderExcel(name){
       this.setState({chosenFileName:name})
@@ -160,6 +130,7 @@ export default class UploadForm extends Component {
         })
       }
     }
+
     refreshFilePreviews = () => {
       this.setState({ 
         rowsncols : [],
@@ -168,11 +139,25 @@ export default class UploadForm extends Component {
       })
     }
 
+    // Toggles excel preview for xls file
+    ToggleExcelPreview(rowncol) {
+      this.setState( (currentState) => ({
+        excelPreview: !currentState.excelPreview,
+      }));
+      this.renderExcel(rowncol.name)
+    }
+
     render() {
         const renderedButtons = this.state.rowsncols.map(rowncol => {
           let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
           return (
-            <button className={claname} onClick={() => {this.renderExcel(rowncol.name)}}>{rowncol.name}</button>
+            <div>
+              <button 
+              className={claname} 
+              onClick={() => this.ToggleExcelPreview(rowncol)}>
+                {rowncol.name}
+              </button>
+            </div>
           )
         })
 
@@ -210,18 +195,15 @@ export default class UploadForm extends Component {
                   Submit
             </button>
         </div>
-        {this.state.dataLoaded && 
+        {this.state.dataLoaded &&
           <div> 
-
-            {renderedButtons}<br></br>
-            {this.state.cardTorender}
+            {renderedButtons}<br/>
+            {this.state.excelPreview && this.state.cardTorender}
           </div>
         }
         </div>
         )
     }
-    
-
 }
 
 

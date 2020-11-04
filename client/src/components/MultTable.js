@@ -1,7 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-import _ from 'lodash';
+//import _ from 'lodash';
 import '../App.css';
 
 let config = require('../frontend_config.json');
