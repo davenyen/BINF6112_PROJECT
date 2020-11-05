@@ -1,0 +1,22 @@
+{
+  peptideSeq: 'LGILVLASVSATHAK',
+  proteinId: '',
+  data: [
+    {
+      file: './public/SC008 IgE.gpr',
+      rawMean: 7,
+      backgroundMean: 14,
+      foregroundMedian: 0,
+      snr: -0.2025
+    }
+  ]
+}
+
+[
+  { peptideSeq: 'GRVSPLMLLLGILVL', proteinId: '', data: [ [Object] ] },
+  { peptideSeq: 'SPLMLLLGILVLASV', proteinId: '', data: [ [Object] ] },
+  { peptideSeq: 'MLLLGILVLASVSAT', proteinId: '', data: [ [Object] ] },
+  { peptideSeq: 'LVLASVSATHAKSSP', proteinId: '', data: [ [Object] ] },
+  { peptideSeq: 'ASVSATHAKSSPYQK', proteinId: '', data: [ [Object] ] },
+  { peptideSeq: 'SATHAKSSPYQKKTE', proteinId: '', data: [ [Object] ] }
+]
