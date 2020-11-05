@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
-import Tabs from "./components/Tabs"; 
+import Tabs from "./components/Tabs";
 import Table from './components/Table';
 import MultTable from './components/MultTable.js';
 import UploadForm from './components/UploadForm';
@@ -30,7 +30,7 @@ export default class App extends Component {
       if(this.state.processedData && this.state.processedData.mode === 0) {
         return <Table data={this.state.processedData} />
       }else if (this.state.processedData && this.state.processedData.mode === 1){
-        return <MultTable data={this.state.processedData} /> 
+        return <MultTable data={this.state.processedData} />
       }else if(this.state.processedData && this.state.processedData.mode === 2){
         return <h1>To Do</h1>
       }
@@ -40,17 +40,17 @@ export default class App extends Component {
         <Navbar />
         <Container>
           <div className="analysis-tabs">
-          <Tabs> 
+          <Tabs>
             <div label="Single Sample">
-              <UploadForm multiple={0} handleSubmit={this.handleSubmit}/>  
-            </div> 
+              <UploadForm multiple={0} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
+            </div>
             <div label="Multiple Sample Analysis">
-              <UploadForm multiple={1} handleSubmit={this.handleSubmit}/>  
-            </div> 
+              <UploadForm multiple={1} handleSubmit={this.handleSubmit}/>
+            </div>
             <div label="Temporal Data Analysis">
-              <UploadForm multiple={2} handleSubmit={this.handleSubmit}/>  
-            </div> 
-          </Tabs> 
+              <UploadForm multiple={2} handleSubmit={this.handleSubmit}/>
+            </div>
+          </Tabs>
           </div>
           {TableMode()}
         </Container>

@@ -1,0 +1,1997 @@
+[
+  {
+    "peptideSeq": "RNNPFYFPSRRFSTR",
+    "proteinId": "Arah1_overlapping 60",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 40.44578947368421,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "19.526",
+        "snr": "NaN",
+        "SNR_Calculated": "0.467"
+      }
+    ],
+    "res_id": 171,
+    "asa": "0.271",
+    "ss": "β-ladder",
+    "pI": "12.000",
+    "gravy": "-1.560"
+  },
+  {
+    "peptideSeq": "PFYFPSRRFSTRYGN",
+    "proteinId": "Arah1_overlapping 61",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 44.3191135734072,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "23.584",
+        "snr": "NaN",
+        "SNR_Calculated": "0.599"
+      }
+    ],
+    "res_id": 174,
+    "asa": "0.249",
+    "ss": "β-ladder",
+    "pI": "10.906",
+    "gravy": "-1.140"
+  },
+  {
+    "peptideSeq": "FPSRRFSTRYGNQNG",
+    "proteinId": "Arah1_overlapping 62",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 43.693622248141125,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "21.469",
+        "snr": "NaN",
+        "SNR_Calculated": "0.578"
+      }
+    ],
+    "res_id": 177,
+    "asa": "0.277",
+    "ss": "β-ladder",
+    "pI": "11.711",
+    "gravy": "-1.627"
+  },
+  {
+    "peptideSeq": "RRFSTRYGNQNGRIR",
+    "proteinId": "Arah1_overlapping 63",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 40.647991037515055,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "17.691",
+        "snr": "NaN",
+        "SNR_Calculated": "0.474"
+      }
+    ],
+    "res_id": 180,
+    "asa": "0.295",
+    "ss": "β-ladder",
+    "pI": "12.000",
+    "gravy": "-1.953"
+  },
+  {
+    "peptideSeq": "STRYGNQNGRIRVLQ",
+    "proteinId": "Arah1_overlapping 64",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 36.079359520762296,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "12.088",
+        "snr": "NaN",
+        "SNR_Calculated": "0.302"
+      }
+    ],
+    "res_id": 183,
+    "asa": "0.233",
+    "ss": "β-ladder",
+    "pI": "11.711",
+    "gravy": "-1.240"
+  },
+  {
+    "peptideSeq": "YGNQNGRIRVLQRFD",
+    "proteinId": "Arah1_overlapping 65",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 31.581126905031287,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "6.786",
+        "snr": "NaN",
+        "SNR_Calculated": "0.110"
+      }
+    ],
+    "res_id": 186,
+    "asa": "0.172",
+    "ss": "β-ladder",
+    "pI": "10.737",
+    "gravy": "-1.187"
+  },
+  {
+    "peptideSeq": "QNGRIRVLQRFDQRS",
+    "proteinId": "Arah1_overlapping 66",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.39197822012695,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.337",
+        "snr": "NaN",
+        "SNR_Calculated": "0.006"
+      }
+    ],
+    "res_id": 189,
+    "asa": "0.213",
+    "ss": "β-ladder",
+    "pI": "12.000",
+    "gravy": "-1.427"
+  },
+  {
+    "peptideSeq": "RIRVLQRFDQRSRQF",
+    "proteinId": "Arah1_overlapping 67",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.913489136610615,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.800",
+        "snr": "NaN",
+        "SNR_Calculated": "0.032"
+      }
+    ],
+    "res_id": 192,
+    "asa": "0.229",
+    "ss": "β-ladder",
+    "pI": "12.000",
+    "gravy": "-1.280"
+  },
+  {
+    "peptideSeq": "VLQRFDQRSRQFQNL",
+    "proteinId": "Arah1_overlapping 68",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 31.4705205898328,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.722",
+        "snr": "NaN",
+        "SNR_Calculated": "0.105"
+      }
+    ],
+    "res_id": 195,
+    "asa": "0.268",
+    "ss": "3-helix",
+    "pI": "11.699",
+    "gravy": "-1.193"
+  },
+  {
+    "peptideSeq": "RFDQRSRQFQNLQNH",
+    "proteinId": "Arah1_overlapping 69",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 32.57987104048226,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "4.226",
+        "snr": "NaN",
+        "SNR_Calculated": "0.155"
+      }
+    ],
+    "res_id": 198,
+    "asa": "0.285",
+    "ss": "3-helix",
+    "pI": "11.699",
+    "gravy": "-2.173"
+  },
+  {
+    "peptideSeq": "QRSRQFQNLQNHRIV",
+    "proteinId": "Arah1_overlapping 70",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.551633996390915,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.293",
+        "snr": "NaN",
+        "SNR_Calculated": "0.014"
+      }
+    ],
+    "res_id": 201,
+    "asa": "0.274",
+    "ss": "3-helix",
+    "pI": "12.000",
+    "gravy": "-1.547"
+  },
+  {
+    "peptideSeq": "RQFQNLQNHRIVQIE",
+    "proteinId": "Arah1_overlapping 71",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 27.426902584579494,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.334",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.093"
+      }
+    ],
+    "res_id": 204,
+    "asa": "0.219",
+    "ss": "β-ladder",
+    "pI": "9.606",
+    "gravy": "-1.127"
+  },
+  {
+    "peptideSeq": "QNLQNHRIVQIEAKP",
+    "proteinId": "Arah1_overlapping 72",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 22.966711175131092,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.222",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.349"
+      }
+    ],
+    "res_id": 207,
+    "asa": "0.211",
+    "ss": "β-ladder",
+    "pI": "8.755",
+    "gravy": "-1.027"
+  },
+  {
+    "peptideSeq": "QNHRIVQIEAKPNTL",
+    "proteinId": "Arah1_overlapping 73",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.113555392329623,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.863",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.340"
+      }
+    ],
+    "res_id": 210,
+    "asa": "0.154",
+    "ss": "β-ladder",
+    "pI": "8.755",
+    "gravy": "-0.840"
+  },
+  {
+    "peptideSeq": "RIVQIEAKPNTLVLP",
+    "proteinId": "Arah1_overlapping 74",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.317860794458515,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.480",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.327"
+      }
+    ],
+    "res_id": 213,
+    "asa": "0.146",
+    "ss": "β-ladder",
+    "pI": "8.748",
+    "gravy": "0.267"
+  },
+  {
+    "peptideSeq": "QIEAKPNTLVLPKHA",
+    "proteinId": "Arah1_overlapping 75",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.636163650253835,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.369",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.248"
+      }
+    ],
+    "res_id": 216,
+    "asa": "0.161",
+    "ss": "β-ladder",
+    "pI": "8.598",
+    "gravy": "-0.367"
+  },
+  {
+    "peptideSeq": "AKPNTLVLPKHADAD",
+    "proteinId": "Arah1_overlapping 76",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.825170367599515,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.627",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.296"
+      }
+    ],
+    "res_id": 219,
+    "asa": "0.161",
+    "ss": "β-ladder",
+    "pI": "6.800",
+    "gravy": "-0.547"
+  },
+  {
+    "peptideSeq": "NTLVLPKHADADNIL",
+    "proteinId": "Arah1_overlapping 77",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 32.708377495850506,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "7.374",
+        "snr": "NaN",
+        "SNR_Calculated": "0.161"
+      }
+    ],
+    "res_id": 222,
+    "asa": "0.107",
+    "ss": "β-ladder",
+    "pI": "5.211",
+    "gravy": "0.020"
+  },
+  {
+    "peptideSeq": "VLPKHADADNILVIQ",
+    "proteinId": "Arah1_overlapping 78",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 41.91336953085266,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "13.546",
+        "snr": "NaN",
+        "SNR_Calculated": "0.518"
+      }
+    ],
+    "res_id": 225,
+    "asa": "0.091",
+    "ss": "β-ladder",
+    "pI": "5.210",
+    "gravy": "0.393"
+  },
+  {
+    "peptideSeq": "KHADADNILVIQQGQ",
+    "proteinId": "Arah1_overlapping 79",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 48.74492687426117,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "18.095",
+        "snr": "NaN",
+        "SNR_Calculated": "0.736"
+      }
+    ],
+    "res_id": 228,
+    "asa": "0.104",
+    "ss": "β-ladder",
+    "pI": "5.211",
+    "gravy": "-0.527"
+  },
+  {
+    "peptideSeq": "DADNILVIQQGQATV",
+    "proteinId": "Arah1_overlapping 80",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 42.648674531031716,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "13.685",
+        "snr": "NaN",
+        "SNR_Calculated": "0.544"
+      }
+    ],
+    "res_id": 231,
+    "asa": "0.086",
+    "ss": "β-ladder",
+    "pI": "4.050",
+    "gravy": "0.180"
+  },
+  {
+    "peptideSeq": "NILVIQQGQATVTVA",
+    "proteinId": "Arah1_overlapping 81",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 42.3452357235216,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "17.107",
+        "snr": "NaN",
+        "SNR_Calculated": "0.533"
+      }
+    ],
+    "res_id": 234,
+    "asa": "0.078",
+    "ss": "β-ladder",
+    "pI": "5.525",
+    "gravy": "0.880"
+  },
+  {
+    "peptideSeq": "VIQQGQATVTVANGN",
+    "proteinId": "Arah1_overlapping 82",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 45.37115613090429,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "22.789",
+        "snr": "NaN",
+        "SNR_Calculated": "0.633"
+      }
+    ],
+    "res_id": 237,
+    "asa": "0.204",
+    "ss": "β-ladder",
+    "pI": "5.495",
+    "gravy": "0.067"
+  },
+  {
+    "peptideSeq": "QGQATVTVANGNNRK",
+    "proteinId": "Arah1_overlapping 83",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 45.117122720746416,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "22.262",
+        "snr": "NaN",
+        "SNR_Calculated": "0.625"
+      }
+    ],
+    "res_id": 240,
+    "asa": "0.298",
+    "ss": "β-ladder",
+    "pI": "11.001",
+    "gravy": "-1.073"
+  },
+  {
+    "peptideSeq": "ATVTVANGNNRKSFN",
+    "proteinId": "Arah1_overlapping 84",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 39.24378733029992,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "14.469",
+        "snr": "NaN",
+        "SNR_Calculated": "0.424"
+      }
+    ],
+    "res_id": 243,
+    "asa": "0.268",
+    "ss": "β-ladder",
+    "pI": "11.001",
+    "gravy": "-0.680"
+  },
+  {
+    "peptideSeq": "TVANGNNRKSFNLDE",
+    "proteinId": "Arah1_overlapping 85",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 34.65507986754942,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.587",
+        "snr": "NaN",
+        "SNR_Calculated": "0.244"
+      }
+    ],
+    "res_id": 246,
+    "asa": "0.318",
+    "ss": "β-ladder",
+    "pI": "5.915",
+    "gravy": "-1.247"
+  },
+  {
+    "peptideSeq": "NGNNRKSFNLDEGHA",
+    "proteinId": "Arah1_overlapping 86",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 31.49272007689986,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "5.935",
+        "snr": "NaN",
+        "SNR_Calculated": "0.106"
+      }
+    ],
+    "res_id": 249,
+    "asa": "0.331",
+    "ss": "β-ladder",
+    "pI": "6.752",
+    "gravy": "-1.720"
+  },
+  {
+    "peptideSeq": "NRKSFNLDEGHALRI",
+    "proteinId": "Arah1_overlapping 87",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 27.04216420580251,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.184",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.114"
+      }
+    ],
+    "res_id": 252,
+    "asa": "0.218",
+    "ss": "β-ladder",
+    "pI": "8.753",
+    "gravy": "-0.973"
+  },
+  {
+    "peptideSeq": "SFNLDEGHALRIPSG",
+    "proteinId": "Arah1_overlapping 88",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.285095634416294,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.134",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.211"
+      }
+    ],
+    "res_id": 255,
+    "asa": "0.178",
+    "ss": "β-ladder",
+    "pI": "5.298",
+    "gravy": "-0.367"
+  },
+  {
+    "peptideSeq": "LDEGHALRIPSGFIS",
+    "proteinId": "Arah1_overlapping 89",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 42.94378290289856,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.873",
+        "snr": "NaN",
+        "SNR_Calculated": "0.554"
+      }
+    ],
+    "res_id": 258,
+    "asa": "0.193",
+    "ss": "β-ladder",
+    "pI": "5.321",
+    "gravy": "0.167"
+  },
+  {
+    "peptideSeq": "GHALRIPSGFISYIL",
+    "proteinId": "Arah1_overlapping 90",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 59.34107465867596,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "18.179",
+        "snr": "NaN",
+        "SNR_Calculated": "1.020"
+      }
+    ],
+    "res_id": 261,
+    "asa": "0.148",
+    "ss": "β-ladder",
+    "pI": "8.755",
+    "gravy": "0.847"
+  },
+  {
+    "peptideSeq": "LRIPSGFISYILNRH",
+    "proteinId": "Arah1_overlapping 91",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 76.67924459702104,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "25.412",
+        "snr": "NaN",
+        "SNR_Calculated": "1.390"
+      }
+    ],
+    "res_id": 264,
+    "asa": "0.155",
+    "ss": "β-ladder",
+    "pI": "10.835",
+    "gravy": "0.220"
+  },
+  {
+    "peptideSeq": "PSGFISYILNRHDNQ",
+    "proteinId": "Arah1_overlapping 92",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 51.708958019163795,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "14.668",
+        "snr": "NaN",
+        "SNR_Calculated": "0.821"
+      }
+    ],
+    "res_id": 267,
+    "asa": "0.247",
+    "ss": "β-ladder",
+    "pI": "7.168",
+    "gravy": "-0.733"
+  },
+  {
+    "peptideSeq": "FISYILNRHDNQNLR",
+    "proteinId": "Arah1_overlapping 93",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 38.0028192561957,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "7.100",
+        "snr": "NaN",
+        "SNR_Calculated": "0.377"
+      }
+    ],
+    "res_id": 270,
+    "asa": "0.211",
+    "ss": "β-ladder",
+    "pI": "8.753",
+    "gravy": "-0.827"
+  },
+  {
+    "peptideSeq": "YILNRHDNQNLRVAK",
+    "proteinId": "Arah1_overlapping 94",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.50437637275127,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.811",
+        "snr": "NaN",
+        "SNR_Calculated": "0.012"
+      }
+    ],
+    "res_id": 273,
+    "asa": "0.186",
+    "ss": "β-ladder",
+    "pI": "9.986",
+    "gravy": "-1.120"
+  },
+  {
+    "peptideSeq": "NRHDNQNLRVAKISM",
+    "proteinId": "Arah1_overlapping 95",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.17136648734696,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.923",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.217"
+      }
+    ],
+    "res_id": 276,
+    "asa": "0.174",
+    "ss": "β-ladder",
+    "pI": "10.835",
+    "gravy": "-1.213"
+  },
+  {
+    "peptideSeq": "DNQNLRVAKISMPVN",
+    "proteinId": "Arah1_overlapping 96",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.830189214086403,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.007",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.296"
+      }
+    ],
+    "res_id": 279,
+    "asa": "0.227",
+    "ss": "β-ladder",
+    "pI": "8.748",
+    "gravy": "-0.527"
+  },
+  {
+    "peptideSeq": "NLRVAKISMPVNTPG",
+    "proteinId": "Arah1_overlapping 97",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 26.638150332546658,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.595",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.135"
+      }
+    ],
+    "res_id": 282,
+    "asa": "0.185",
+    "ss": "β-ladder",
+    "pI": "11.001",
+    "gravy": "-0.007"
+  },
+  {
+    "peptideSeq": "VAKISMPVNTPGQFE",
+    "proteinId": "Arah1_overlapping 98",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 27.407535209076094,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.389",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.094"
+      }
+    ],
+    "res_id": 285,
+    "asa": "0.244",
+    "ss": "β-ladder",
+    "pI": "6.188",
+    "gravy": "-0.007"
+  },
+  {
+    "peptideSeq": "ISMPVNTPGQFEDFF",
+    "proteinId": "Arah1_overlapping 99",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.627083780733916,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.294",
+        "snr": "NaN",
+        "SNR_Calculated": "0.018"
+      }
+    ],
+    "res_id": 288,
+    "asa": "0.273",
+    "ss": "β-ladder",
+    "pI": "4.050",
+    "gravy": "-0.007"
+  },
+  {
+    "peptideSeq": "PVNTPGQFEDFFPAS",
+    "proteinId": "Arah1_overlapping 100",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 30.641365302640203,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.952",
+        "snr": "NaN",
+        "SNR_Calculated": "0.067"
+      }
+    ],
+    "res_id": 291,
+    "asa": "0.319",
+    "ss": "-",
+    "pI": "4.050",
+    "gravy": "-0.420"
+  },
+  {
+    "peptideSeq": "TPGQFEDFFPASSRD",
+    "proteinId": "Arah1_overlapping 101",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 43.182721713303295,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "12.971",
+        "snr": "NaN",
+        "SNR_Calculated": "0.562"
+      }
+    ],
+    "res_id": 294,
+    "asa": "0.290",
+    "ss": "-",
+    "pI": "4.273",
+    "gravy": "-0.947"
+  },
+  {
+    "peptideSeq": "QFEDFFPASSRDQSS",
+    "proteinId": "Arah1_overlapping 102",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 46.67447277690179,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "17.052",
+        "snr": "NaN",
+        "SNR_Calculated": "0.674"
+      }
+    ],
+    "res_id": 297,
+    "asa": "0.265",
+    "ss": "-",
+    "pI": "4.050",
+    "gravy": "-1.107"
+  },
+  {
+    "peptideSeq": "DFFPASSRDQSSYLQ",
+    "proteinId": "Arah1_overlapping 103",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 48.74400296039564,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "20.243",
+        "snr": "NaN",
+        "SNR_Calculated": "0.736"
+      }
+    ],
+    "res_id": 300,
+    "asa": "0.262",
+    "ss": "-",
+    "pI": "4.208",
+    "gravy": "-0.893"
+  },
+  {
+    "peptideSeq": "PASSRDQSSYLQGFS",
+    "proteinId": "Arah1_overlapping 104",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 37.61497000906779,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.520",
+        "snr": "NaN",
+        "SNR_Calculated": "0.362"
+      }
+    ],
+    "res_id": 303,
+    "asa": "0.340",
+    "ss": "-",
+    "pI": "6.260",
+    "gravy": "-0.927"
+  },
+  {
+    "peptideSeq": "SRDQSSYLQGFSRNT",
+    "proteinId": "Arah1_overlapping 105",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 36.85220467986621,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.727",
+        "snr": "NaN",
+        "SNR_Calculated": "0.333"
+      }
+    ],
+    "res_id": 306,
+    "asa": "0.378",
+    "ss": "-",
+    "pI": "8.461",
+    "gravy": "-1.467"
+  },
+  {
+    "peptideSeq": "QSSYLQGFSRNTLEA",
+    "proteinId": "Arah1_overlapping 106",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 37.472038355087804,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.301",
+        "snr": "NaN",
+        "SNR_Calculated": "0.357"
+      }
+    ],
+    "res_id": 309,
+    "asa": "0.384",
+    "ss": "α-helix",
+    "pI": "6.001",
+    "gravy": "-0.740"
+  },
+  {
+    "peptideSeq": "YLQGFSRNTLEAAFN",
+    "proteinId": "Arah1_overlapping 107",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 33.92314565578683,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "5.494",
+        "snr": "NaN",
+        "SNR_Calculated": "0.213"
+      }
+    ],
+    "res_id": 312,
+    "asa": "0.469",
+    "ss": "α-helix",
+    "pI": "6.001",
+    "gravy": "-0.327"
+  },
+  {
+    "peptideSeq": "GFSRNTLEAAFNAEF",
+    "proteinId": "Arah1_overlapping 108",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 35.6415104046532,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "6.033",
+        "snr": "NaN",
+        "SNR_Calculated": "0.285"
+      }
+    ],
+    "res_id": 315,
+    "asa": "0.494",
+    "ss": "α-helix",
+    "pI": "4.531",
+    "gravy": "-0.187"
+  },
+  {
+    "peptideSeq": "RNTLEAAFNAEFNEI",
+    "proteinId": "Arah1_overlapping 109",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 36.29318308347228,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "7.848",
+        "snr": "NaN",
+        "SNR_Calculated": "0.311"
+      }
+    ],
+    "res_id": 318,
+    "asa": "0.467",
+    "ss": "α-helix",
+    "pI": "4.253",
+    "gravy": "-0.460"
+  },
+  {
+    "peptideSeq": "LEAAFNAEFNEIRRV",
+    "proteinId": "Arah1_overlapping 110",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 39.60564544988677,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "12.276",
+        "snr": "NaN",
+        "SNR_Calculated": "0.437"
+      }
+    ],
+    "res_id": 321,
+    "asa": "0.463",
+    "ss": "α-helix",
+    "pI": "4.786",
+    "gravy": "-0.200"
+  },
+  {
+    "peptideSeq": "AFNAEFNEIRRVLLE",
+    "proteinId": "Arah1_overlapping 111",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 43.97248058157705,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "18.639",
+        "snr": "NaN",
+        "SNR_Calculated": "0.588"
+      }
+    ],
+    "res_id": 324,
+    "asa": "0.456",
+    "ss": "α-helix",
+    "pI": "5.010",
+    "gravy": "-0.067"
+  },
+  {
+    "peptideSeq": "NNEGVIVKVSKEHVE",
+    "proteinId": "Arah1_overlapping 123",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.84078947368421,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.789",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.236"
+      }
+    ],
+    "res_id": 340,
+    "asa": "0.429",
+    "ss": "-",
+    "pI": "5.613",
+    "gravy": "-0.560"
+  },
+  {
+    "peptideSeq": "GVIVKVSKEHVEELT",
+    "proteinId": "Arah1_overlapping 124",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.00516620498615,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.166",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.286"
+      }
+    ],
+    "res_id": 363,
+    "asa": "0.391",
+    "ss": "α-helix",
+    "pI": "5.498",
+    "gravy": "0.113"
+  },
+  {
+    "peptideSeq": "VKVSKEHVEELTKHA",
+    "proteinId": "Arah1_overlapping 125",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 22.616475433736692,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.160",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.372"
+      }
+    ],
+    "res_id": 366,
+    "asa": "0.461",
+    "ss": "α-helix",
+    "pI": "6.899",
+    "gravy": "-0.793"
+  },
+  {
+    "peptideSeq": "EEGDITNPINLREGE",
+    "proteinId": "Arah1_Overlapping 133",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 33.65052631578947,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.447",
+        "snr": "NaN",
+        "SNR_Calculated": "0.202"
+      }
+    ],
+    "res_id": 390,
+    "asa": "0.383",
+    "ss": "-",
+    "pI": "4.118",
+    "gravy": "-1.287"
+  },
+  {
+    "peptideSeq": "DITNPINLREGEPDL",
+    "proteinId": "Arah1_Overlapping 134",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 30.214584487534626,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "6.515",
+        "snr": "NaN",
+        "SNR_Calculated": "0.046"
+      }
+    ],
+    "res_id": 393,
+    "asa": "0.391",
+    "ss": "-",
+    "pI": "4.050",
+    "gravy": "-0.880"
+  },
+  {
+    "peptideSeq": "NPINLREGEPDLSNN",
+    "proteinId": "Arah1_Overlapping 135",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 28.342890363026683,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "4.416",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.046"
+      }
+    ],
+    "res_id": 396,
+    "asa": "0.429",
+    "ss": "β-ladder",
+    "pI": "4.137",
+    "gravy": "-1.420"
+  },
+  {
+    "peptideSeq": "NLREGEPDLSNNFGK",
+    "proteinId": "Arah1_Overlapping 136",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.41975341656372,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.748",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.203"
+      }
+    ],
+    "res_id": 399,
+    "asa": "0.420",
+    "ss": "β-ladder",
+    "pI": "4.679",
+    "gravy": "-1.480"
+  },
+  {
+    "peptideSeq": "EGEPDLSNNFGKLFE",
+    "proteinId": "Arah1_Overlapping 137",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 22.28461498712289,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.513",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.393"
+      }
+    ],
+    "res_id": 402,
+    "asa": "0.389",
+    "ss": "β-ladder",
+    "pI": "4.244",
+    "gravy": "-0.993"
+  },
+  {
+    "peptideSeq": "PDLSNNFGKLFEVKP",
+    "proteinId": "Arah1_Overlapping 138",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.043827378851724,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.068",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.345"
+      }
+    ],
+    "res_id": 405,
+    "asa": "0.285",
+    "ss": "β-ladder",
+    "pI": "6.488",
+    "gravy": "-0.587"
+  },
+  {
+    "peptideSeq": "SNNFGKLFEVKPDKK",
+    "proteinId": "Arah1_Overlapping 139",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 23.83942918298819,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.858",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.296"
+      }
+    ],
+    "res_id": 408,
+    "asa": "0.337",
+    "ss": "β-ladder",
+    "pI": "9.524",
+    "gravy": "-1.253"
+  },
+  {
+    "peptideSeq": "FGKLFEVKPDKKNPQ",
+    "proteinId": "Arah1_Overlapping 140",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.506799940447788,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.349",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.256"
+      }
+    ],
+    "res_id": 411,
+    "asa": "0.285",
+    "ss": "β-ladder",
+    "pI": "9.528",
+    "gravy": "-1.307"
+  },
+  {
+    "peptideSeq": "LFEVKPDKKNPQLQD",
+    "proteinId": "Arah1_Overlapping 141",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.52897301635556,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.209",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.254"
+      }
+    ],
+    "res_id": 414,
+    "asa": "0.315",
+    "ss": "α-helix",
+    "pI": "6.223",
+    "gravy": "-1.420"
+  },
+  {
+    "peptideSeq": "VKPDKKNPQLQDLDM",
+    "proteinId": "Arah1_Overlapping 142",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.993489046671872,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.099",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.227"
+      }
+    ],
+    "res_id": 417,
+    "asa": "0.336",
+    "ss": "α-helix",
+    "pI": "6.009",
+    "gravy": "-1.480"
+  },
+  {
+    "peptideSeq": "DKKNPQLQDLDMMLT",
+    "proteinId": "Arah1_Overlapping 143",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 24.316361854513378,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.054",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.267"
+      }
+    ],
+    "res_id": 420,
+    "asa": "0.296",
+    "ss": "α-helix",
+    "pI": "4.429",
+    "gravy": "-1.060"
+  },
+  {
+    "peptideSeq": "NPQLQDLDMMLTCVE",
+    "proteinId": "Arah1_Overlapping 144",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.373995503056275,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.501",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.206"
+      }
+    ],
+    "res_id": 423,
+    "asa": "0.210",
+    "ss": "β-ladder",
+    "pI": "4.050",
+    "gravy": "-0.093"
+  },
+  {
+    "peptideSeq": "LQDLDMMLTCVEIKE",
+    "proteinId": "Arah1_Overlapping 145",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.57710881977712,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.745",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.194"
+      }
+    ],
+    "res_id": 426,
+    "asa": "0.236",
+    "ss": "β-ladder",
+    "pI": "4.156",
+    "gravy": "0.287"
+  },
+  {
+    "peptideSeq": "LDMMLTCVEIKEGAL",
+    "proteinId": "Arah1_Overlapping 146",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 26.9163379888567,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.973",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.120"
+      }
+    ],
+    "res_id": 429,
+    "asa": "0.188",
+    "ss": "β-ladder",
+    "pI": "4.137",
+    "gravy": "0.847"
+  },
+  {
+    "peptideSeq": "MLTCVEIKEGALMLP",
+    "proteinId": "Arah1_Overlapping 147",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 26.88877254814517,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.270",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.122"
+      }
+    ],
+    "res_id": 432,
+    "asa": "0.175",
+    "ss": "β-ladder",
+    "pI": "4.530",
+    "gravy": "0.973"
+  },
+  {
+    "peptideSeq": "CVEIKEGALMLPHFN",
+    "proteinId": "Arah1_Overlapping 148",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 27.329426534692143,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "3.000",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.098"
+      }
+    ],
+    "res_id": 435,
+    "asa": "0.183",
+    "ss": "β-ladder",
+    "pI": "5.399",
+    "gravy": "0.380"
+  },
+  {
+    "peptideSeq": "IKEGALMLPHFNSKA",
+    "proteinId": "Arah1_Overlapping 149",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.97652756753705,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "1.779",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.172"
+      }
+    ],
+    "res_id": 438,
+    "asa": "0.205",
+    "ss": "β-ladder",
+    "pI": "8.598",
+    "gravy": "-0.027"
+  },
+  {
+    "peptideSeq": "GALMLPHFNSKAMVI",
+    "proteinId": "Arah1_Overlapping 150",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 22.514704730222352,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.848",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.378"
+      }
+    ],
+    "res_id": 441,
+    "asa": "0.135",
+    "ss": "β-ladder",
+    "pI": "8.757",
+    "gravy": "0.873"
+  },
+  {
+    "peptideSeq": "MLPHFNSKAMVIVVV",
+    "proteinId": "Arah1_Overlapping 151",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 21.223073769657926,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.460",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.463"
+      }
+    ],
+    "res_id": 444,
+    "asa": "0.104",
+    "ss": "β-ladder",
+    "pI": "8.521",
+    "gravy": "1.367"
+  },
+  {
+    "peptideSeq": "HFNSKAMVIVVVNKG",
+    "proteinId": "Arah1_Overlapping 152",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 20.57296890891046,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.231",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.508"
+      }
+    ],
+    "res_id": 447,
+    "asa": "0.109",
+    "ss": "β-ladder",
+    "pI": "10.003",
+    "gravy": "0.573"
+  },
+  {
+    "peptideSeq": "SKAMVIVVVNKGTGN",
+    "proteinId": "Arah1_Overlapping 153",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 20.666636681295557,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.121",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.502"
+      }
+    ],
+    "res_id": 450,
+    "asa": "0.150",
+    "ss": "β-ladder",
+    "pI": "10.001",
+    "gravy": "0.527"
+  },
+  {
+    "peptideSeq": "MVIVVVNKGTGNLEL",
+    "proteinId": "Arah1_Overlapping 154",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 19.807918602732297,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.062",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.563"
+      }
+    ],
+    "res_id": 453,
+    "asa": "0.133",
+    "ss": "β-ladder",
+    "pI": "5.753",
+    "gravy": "0.993"
+  },
+  {
+    "peptideSeq": "VVVNKGTGNLELVAV",
+    "proteinId": "Arah1_Overlapping 155",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 21.171399181832417,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.348",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.467"
+      }
+    ],
+    "res_id": 456,
+    "asa": "0.191",
+    "ss": "β-ladder",
+    "pI": "5.972",
+    "gravy": "0.967"
+  },
+  {
+    "peptideSeq": "NKGTGNLELVAVRKE",
+    "proteinId": "Arah1_Overlapping 156",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 22.164965922922452,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "0.504",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.401"
+      }
+    ],
+    "res_id": 459,
+    "asa": "0.276",
+    "ss": "β-ladder",
+    "pI": "8.591",
+    "gravy": "-0.667"
+  },
+  {
+    "peptideSeq": "REVRRYTARLKEGDV",
+    "proteinId": "Arah1_Overlapping 168",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 59.69947368421053,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "19.395",
+        "snr": "NaN",
+        "SNR_Calculated": "1.029"
+      }
+    ],
+    "res_id": 495,
+    "asa": "0.351",
+    "ss": "β-ladder",
+    "pI": "9.971",
+    "gravy": "-1.387"
+  },
+  {
+    "peptideSeq": "RRYTARLKEGDVFIM",
+    "proteinId": "Arah1_Overlapping 169",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 67.01567867036012,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "19.715",
+        "snr": "NaN",
+        "SNR_Calculated": "1.196"
+      }
+    ],
+    "res_id": 498,
+    "asa": "0.253",
+    "ss": "β-ladder",
+    "pI": "9.978",
+    "gravy": "-0.520"
+  },
+  {
+    "peptideSeq": "TARLKEGDVFIMPAA",
+    "proteinId": "Arah1_Overlapping 170",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 61.01216503863537,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "16.765",
+        "snr": "NaN",
+        "SNR_Calculated": "1.060"
+      }
+    ],
+    "res_id": 501,
+    "asa": "0.247",
+    "ss": "β-ladder",
+    "pI": "5.735",
+    "gravy": "0.300"
+  },
+  {
+    "peptideSeq": "LKEGDVFIMPAAHPV",
+    "proteinId": "Arah1_Overlapping 171",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 53.44740506134851,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "22.590",
+        "snr": "NaN",
+        "SNR_Calculated": "0.869"
+      }
+    ],
+    "res_id": 504,
+    "asa": "0.169",
+    "ss": "β-ladder",
+    "pI": "5.321",
+    "gravy": "0.487"
+  },
+  {
+    "peptideSeq": "GDVFIMPAAHPVAIN",
+    "proteinId": "Arah1_Overlapping 172",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 54.81795344006843,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "28.877",
+        "snr": "NaN",
+        "SNR_Calculated": "0.906"
+      }
+    ],
+    "res_id": 507,
+    "asa": "0.124",
+    "ss": "β-ladder",
+    "pI": "5.077",
+    "gravy": "0.913"
+  },
+  {
+    "peptideSeq": "FIMPAAHPVAINASS",
+    "proteinId": "Arah1_Overlapping 173",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 54.80363310233259,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "31.936",
+        "snr": "NaN",
+        "SNR_Calculated": "0.905"
+      }
+    ],
+    "res_id": 510,
+    "asa": "0.169",
+    "ss": "β-ladder",
+    "pI": "6.741",
+    "gravy": "0.907"
+  },
+  {
+    "peptideSeq": "PAAHPVAINASSELH",
+    "proteinId": "Arah1_Overlapping 174",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 47.451494354186096,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "23.888",
+        "snr": "NaN",
+        "SNR_Calculated": "0.698"
+      }
+    ],
+    "res_id": 513,
+    "asa": "0.226",
+    "ss": "β-ladder",
+    "pI": "6.003",
+    "gravy": "0.100"
+  },
+  {
+    "peptideSeq": "HPVAINASSELHLLG",
+    "proteinId": "Arah1_Overlapping 175",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 45.02351982756538,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "21.374",
+        "snr": "NaN",
+        "SNR_Calculated": "0.622"
+      }
+    ],
+    "res_id": 516,
+    "asa": "0.179",
+    "ss": "β-ladder",
+    "pI": "5.982",
+    "gravy": "0.447"
+  },
+  {
+    "peptideSeq": "AINASSELHLLGFGI",
+    "proteinId": "Arah1_Overlapping 176",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 44.18308223014841,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "20.430",
+        "snr": "NaN",
+        "SNR_Calculated": "0.595"
+      }
+    ],
+    "res_id": 519,
+    "asa": "0.146",
+    "ss": "β-ladder",
+    "pI": "5.242",
+    "gravy": "0.947"
+  },
+  {
+    "peptideSeq": "ASSELHLLGFGINAE",
+    "proteinId": "Arah1_Overlapping 177",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 52.31304675806788,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "31.149",
+        "snr": "NaN",
+        "SNR_Calculated": "0.838"
+      }
+    ],
+    "res_id": 522,
+    "asa": "0.195",
+    "ss": "β-ladder",
+    "pI": "4.815",
+    "gravy": "0.413"
+  },
+  {
+    "peptideSeq": "ELHLLGFGINAENNH",
+    "proteinId": "Arah1_Overlapping 178",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 56.50086493277456,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "35.862",
+        "snr": "NaN",
+        "SNR_Calculated": "0.949"
+      }
+    ],
+    "res_id": 525,
+    "asa": "0.246",
+    "ss": "β-ladder",
+    "pI": "5.230",
+    "gravy": "-0.280"
+  },
+  {
+    "peptideSeq": "LLGFGINAENNHRIF",
+    "proteinId": "Arah1_Overlapping 179",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 55.70540000027904,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "35.218",
+        "snr": "NaN",
+        "SNR_Calculated": "0.929"
+      }
+    ],
+    "res_id": 528,
+    "asa": "0.216",
+    "ss": "β-ladder",
+    "pI": "6.750",
+    "gravy": "0.100"
+  },
+  {
+    "peptideSeq": "FGINAENNHRIFLAG",
+    "proteinId": "Arah1_Overlapping 180",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 60.04916814733894,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "37.761",
+        "snr": "NaN",
+        "SNR_Calculated": "1.037"
+      }
+    ],
+    "res_id": 531,
+    "asa": "0.249",
+    "ss": "β-ladder",
+    "pI": "6.750",
+    "gravy": "-0.033"
+  },
+  {
+    "peptideSeq": "NAENNHRIFLAGDKD",
+    "proteinId": "Arah1_Overlapping 181",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 68.79041434685226,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "47.721",
+        "snr": "NaN",
+        "SNR_Calculated": "1.233"
+      }
+    ],
+    "res_id": 534,
+    "asa": "0.331",
+    "ss": "Bend",
+    "pI": "5.492",
+    "gravy": "-1.220"
+  },
+  {
+    "peptideSeq": "NNHRIFLAGDKDNVI",
+    "proteinId": "Arah1_Overlapping 182",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 72.9531137804961,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "50.430",
+        "snr": "NaN",
+        "SNR_Calculated": "1.318"
+      }
+    ],
+    "res_id": 537,
+    "asa": "0.299",
+    "ss": "Bend",
+    "pI": "6.747",
+    "gravy": "-0.527"
+  },
+  {
+    "peptideSeq": "RIFLAGDKDNVIDQI",
+    "proteinId": "Arah1_Overlapping 183",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 59.69940516644953,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "35.073",
+        "snr": "NaN",
+        "SNR_Calculated": "1.029"
+      }
+    ],
+    "res_id": 540,
+    "asa": "0.302",
+    "ss": "Bend",
+    "pI": "4.429",
+    "gravy": "-0.013"
+  },
+  {
+    "peptideSeq": "LAGDKDNVIDQIEKQ",
+    "proteinId": "Arah1_Overlapping 184",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 42.90431378985718,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "16.741",
+        "snr": "NaN",
+        "SNR_Calculated": "0.552"
+      }
+    ],
+    "res_id": 543,
+    "asa": "0.423",
+    "ss": "α-helix",
+    "pI": "4.226",
+    "gravy": "-0.927"
+  },
+  {
+    "peptideSeq": "DKDNVIDQIEKQAKD",
+    "proteinId": "Arah1_Overlapping 185",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 36.597919508356696,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.931",
+        "snr": "NaN",
+        "SNR_Calculated": "0.323"
+      }
+    ],
+    "res_id": 546,
+    "asa": "0.413",
+    "ss": "α-helix",
+    "pI": "4.516",
+    "gravy": "-1.647"
+  },
+  {
+    "peptideSeq": "NVIDQIEKQAKDLAF",
+    "proteinId": "Arah1_Overlapping 186",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 40.19182207384202,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "16.023",
+        "snr": "NaN",
+        "SNR_Calculated": "0.458"
+      }
+    ],
+    "res_id": 549,
+    "asa": "0.449",
+    "ss": "α-helix",
+    "pI": "4.558",
+    "gravy": "-0.360"
+  },
+  {
+    "peptideSeq": "DQIEKQAKDLAFPGS",
+    "proteinId": "Arah1_Overlapping 187",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 41.72347614844412,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "18.915",
+        "snr": "NaN",
+        "SNR_Calculated": "0.512"
+      }
+    ],
+    "res_id": 552,
+    "asa": "0.513",
+    "ss": "α-helix",
+    "pI": "4.558",
+    "gravy": "-0.893"
+  },
+  {
+    "peptideSeq": "EKQAKDLAFPGSGEQ",
+    "proteinId": "Arah1_Overlapping 188",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 44.220756358700136,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "23.486",
+        "snr": "NaN",
+        "SNR_Calculated": "0.596"
+      }
+    ],
+    "res_id": 555,
+    "asa": "0.528",
+    "ss": "α-helix",
+    "pI": "4.679",
+    "gravy": "-1.220"
+  },
+  {
+    "peptideSeq": "AKDLAFPGSGEQVEK",
+    "proteinId": "Arah1_Overlapping 189",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 32.688602835796466,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "9.747",
+        "snr": "NaN",
+        "SNR_Calculated": "0.160"
+      }
+    ],
+    "res_id": 558,
+    "asa": "0.461",
+    "ss": "α-helix",
+    "pI": "4.679",
+    "gravy": "-0.707"
+  },
+  {
+    "peptideSeq": "LAFPGSGEQVEKLIK",
+    "proteinId": "Arah1_Overlapping 190",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 29.876404232594016,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "8.181",
+        "snr": "NaN",
+        "SNR_Calculated": "0.030"
+      }
+    ],
+    "res_id": 561,
+    "asa": "0.526",
+    "ss": "α-helix",
+    "pI": "6.143",
+    "gravy": "-0.040"
+  },
+  {
+    "peptideSeq": "PGSGEQVEKLIKNQK",
+    "proteinId": "Arah1_Overlapping 191",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 28.600864496724498,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "6.288",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.033"
+      }
+    ],
+    "res_id": 564,
+    "asa": "0.519",
+    "ss": "α-helix",
+    "pI": "8.904",
+    "gravy": "-1.327"
+  },
+  {
+    "peptideSeq": "GEQVEKLIKNQKESH",
+    "proteinId": "Arah1_Overlapping 192",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 25.340930036035797,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "2.615",
+        "snr": "NaN",
+        "SNR_Calculated": "-0.207"
+      }
+    ],
+    "res_id": 567,
+    "asa": "0.465",
+    "ss": "α-helix",
+    "pI": "6.763",
+    "gravy": "-1.640"
+  },
+  {
+    "peptideSeq": "VEKLIKNQKESHFVS",
+    "proteinId": "Arah1_Overlapping 193",
+    "data": [
+      {
+        "file": "./public/SC008 IgG4 .xlsx",
+        "rawMean": 30.979016507069296,
+        "backgroundMean": 29.26,
+        "foregroundMedian": "6.596",
+        "snr": "NaN",
+        "SNR_Calculated": "0.082"
+      }
+    ],
+    "res_id": 570,
+    "asa": "0.398",
+    "ss": "α-helix",
+    "pI": "8.477",
+    "gravy": "-0.733"
+  }
+]
