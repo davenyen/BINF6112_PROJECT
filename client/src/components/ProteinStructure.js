@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import logo from './pdb_bg.png'
+import proteinBg from './pdb_bg.png'
 import { Stage } from 'ngl'
 import './css/ProteinStructure.css'
 
@@ -8,56 +8,42 @@ export default function ProteinStructure(props) {
   const [ stage, setStage ] = useState(null)
   const [ pdb, setPDB ] = useState(null)
 
-  /*useEffect( () => {
-    if (stage) stage.dispose();
+  // lifecycle mounts protein structure
+  useEffect( () => {
+    pdbFunction()
   })
 
-  const resetStage = () => {
-    if(stage) {
-      stage.removeAllComponents();
-      setStage(null)
-      setPDB(false)
-    }
-  }*/
-
-  const pdbFunction = (event) => {
-
-    event.preventDefault()
-
+  // sets state of stage and pdb for visualisation
+  const pdbFunction = () => {
     var pdb = props.pdbFile
 
     if (!stage) {
       setStage(new Stage("viewport", {backgroundColor: "black"}))
     } else stage.removeAllComponents();
 
-    setPDB(pdb);
+    setPDB(pdb)
     
     if (stage) {
-    setTimeout( () =>
-      stage.loadFile( pdb, { ext: "pdb" } ).then( function( comp ){
-        comp.addRepresentation( "ribbon" )})
-     );
+      setTimeout( () =>
+        stage.loadFile( pdb, { ext: "pdb" } ).then( function(component){
+          component.addRepresentation("ribbon");
+          component.autoView(2500);
+        })
+      )
+      //console.log(stage.getParameters())
     }
-
   }
 
-    return (
-      <div className="protein-structure">
-        <div id="viewport" className="viewport">
-          <img 
-          src={logo} 
-          className="protein-image" 
-          alt="logo" 
-          style={{display: pdb ? "none" : "block"}}
-          />
-        </div>
-        <form className='pdbform'>
-          <button 
-          className='show-protein-button' 
-          onClick={(e) => pdbFunction(e)}>
-            Show Protein Structure
-          </button>
-        </form>
+  return (
+    <div className="protein-structure">
+      <div id="viewport" className="viewport">
+        <img 
+        src={proteinBg} 
+        className="protein-image" 
+        alt="proteinBg" 
+        style={{display: pdb ? "none" : "block"}}
+        />
       </div>
-    );
+    </div>
+  )
 }

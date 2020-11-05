@@ -249,7 +249,7 @@ export default class UploadForm extends Component {
         </div>
         }
         {this.state.pdbFile &&
-        <div style={{display: "flex"}}>
+        <div className='visualisation-wrap' style={{display: "flex"}}>
           <div className={'chart-wrap'}>
             <ButtonGroup justified>
               <Button active={chartType === 'median'}
