@@ -75,7 +75,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
 function smoothData(peptide, ma_json) {
 
     overlapping_peptides = ma_json.filter(p => {
-        for (let overlap = 6; overlap < peptide.peptideSeq.length; overlap += 3) {
+        for (let overlap = 9; overlap < peptide.peptideSeq.length; overlap += 3) {
             if (p.peptideSeq.slice(-overlap) === peptide.peptideSeq.slice(0, overlap) || 
                 p.peptideSeq.slice(0, overlap) === peptide.peptideSeq.slice(-overlap)) {
                 return true;
