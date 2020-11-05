@@ -19,6 +19,7 @@ var usersRouter = require('./routes/users');
 const xlsxFile = require('read-excel-file/node');
 const parse = require('./components/parseTwo');
 const map = require('./components/map');
+const ave = require('./components/multipleAve');
 const fs = require('fs');
 let fileHandler = [];
 
@@ -51,7 +52,7 @@ filename: function (req, file, cb) {
 var upload = multer({ storage: storage }).array('file')
 
 app.post('/submit',function(req, res) {
-  console.log(fileHandler);
+  //console.log(fileHandler);
   upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -98,6 +99,7 @@ app.get('/processMult', function(req, res, next) {
     console.log('multiple parse in mult');
     parse.parseMultiple(xlFiles)
           .then(json => map.mapData(json, pdbFile))
+          .then(json => ave.aveData(json))
           .then(json => {
             return res.status(200).json(json);
           });

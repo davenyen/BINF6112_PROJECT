@@ -4,8 +4,7 @@ import axios from 'axios';
 import { Card } from 'reactstrap';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import './css/Upform.css'
-
-
+import ProteinStructure from './ProteinStructure'
 
 const apiURL = "http://localhost:8000";
 
@@ -17,10 +16,12 @@ export default class UploadForm extends Component {
             isOpen: false,
             dataLoaded: false,
             isFormInvalid: false,
+            excelPreview: false,
             fileObjects: [],
             rowsncols: [],
             cardTorender: "",
-            chosenFileName : ""
+            chosenFileName : "",
+            pdbFile: null,
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.addFile = this.addFile.bind(this);
@@ -41,11 +42,7 @@ export default class UploadForm extends Component {
     
     }
     onSubmit = () => {
-      this.setState({ 
-        rowsncols : [],
-        dataLoaded: false,
-        cardTorender: ""
-      })
+        this.refreshFilePreviews()
         // If file doesn't exist returns
         if (this.state.fileObjects.length === 0) return; 
 
@@ -59,10 +56,11 @@ export default class UploadForm extends Component {
               this.getReq()
               .then(rsp => rsp.data)
               .then(json => {
-                console.log(json);
+                //console.log(json);
                 this.setState({
                   dataLoaded: false
                 });
+                json.mode = this.props.multiple;
                 this.props.handleSubmit(json);
                 axios.post(apiURL+"/clear")
               })
@@ -70,10 +68,12 @@ export default class UploadForm extends Component {
         }).catch(err => console.log(err))
       }
 
+    // appends files to objects state
     addFile = (fileObj) => {
-      console.log(fileObj.name);
+      //console.log(fileObj.name);
       this.setState(prevState => ({
-        fileObjects: [...prevState.fileObjects, fileObj]
+        fileObjects: [...prevState.fileObjects, fileObj],
+        pdbFile: fileObj
       }));
     }
 
@@ -106,11 +106,10 @@ export default class UploadForm extends Component {
         }
         }); 
     }
+
     renderExcel(name){
       this.setState({chosenFileName:name})
     }
-
-      
 
     componentDidUpdate(props,prevState) {
       let rows,cols;
@@ -136,11 +135,33 @@ export default class UploadForm extends Component {
       }
     }
 
+    refreshFilePreviews = () => {
+      this.setState({ 
+        rowsncols : [],
+        dataLoaded: false,
+        cardTorender: ""
+      })
+    }
+
+    // Toggles excel preview for xls file
+    ToggleExcelPreview(rowncol) {
+      this.setState( (currentState) => ({
+        excelPreview: !currentState.excelPreview,
+      }));
+      this.renderExcel(rowncol.name)
+    }
+
     render() {
         const renderedButtons = this.state.rowsncols.map(rowncol => {
           let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
           return (
-            <button className={claname} onClick={() => {this.renderExcel(rowncol.name)}}>{rowncol.name}</button>
+            <div>
+              <button 
+              className={claname} 
+              onClick={() => this.ToggleExcelPreview(rowncol)}>
+                {rowncol.name}
+              </button>
+            </div>
           )
         })
 
@@ -158,6 +179,7 @@ export default class UploadForm extends Component {
                 renderFile={this.renderFile}
                 addFile={this.addFile}
                 clearFiles={this.clearFiles}
+                refreshPreview= {this.refreshFilePreviews}
                 name=".xlsx/.gpr"
               />
               <UploadField 
@@ -169,6 +191,7 @@ export default class UploadForm extends Component {
                 renderFile={null}
                 addFile={this.addFile}
                 clearFiles={this.clearFiles}
+                refreshPreview= {this.refreshFilePreviews}
                 name=".pdb"
               />
             </div>
@@ -176,18 +199,16 @@ export default class UploadForm extends Component {
                   Submit
             </button>
         </div>
-        {this.state.dataLoaded && 
+        {this.state.dataLoaded &&
           <div> 
-
-            {renderedButtons}<br></br>
-            {this.state.cardTorender}
+            {renderedButtons}<br/>
+            {this.state.excelPreview && this.state.cardTorender}
           </div>
         }
+        <ProteinStructure pdbFile={this.state.pdbFile} test="test"/>
         </div>
         )
     }
-    
-
 }
 
 

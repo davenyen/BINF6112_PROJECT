@@ -150,50 +150,29 @@ function keyMatch(o,r){
 
 //start("./toyige.xlsx") //-> for debugging purposes
 
-exports.parseMultiple = async function parse_multiple(file_paths) { 
+var starm = exports.parseMultiple = async function parse_multiple(file_paths) { 
     
     // let json1 = await this.parse(file_paths[0]);
     // let json2 = await this.parse(file_paths[1]);
-
+    
     let m = new Map();
 
     for (let file of file_paths) {
         let json = await this.parse(file);
-//the gpr files dont have Id (as in name) so I changed your proteinId to  peptideSequece
+
+//the gpr files dont have Id (as in name) so I changed proteinId to peptideSequece
         json.forEach(function(pepA) {
             if (m.has(pepA.peptideSeq)) {
-                let pep = m.get(pepA.peptideSeq);
-                let data = pep.data;
-                data.push(pepA.data[0]);
-                //console.log(pep);
-                // console.log(data);
-                // pep.data.push({
-                //     file: file_paths[1],
-                //     rawMean: pepA.rawMean,
-                //     backgroundMean: pepA.backgroundMean,
-                //     foregroundMedian: pepA.foregroundMedian
-                // });
-                // console.log(pep.data);
-                
-                // m.set(pepA.proteinId, data);
+                m.get(pepA.peptideSeq).data.push(pepA.data[0])
             } else {
-                // pep = {
-                //     peptideSeq: pepA.peptideSeq,
-                //     proteinId: pepA.proteinId,
-                //     data: [{
-                //         file: file_paths[0],
-                //         rawMean: pepA.rawMean,
-                //         backgroundMean: pepA.backgroundMean,
-                //         foregroundMedian: pepA.foregroundMedian
-                //     }]
-                // }
                 m.set(pepA.peptideSeq, pepA);
             }
         });
     }
-
+    //console.log(Array.from(m.values()))
     return Array.from(m.values());
 }
+//starm(["./toyige.xlsx","./toyige.gpr"]); //->Debugging
 
 
 

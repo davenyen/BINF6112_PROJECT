@@ -4,11 +4,9 @@ import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
 import Tabs from "./components/Tabs"; 
 import Table from './components/Table';
+import MultTable from './components/MultTable.js';
 import UploadForm from './components/UploadForm';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-// todo: 
-// - convert to hooks 
-// - split into different components
 
 // const apiURL = "http://localhost:8000";
 
@@ -28,6 +26,15 @@ export default class App extends Component {
   }
 
   render() {
+    const TableMode = () => {
+      if(this.state.processedData && this.state.processedData.mode === 0) {
+        return <Table data={this.state.processedData} />
+      }else if (this.state.processedData && this.state.processedData.mode === 1){
+        return <MultTable data={this.state.processedData} /> 
+      }else if(this.state.processedData && this.state.processedData.mode === 2){
+        return <h1>To Do</h1>
+      }
+    }
     return (
       <div>
         <Navbar />
@@ -45,10 +52,7 @@ export default class App extends Component {
             </div> 
           </Tabs> 
           </div>
-          
-          {this.state.processedData && 
-            <Table data={this.state.processedData} />
-          }
+          {TableMode()}
         </Container>
       </div>
     );

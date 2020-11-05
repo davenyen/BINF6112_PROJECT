@@ -1,0 +1,22 @@
+
+.pdbform {
+    display:flex;
+    justify-content: center;
+}
+
+.show-protein {
+    margin-top: 10px;
+    color: white;
+    background-color: #ff6262;
+    border-radius: 10px;
+}
+
+.viewport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.protein-image {
+    height: 500px;
+}

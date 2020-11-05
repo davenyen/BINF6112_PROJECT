@@ -10,6 +10,6 @@ NormalizationMethod=None
 BackgroundSubtraction=LocalFeature																									
 Creator=PepSlide Analyzer 2.2.8																									
 Block	Column	Row	Name	ID	X	Y	Dia.	F532 Median	F532 Mean	F532 SD	B532 Median	B532 Mean	B532 SD	% > B532 + 1 SD	% > B532 + 2 SD	F532 % Sat.	F Pixels	B Pixels	Flags	Normalize	F532 Median - B532	F532 Mean - B532		F532 Total Intensity	
-Lee UNSW Sydney (PEP20205021558)	1	1		GSGSGSGMRGRVSPL	0	0	0	2	2	2	2	2	2	2	2	2	2	2	2	2	2	2		2	2
-Lee UNSW Sydney (PEP20205021558)	2	1		SGSGMRGRVSPLMLL	0	0	0	4	4	4	4	4	4	4	4	4	4	4	4	4	4	4		4	4
-Lee UNSW Sydney (PEP20205021558)	2	1		SGSGMRGRVSPLMLL	0	0	0	6	6	6	6	6	6	6	6	6	6	6	6	6	6	6		6	6
+Lee UNSW Sydney (PEP20205021558)	1	1		GSGSGSGMRGRVSPL	0	0	0	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3	3
+Lee UNSW Sydney (PEP20205021558)	2	1		SGSGMRGRVSPLMLL	0	0	0	30	30	30	30	30	30	30	30	30	30	30	30	30	30	30	30	30	30
+Lee UNSW Sydney (PEP20205021558)	2	1		SGSGMRGRVSPLMLL	0	0	0	10	10	10	10	10	10	10	10	10	10	10	10	10	10	10	10	10	10
