@@ -148,10 +148,7 @@ function calculateRatios(mappedData) {
             ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
             let ratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
             ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-            peptide.ratios.foregroundMedian = [
-                ratio1,
-                ratio2
-            ]
+            peptide.ratios.foregroundMedian = [ratio1, ratio2 ];
 
 
             ratio1 = peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated;
@@ -159,10 +156,16 @@ function calculateRatios(mappedData) {
             ratio2 = peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated;
             ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
 
-            peptide.ratios.SNR_Calculated = [
-                (peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated).toFixed(dps),
-                (peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated).toFixed(dps)
-            ]
+            peptide.ratios.SNR_Calculated = [ratio1, ratio2];
+
+            if (!isNaN(peptide.data[0].snr)) {
+                ratio1 = peptide.data[0].snr/peptide.data[1].snr;
+                ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
+                ratio2 = peptide.data[1].snr/peptide.data[0].snr;
+                ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
+
+                peptide.ratios.SNR = [ratio1, ratio2];
+            }
         }
 
         return peptide;
