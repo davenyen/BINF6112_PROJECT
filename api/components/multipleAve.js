@@ -23,7 +23,8 @@ exports.aveData = async function aveData(our_json) {
             ss: pep.ss,
             aveSNR: aveSNR.toFixed(3),
             aveFM: aveFM.toFixed(3),
-            snr:snr
+            snr:snr,
+            res_id: pep.res_id
         })
         
     })

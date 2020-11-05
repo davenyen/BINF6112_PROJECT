@@ -54,6 +54,15 @@ const CustomToggleList = ({
   );
 
 let columns = [{
+  dataField: 'res_id',
+  text: 'ID',
+  sort: true,
+  sortFunc: sortNumerical,
+  headerAlign: "center",
+  headerStyle: {
+      width: "3rem"
+  }
+},{
     dataField: 'peptideSeq',
     text: 'Sequencer',
     sort: true,
