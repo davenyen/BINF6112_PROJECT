@@ -1,60 +1,63 @@
-  
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import logo from './pdb_bg.png'
 import { Stage } from 'ngl'
 import './css/ProteinStructure.css'
 
-export default class ProteinStructure extends Component {
+export default function ProteinStructure(props) {
     
-  componentDidMount() {
-    document.addEventListener('paste', this.paste);
-  }
- componentWillUnount() {
-    document.removeEventListener("paste", this.paste)
-    this.state.stage.dispose();
-  }
+  const [ stage, setStage ] = useState(null)
+  const [ pdb, setPDB ] = useState(null)
 
-  constructor(props) {
-    super(props);
-    this.state = {stage: null, pdb: null}
-  }
+  /*useEffect( () => {
+    if (stage) stage.dispose();
+  })
 
-  resetStage () {
-    if(this.state.stage) {
-      this.state.stage.removeAllComponents();
-      this.setState({stage: null, pdb: null});
+  const resetStage = () => {
+    if(stage) {
+      stage.removeAllComponents();
+      setStage(null)
+      setPDB(false)
     }
-  }
+  }*/
 
-  pdb (event) {
-    event.preventDefault();
-    var pdb = this.props.pdbFile
+  const pdbFunction = (event) => {
 
-    this.setState({stage: new Stage("viewport")})
-    this.setState({pdb});
+    event.preventDefault()
+
+    var pdb = props.pdbFile
+
+    if (!stage) {
+      setStage(new Stage("viewport", {backgroundColor: "black"}))
+    } else stage.removeAllComponents();
+
+    setPDB(pdb);
+    
+    if (stage) {
     setTimeout( () =>
-      this.state.stage.loadFile( pdb, { ext: "pdb", defaultRepresentation: true } )
+      stage.loadFile( pdb, { ext: "pdb" } ).then( function( comp ){
+        comp.addRepresentation( "ribbon" )})
      );
+    }
+
   }
-  
-  render() {
+
     return (
       <div className="protein-structure">
-        <header className="App-header">
-          <div id="viewport" className="viewport" style={{width: "100%", height: "100%"}}>
-            <img 
-            src={logo} 
-            id="logo" className="protein-image" 
-            alt="logo" 
-            style = {{margin: "auto", display: this.state.pdb ? "none" : "block" }} />
-          </div>
-          <form className='pdbform'>
-            <button className='show-protein' onClick={(e) => this.pdb(e)}>Show Protein Structure</button>
-          </form>
-        </header>
+        <div id="viewport" className="viewport">
+          <img 
+          src={logo} 
+          className="protein-image" 
+          alt="logo" 
+          style={{display: pdb ? "none" : "block"}}
+          />
+        </div>
+        <form className='pdbform'>
+          <button 
+          className='show-protein-button' 
+          onClick={(e) => pdbFunction(e)}>
+            Show Protein Structure
+          </button>
+        </form>
       </div>
     );
-  }
 }
-
-// <button type="reset" onClick={ (e) => this.resetStage() }>Reset</button>

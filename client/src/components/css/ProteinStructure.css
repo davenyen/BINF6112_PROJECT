@@ -4,7 +4,7 @@
     justify-content: center;
 }
 
-.show-protein {
+.show-protein-button {
     margin-top: 10px;
     color: white;
     background-color: #ff6262;
@@ -14,9 +14,12 @@
 .viewport {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
 }
 
 .protein-image {
-    height: 500px;
+    height: 450px;
+    width: auto;
 }

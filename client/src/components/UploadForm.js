@@ -39,8 +39,8 @@ export default class UploadForm extends Component {
       }else if(this.props.multiple === 2){
           return axios.get(apiURL+"/processTemp") 
       }
-    
     }
+
     onSubmit = () => {
         this.refreshFilePreviews()
         // If file doesn't exist returns
@@ -205,7 +205,9 @@ export default class UploadForm extends Component {
             {this.state.excelPreview && this.state.cardTorender}
           </div>
         }
-        <ProteinStructure pdbFile={this.state.pdbFile} test="test"/>
+        {this.state.pdbFile && 
+          <ProteinStructure pdbFile={this.state.pdbFile}/>
+        }
         </div>
         )
     }
