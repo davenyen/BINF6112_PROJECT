@@ -268,7 +268,12 @@ export default class UploadForm extends Component {
                 onClick={() => this.setState({chartVisible: !chartVisible})}>show</Button>
             </div>
           </div>
-          <div  onMouseEnter={this.changeScroll} onMouseLeave={this.changeScroll} className={'chart-wrap'}><ProteinStructure pdbFile={this.state.pdbFile}/></div>
+            <div 
+            onMouseEnter={this.changeScroll} 
+            onMouseLeave={this.changeScroll} 
+            className={'chart-wrap'}>
+              <ProteinStructure pdbFile={this.state.pdbFile}/>
+            </div>
         </div>
         }
       </div>
