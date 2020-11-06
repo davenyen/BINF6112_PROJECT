@@ -111,6 +111,11 @@ export default class UploadForm extends Component {
       }
     });
   }
+  changeScroll(){ 
+    let style = document.body.style.overflow 
+    document.body.style.overflow = (style === 'hidden') ? 'auto':'hidden'
+  }  
+
 
   renderExcel(name) {
     this.setState({chosenFileName: name})
@@ -263,7 +268,7 @@ export default class UploadForm extends Component {
                 onClick={() => this.setState({chartVisible: !chartVisible})}>show</Button>
             </div>
           </div>
-          <div className={'chart-wrap'}><ProteinStructure pdbFile={this.state.pdbFile}/></div>
+          <div  onMouseEnter={this.changeScroll} onMouseLeave={this.changeScroll} className={'chart-wrap'}><ProteinStructure pdbFile={this.state.pdbFile}/></div>
         </div>
         }
       </div>
