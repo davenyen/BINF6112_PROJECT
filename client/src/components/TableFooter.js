@@ -20,7 +20,7 @@ export default class TableFooter extends Component {
                         <td>Relative ASA</td>
                         <td>Relative Accessible Surface Area (ASA) - the solvent accessible surface area (as calculated per residue 
                             by DSSP) relative to the maximum accessible surface area for the residue (as determined by 
-                            <a href="https://doi.org/10.1002/prot.340200303" target="_blank"> Sander and Rost (1994)</a>). Relative ASA values
+                            <a href="https://doi.org/10.1002/prot.340200303" target="_blank" rel="noopener noreferrer"> Sander and Rost (1994)</a>). Relative ASA values
                             for peptides are calculated as the sum of the residues' ASA values, divided by the sum of the residues'
                             maximum ASA values - values lie between 0 and 1.
                             <br />
@@ -29,7 +29,7 @@ export default class TableFooter extends Component {
                     </tr>
                     <tr>
                         <td>Secondary Structure</td>
-                        <td>Secondary structures are assigned to residues by <a href="https://swift.cmbi.umcn.nl/gv/dssp/" target="_blank"> DSSP</a>.
+                        <td>Secondary structures are assigned to residues by <a href="https://swift.cmbi.umcn.nl/gv/dssp/" target="_blank" rel="noopener noreferrer"> DSSP</a>.
                             Secondary structure for peptides is the mode of the residue assignments.
                         </td>
                     </tr>
