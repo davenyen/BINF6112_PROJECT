@@ -53,7 +53,7 @@ const CustomToggleList = ({
     </div>
   );
 
-let columns = [{
+let columns_base = [{
     dataField: 'res_id',
     text: 'ID',
     sort: true,
@@ -121,6 +121,12 @@ export default class Table extends React.Component {
         console.log(this.props.data)
         if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
         else this.state = {ratio: null}
+
+        
+    }
+
+    render() {
+        let columns = columns_base.slice();
 
         if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
           let nameCol = {
@@ -216,12 +222,12 @@ export default class Table extends React.Component {
                 }
             }
         }
-    }
 
-    render() {
+
+
         return (
             <ToolkitProvider
-            keyField="proteinID"
+            keyField="peptideSeq"
             data={ this.props.data }
             columns={ columns }
             columnToggle

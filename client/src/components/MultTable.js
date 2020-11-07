@@ -53,7 +53,7 @@ const CustomToggleList = ({
     </div>
   );
 
-let columns = [{
+let columns_base = [{
   dataField: 'res_id',
   text: 'ID',
   sort: true,
@@ -64,7 +64,7 @@ let columns = [{
   }
 },{
     dataField: 'peptideSeq',
-    text: 'Sequencer',
+    text: 'Sequence',
     sort: true,
     headerStyle: {
         width: "12rem",
@@ -128,6 +128,25 @@ const MyExportCSV = (props) => {
 
 export default class MultTable extends React.Component {
     render() {
+        let columns = columns_base.slice();
+        if (this.props.data[0].hasOwnProperty("pepName") && this.props.data[0].pepName) {
+          let nameCol = {
+            dataField: 'pepName',
+            text: 'Peptide Name',
+            sort: true,
+            headerStyle: {
+                width: "13rem",
+            },
+            style: {
+                width: "15em",
+                wordBreak: "break-all"
+            }
+          }
+
+          // insert at index 1
+          columns.splice(1, 0, nameCol)
+        }
+
         if(!(isNaN(parseFloat(this.props.data[0].snr)))){
             columns.push({
               dataField: 'snr',
@@ -138,7 +157,7 @@ export default class MultTable extends React.Component {
         }
         return (
             <ToolkitProvider
-            keyField="proteinID"
+            keyField="peptideSeq"
             data={ this.props.data }
             columns={ columns }
             columnToggle
