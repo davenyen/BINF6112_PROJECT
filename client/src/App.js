@@ -4,6 +4,7 @@ import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
 import Tabs from "./components/Tabs";
 import Table from './components/Table';
+import TableFooter from './components/TableFooter';
 import MultTable from './components/MultTable.js';
 import UploadForm from './components/UploadForm';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -53,6 +54,7 @@ export default class App extends Component {
           </Tabs>
           </div>
           {TableMode()}
+          {this.state.processedData && <TableFooter />}
         </Container>
       </div>
     );
