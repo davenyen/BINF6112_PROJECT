@@ -28,8 +28,9 @@ export default class UploadForm extends Component {
       chosenFileName: "",
       pdbFile: null,
       chartVisible: false,
-      chartType: 'median'//median|snr
+      chartType: 'median'//median|snr|include
     }
+    this.myChart = React.createRef()
     this.onSubmit = this.onSubmit.bind(this);
     this.addFile = this.addFile.bind(this);
     this.renderFile = this.renderFile.bind(this);
@@ -111,10 +112,11 @@ export default class UploadForm extends Component {
       }
     });
   }
-  changeScroll(){ 
-    let style = document.body.style.overflow 
-    document.body.style.overflow = (style === 'hidden') ? 'auto':'hidden'
-  }  
+
+  changeScroll() {
+    let style = document.body.style.overflow
+    document.body.style.overflow = (style === 'hidden') ? 'auto' : 'hidden'
+  }
 
 
   renderExcel(name) {
@@ -163,22 +165,49 @@ export default class UploadForm extends Component {
 
   getChartOption() {
     const {data} = this.props
-    const {chartType, chartVisible} = this.state;
+    const {chartType} = this.state;
     if (!data) return {}
-    const median = data.map(item => item.data[0].foregroundMedian);
-    const snr = data.map(item => item.data[0].SNR_Calculated);
-    const seq = data.map(item => item.peptideSeq.substr(0, 3));
-    console.log();
+    const median = data.map(item => {
+      return {
+        value: item.aveFM || item.data[0].foregroundMedian,
+        ss: item.ss
+      }
+    });
+    const snr = data.map(item => {
+      return {
+        value: item.aveSNR || item.data[0].SNR_Calculated,
+        ss: item.ss
+      }
+    });
+    let includeSnr
+    if (this.isIncludeSRN()) {
+      includeSnr = data.map(item => {
+        return {
+          value: item.snr || item.data[0].snr.replace(' ', ''),
+          ss: item.ss
+        }
+      });
+    }
+    const seq = data.map(item => {
+      return {
+        value: item.res_id + '\n' + item.peptideSeq.substr(0, 3),
+        textStyle: {
+          color: item.asa > 0.2 ? 'red' : 'gray'
+        }
+      }
+    });
     return {
       xAxis: {
         type: 'category',
-        axisLabel: {interval: 0},
+        triggerEvent: true,
+        axisLabel: {
+          interval: 0,
+        },
         data: seq
       },
       dataZoom: [{
         type: 'slider',
         show: true,
-        zoomLock: true,
         xAxisIndex: [0],
         left: '9%',
         bottom: -5,
@@ -189,17 +218,31 @@ export default class UploadForm extends Component {
         type: 'value'
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        formatter(params) {
+          const item = params[0];
+          return `${chartType}：${item.data.value}<br />
+                ss：${item.data.ss}
+               `;
+        },
       },
       series: [{
-        data: chartVisible ? (chartType === 'median' ? median : snr) : [],
+        data: chartType === 'include' ? includeSnr : (chartType === 'median' ? median : snr),
         type: 'line'
       }]
     }
   }
 
+  isIncludeSRN() {
+    const {data} = this.props
+    if (!data) return false
+    if (data[0].snr) return true
+    if (data[0].data && data[0].data[0].snr !== 'NaN') return true
+    return false
+  }
+
   render() {
-    const {chartType, chartVisible} = this.state;
+    const {chartType} = this.state;
     const renderedButtons = this.state.rowsncols.map(rowncol => {
       let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
       return (
@@ -253,6 +296,7 @@ export default class UploadForm extends Component {
           {this.state.excelPreview && this.state.cardTorender}
         </div>
         }
+
         {this.state.pdbFile &&
         <div className='visualisation-wrap' style={{display: "flex"}}>
           <div className={'chart-wrap'}>
@@ -260,20 +304,19 @@ export default class UploadForm extends Component {
               <Button active={chartType === 'median'}
                       onClick={() => this.setState({chartType: 'median'})}>Median</Button>
               <Button active={chartType === 'snr'}
-                      onClick={() => this.setState({chartType: 'snr'})}>SNR</Button>
+                      onClick={() => this.setState({chartType: 'snr'})}>calculated SNR</Button>
+              {this.isIncludeSRN() && <Button active={chartType === 'include'}
+                                              onClick={() => this.setState({chartType: 'include'})}>Include
+                SNR</Button>}
             </ButtonGroup>
-            <ReactEcharts echarts={echarts} notMerge={true} option={this.getChartOption()}/>
-            <div className={'chart-btns'}>
-              <Button
-                onClick={() => this.setState({chartVisible: !chartVisible})}>show</Button>
-            </div>
+            <ReactEcharts ref={this.myChart} echarts={echarts} notMerge={true} option={this.getChartOption()}/>
           </div>
-            <div 
-            onMouseEnter={this.changeScroll} 
-            onMouseLeave={this.changeScroll} 
+          <div
+            onMouseEnter={this.changeScroll}
+            onMouseLeave={this.changeScroll}
             className={'chart-wrap'}>
-              <ProteinStructure pdbFile={this.state.pdbFile}/>
-            </div>
+            <ProteinStructure pdbFile={this.state.pdbFile}/>
+          </div>
         </div>
         }
       </div>

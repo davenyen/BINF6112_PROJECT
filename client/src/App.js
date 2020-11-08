@@ -46,10 +46,10 @@ export default class App extends Component {
               <UploadForm multiple={0} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
             </div>
             <div label="Multiple Sample Analysis">
-              <UploadForm multiple={1} handleSubmit={this.handleSubmit}/>
+              <UploadForm multiple={1} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
             </div>
             <div label="Temporal Data Analysis">
-              <UploadForm multiple={2} handleSubmit={this.handleSubmit}/>
+              <UploadForm multiple={2} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
             </div>
           </Tabs>
           </div>

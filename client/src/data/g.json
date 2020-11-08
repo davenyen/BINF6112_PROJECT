@@ -1,0 +1,249 @@
+[
+  {
+    "peptideSeq": "RNNPFYFPSRRFSTR",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 18.07894736842105,
+        "backgroundMean": 14,
+        "foregroundMedian": "6.395",
+        "snr": "0. 171",
+        "SNR_Calculated": "0.369"
+      }
+    ],
+    "res_id": 171,
+    "asa": "0.271",
+    "ss": "β- ladder",
+    "pI": "12.000",
+    "gravy": "-1.560"
+  },
+  {
+    "peptideSeq": "PFYFPSRRFSTRYGN",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 22.200831024930746,
+        "backgroundMean": 14,
+        "foregroundMedian": "9.899",
+        "snr": "0 .273",
+        "SNR_Calculated": "0.665"
+      }
+    ],
+    "res_id": 174,
+    "asa": "0.249",
+    "ss": "β- ladder",
+    "pI": "10.906",
+    "gravy": "-1.140"
+  },
+  {
+    "peptideSeq": "FPSRRFSTRYGNQNG",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 23.34421927394664,
+        "backgroundMean": 14,
+        "foregroundMedian": "10.725",
+        "snr": "0 .231",
+        "SNR_Calculated": "0.738"
+      }
+    ],
+    "res_id": 177,
+    "asa": "0.277",
+    "ss": "β- ladder",
+    "pI": "11.711",
+    "gravy": "-1.627"
+  },
+  {
+    "peptideSeq": "RRFSTRYGNQNGRIR",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 23.314703693188356,
+        "backgroundMean": 14,
+        "foregroundMedian": "10.479",
+        "snr": " 0.542",
+        "SNR_Calculated": "0.736"
+      }
+    ],
+    "res_id": 180,
+    "asa": "0.295",
+    "ss": "β- ladder",
+    "pI": "12.000",
+    "gravy": "-1.953"
+  },
+  {
+    "peptideSeq": "STRYGNQNGRIRVLQ",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 17.725866978662808,
+        "backgroundMean": 14,
+        "foregroundMedian": "5.478",
+        "snr": "0 .109",
+        "SNR_Calculated": "0.340"
+      }
+    ],
+    "res_id": 183,
+    "asa": "0.233",
+    "ss": "β- ladder",
+    "pI": "11.711",
+    "gravy": "-1.240"
+  },
+  {
+    "peptideSeq": "YGNQNGRIRVLQRFD",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 15.07092521022191,
+        "backgroundMean": 14,
+        "foregroundMedian": "2.966",
+        "snr": "0. 011",
+        "SNR_Calculated": "0.106"
+      }
+    ],
+    "res_id": 186,
+    "asa": "0.172",
+    "ss": "β- ladder",
+    "pI": "10.737",
+    "gravy": "-1.187"
+  },
+  {
+    "peptideSeq": "QNGRIRVLQRFDQRS",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 13.550594830361899,
+        "backgroundMean": 14,
+        "foregroundMedian": "2.174",
+        "snr": "- 0.154",
+        "SNR_Calculated": "-0.047"
+      }
+    ],
+    "res_id": 189,
+    "asa": "0.213",
+    "ss": "β- ladder",
+    "pI": "12.000",
+    "gravy": "-1.427"
+  },
+  {
+    "peptideSeq": "RIRVLQRFDQRSRQF",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 13.863955523795438,
+        "backgroundMean": 14,
+        "foregroundMedian": "1.821",
+        "snr": "- 0.028",
+        "SNR_Calculated": "-0.014"
+      }
+    ],
+    "res_id": 192,
+    "asa": "0.229",
+    "ss": "β- ladder",
+    "pI": "12.000",
+    "gravy": "-1.280"
+  },
+  {
+    "peptideSeq": "VLQRFDQRSRQFQNL",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 14.005663504540392,
+        "backgroundMean": 14,
+        "foregroundMedian": "1.674",
+        "snr": "0 .061",
+        "SNR_Calculated": "0.001"
+      }
+    ],
+    "res_id": 195,
+    "asa": "0.268",
+    "ss": "3- helix",
+    "pI": "11.699",
+    "gravy": "-1.193"
+  },
+  {
+    "peptideSeq": "RFDQRSRQFQNLQNH",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 15.8218168731341,
+        "backgroundMean": 14,
+        "foregroundMedian": "3.456",
+        "snr": "-0.0 81",
+        "SNR_Calculated": "0.176"
+      }
+    ],
+    "res_id": 198,
+    "asa": "0.285",
+    "ss": "3- helix",
+    "pI": "11.699",
+    "gravy": "-2.173"
+  },
+  {
+    "peptideSeq": "QRSRQFQNLQNHRIV",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 16.858118842429345,
+        "backgroundMean": 14,
+        "foregroundMedian": "4.729",
+        "snr": "0 .011",
+        "SNR_Calculated": "0.268"
+      }
+    ],
+    "res_id": 201,
+    "asa": "0.274",
+    "ss": "3- helix",
+    "pI": "12.000",
+    "gravy": "-1.547"
+  },
+  {
+    "peptideSeq": "RQFQNLQNHRIVQIE",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 17.573575052058928,
+        "backgroundMean": 14,
+        "foregroundMedian": "5.883",
+        "snr": "0 .438",
+        "SNR_Calculated": "0.328"
+      }
+    ],
+    "res_id": 204,
+    "asa": "0.219",
+    "ss": "β- ladder",
+    "pI": "9.606",
+    "gravy": "-1.127"
+  },
+  {
+    "peptideSeq": "QNLQNHRIVQIEAKP",
+    "proteinId": "",
+    "data": [
+      {
+        "file": "./public/SC008 IgE.gpr",
+        "rawMean": 12.177297722922305,
+        "backgroundMean": 14,
+        "foregroundMedian": "1.985",
+        "snr": "- 0.176",
+        "SNR_Calculated": "-0.201"
+      }
+    ],
+    "res_id": 207,
+    "asa": "0.211",
+    "ss": "β- ladder",
+    "pI": "8.755",
+    "gravy": "-1.027"
+  }
+]

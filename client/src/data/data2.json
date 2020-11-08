@@ -1,0 +1,26 @@
+[
+  {
+    "pepName": "Arah1_overlapping 60",
+    "asa": "0.271",
+    "gravy": "-1.560",
+    "pI": "12.000",
+    "peptideSeq": "RNNPFYFPSRRFSTR",
+    "ss": "β- ladder",
+    "aveSNR": "-0.252",
+    "aveFM": "9.928",
+    "snr": null,
+    "res_id": 171
+  },
+  {
+    "pepName": "Arah1_overlapping 61",
+    "asa": "0.249",
+    "gravy": "-1.140",
+    "pI": "10.906",
+    "peptideSeq": "PFYFPSRRFSTRYGN",
+    "ss": "β- ladder",
+    "aveSNR": "-0.216",
+    "aveFM": "11.945",
+    "snr": null,
+    "res_id": 174
+  }
+]

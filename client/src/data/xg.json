@@ -1,0 +1,98 @@
+[
+  {
+    "pepName": "",
+    "asa": "0.271",
+    "gravy": "-1.560",
+    "pI": "12.000",
+    "peptideSeq": "RNNPFYFPSRRFSTR",
+    "ss": "β-ladder",
+    "aveSNR": "0.418",
+    "aveFM": "12.960",
+    "snr": "0.171",
+    "res_id": 171
+  },
+  {
+    "pepName": "",
+    "asa": "0.249",
+    "gravy": "-1.140",
+    "pI": "10.906",
+    "peptideSeq": "PFYFPSRRFSTRYGN",
+    "ss": "β-ladder",
+    "aveSNR": "0.632",
+    "aveFM": "16.741",
+    "snr": "0.137",
+    "res_id": 174
+  },
+  {
+    "pepName": "",
+    "asa": "0.277",
+    "gravy": "-1.627",
+    "pI": "11.711",
+    "peptideSeq": "FPSRRFSTRYGNQNG",
+    "ss": "β-ladder",
+    "aveSNR": "0.658",
+    "aveFM": "16.097",
+    "snr": "0.077",
+    "res_id": 177
+  },
+  {
+    "pepName": "",
+    "asa": "0.295",
+    "gravy": "-1.953",
+    "pI": "12.000",
+    "peptideSeq": "RRFSTRYGNQNGRIR",
+    "ss": "β-ladder",
+    "aveSNR": "0.605",
+    "aveFM": "14.085",
+    "snr": "0.136",
+    "res_id": 180
+  },
+  {
+    "pepName": "",
+    "asa": "0.233",
+    "gravy": "-1.240",
+    "pI": "11.711",
+    "peptideSeq": "STRYGNQNGRIRVLQ",
+    "ss": "β-ladder",
+    "aveSNR": "0.321",
+    "aveFM": "8.783",
+    "snr": "0.022",
+    "res_id": 183
+  },
+  {
+    "pepName": "",
+    "asa": "0.172",
+    "gravy": "-1.187",
+    "pI": "10.737",
+    "peptideSeq": "YGNQNGRIRVLQRFD",
+    "ss": "β-ladder",
+    "aveSNR": "0.108",
+    "aveFM": "4.876",
+    "snr": "0.002",
+    "res_id": 186
+  },
+  {
+    "pepName": "",
+    "asa": "0.213",
+    "gravy": "-1.427",
+    "pI": "12.000",
+    "peptideSeq": "QNGRIRVLQRFDQRS",
+    "ss": "β-ladder",
+    "aveSNR": "-0.021",
+    "aveFM": "2.756",
+    "snr": "-0.022",
+    "res_id": 189
+  },
+  {
+    "pepName": "",
+    "asa": "0.229",
+    "gravy": "-1.280",
+    "pI": "12.000",
+    "peptideSeq": "RIRVLQRFDQRSRQF",
+    "ss": "β-ladder",
+    "aveSNR": "0.009",
+    "aveFM": "2.310",
+    "snr": "-0.004",
+    "res_id": 192
+  }
+]
