@@ -37,6 +37,15 @@
 
     "parameters": {
         "bury_threshold": "N/A"
-    }
+    },
+
+    "overlap": {
+        "amount": 3,
+        "weightPrev": 0.125,
+        "weightCurr": 0.75,
+        "weightNext": 0.125
+    },
+
+    "decimal_places": 3
 
 }
