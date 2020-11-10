@@ -164,9 +164,10 @@ export default class UploadForm extends Component {
   }
 
   getChartOption() {
-    const {data} = this.props
+    let {data} = this.props
     const {chartType} = this.state;
     if (!data) return {}
+    data = data.peptides;
     const median = data.map(item => {
       return {
         value: item.aveFM || item.data[0].foregroundMedian,
@@ -260,8 +261,9 @@ export default class UploadForm extends Component {
   }
 
   isIncludeSRN() {
-    const {data} = this.props
+    let {data} = this.props
     if (!data) return false
+    data = data.peptides;
     if (data[0].snr) return true
     if (data[0].data && data[0].data[0].snr !== 'NaN') return true
     return false

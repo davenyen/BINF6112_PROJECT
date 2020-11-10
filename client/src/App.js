@@ -29,7 +29,7 @@ export default class App extends Component {
   render() {
     const TableMode = () => {
       if(this.state.processedData && this.state.processedData.mode === 0) {
-        return <Table data={this.state.processedData} />
+        return <Table data={this.state.processedData.peptides} />
       }else if (this.state.processedData && this.state.processedData.mode === 1){
         return <MultTable data={this.state.processedData} />
       }else if(this.state.processedData && this.state.processedData.mode === 2){
