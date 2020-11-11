@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './css/TableFooter.css';
+import './css/Table.css';
 
 let config = require('../frontend_config.json');
 
@@ -10,8 +10,7 @@ export default class TableFooter extends Component {
             <div className="table-footer">
                 <b>Summary Table Fields</b>
                 <table>
-                    <col style={{width: "20%"}}/>
-                    <col />
+                    <tbody>
                     <tr>
                         <td>ID</td>
                         <td>Residue ID from DSSP output - position in protein structure that protein has been mapped to.</td>
@@ -45,6 +44,7 @@ export default class TableFooter extends Component {
                         <td>SNR Calculated</td>
                         <td>Signal to Noise Ratio calculated as log<sub>2</sub>(Raw Mean) − log<sub>2</sub>(Background Mean)</td>
                     </tr>
+                    </tbody>
                 </table>
                 <br />
                 <p>Binding data is smoothed for overlapping peptides, calculated as: smoothed value for p2 = {config.overlap.weightPrev} * p1 

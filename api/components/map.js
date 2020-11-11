@@ -111,7 +111,7 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             if (parseFloat(peptides[ind - 1].data[d].foregroundMedian) > fmThreshold
                 && parseFloat(peptides[ind - 1].data[d].foregroundMedian) > incThreshold * p.data[d].foregroundMedian) {
                 seq = peptides[ind-1].peptideSeq.slice(0, config.overlap.amount) + seq;
-                pos = peptides[ind-1].res_id;
+                // pos = peptides[ind-1].res_id;
             }
 
             if (parseFloat(peptides[ind + 1].data[d].foregroundMedian) > fmThreshold
@@ -135,7 +135,8 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             e.asa = (asa.reduce((a, b) => a + b, 0)/getMaxASA(seq)).toFixed(dps);
             let mode_ss = mode(ss);
             e.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
-            e.data = p.data[d];
+            e.data = [];
+            e.data.push(p.data[d]);
             
             return e;
         });
@@ -152,9 +153,9 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             return e;
         })
     
-        // console.log("----Epitopes----");
-        // console.log(epitopes);
-        // console.log("---end---");
+        console.log("----Epitopes----");
+        console.log(epitopes);
+        console.log("---end---");
         epitope_json[peptides[0].data[d].file] = epitopes;
     }
 

@@ -8,6 +8,7 @@ import TableFooter from './components/TableFooter';
 import MultTable from './components/MultTable.js';
 import UploadForm from './components/UploadForm';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import EpitopeTable from './components/EpitopeTable';
 
 // const apiURL = "http://localhost:8000";
 
@@ -29,7 +30,12 @@ export default class App extends Component {
   render() {
     const TableMode = () => {
       if(this.state.processedData && this.state.processedData.mode === 0) {
-        return <Table data={this.state.processedData.peptides} />
+        return (<div>
+          <EpitopeTable data={this.state.processedData.epitopesByFile} />
+          
+          <Table data={this.state.processedData.peptides} caption="Peptides" seqWidth={12}/>
+        </div>
+        );
       }else if (this.state.processedData && this.state.processedData.mode === 1){
         return <MultTable data={this.state.processedData} />
       }else if(this.state.processedData && this.state.processedData.mode === 2){

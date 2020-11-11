@@ -2,7 +2,7 @@ import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
-import '../App.css';
+import './css/Table.css';
 
 let config = require('../frontend_config.json');
 
@@ -108,7 +108,7 @@ const MyExportCSV = (props) => {
     };
     return (
         <div>
-        <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
+        <button className="btn btn-success" onClick={ handleClick }>Export {props.caption} to CSV</button>
         </div>
     );
 };
@@ -127,6 +127,7 @@ export default class Table extends React.Component {
 
     render() {
         let columns = columns_base.slice();
+        if (this.props.seqWidth) columns[1].headerStyle.width = this.props.seqWidth+"rem";
 
         if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
           let nameCol = {
@@ -236,11 +237,13 @@ export default class Table extends React.Component {
                 {
                     props => (
                         <div>
-                            <MyExportCSV { ...props.csvProps } />
-                            <hr />
+                            <br />
                             <CustomToggleList { ...props.columnToggleProps }  />
+                            <BootstrapTable { ...props.baseProps } caption={this.props.caption}/>
                             <hr />
-                            <BootstrapTable { ...props.baseProps } />
+                            <MyExportCSV { ...props.csvProps } caption={this.props.caption}/>
+                            <hr />
+                            <br />
                         </div>
                     )
                 }
