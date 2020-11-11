@@ -1,3 +1,10 @@
 {
-    "bury_threshold": 0.2
+    "bury_threshold": 0.2,
+
+    "overlap": {
+        "amount": 3,
+        "weightPrev": 0.125,
+        "weightCurr": 0.75,
+        "weightNext": 0.125
+    }
 }

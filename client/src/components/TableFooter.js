@@ -47,7 +47,9 @@ export default class TableFooter extends Component {
                     </tr>
                 </table>
                 <br />
-                <p>Binding data is smoothed for overlapping peptides, taking the 2 adjacent peptides overlapping on either side and weighting values by the identity shared with peptide in question.</p>
+                <p>Binding data is smoothed for overlapping peptides, calculated as: smoothed value for p2 = {config.overlap.weightPrev} * p1 
+                            + {config.overlap.weightCurr} * p2 + {config.overlap.weightNext} * p3, for overlapping peptides p1 and p3
+                            offset from p2 by {config.overlap.amount} residues.</p>
             </div>
         );
     }
