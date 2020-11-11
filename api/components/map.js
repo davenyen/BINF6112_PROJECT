@@ -3,10 +3,11 @@ const Parse = require('./parseTwo');
 let config = require('../../Config.json');
 const dps = parseInt(config.decimal_places);
 
+const exec = require('child_process').execSync;
+
 exports.mapData = async function mapData(ma_json, pdbFile) {
     // const spawn = require("child_process").spawn;
     // var pythonProcess = spawn('python',['./dssp.py', pdbFile]);
-    const exec = require('child_process').execSync;
 
     // pythonProcess.stdout.on('data', function(data) {
     //     console.log('here');
@@ -73,8 +74,92 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
 
     jsonObj = {};
     jsonObj.peptides = mappedData;
+    
+    jsonObj.epitopesByFile = getEpitopes(mappedData, dssp_json, sequence);
     console.log(jsonObj);
     return jsonObj;
+}
+
+function getEpitopes(peptides, dssp_json, full_sequence) {
+    peptides.sort((a, b) => a.res_id - b.res_id);
+
+    let fmThreshold = parseFloat(config.epitopes.foregroundMedianThreshold);
+    let incThreshold = parseFloat(config.epitopes.relativeIncludeThreshold);
+
+    let epitope_json = {};
+    
+    for (let d in peptides[0].data) {
+        console.log(peptides[0].data[d].file);
+        
+        let epitopes = peptides.map((p, ind) => {
+            if (!(ind !== 0 && ind !== peptides.length - 1 &&
+                // has overlapping peptides on either side
+                p.res_id - peptides[ind - 1].res_id === config.overlap.amount && 
+                peptides[ind + 1].res_id - p.res_id === config.overlap.amount &&
+    
+                // local maxima with foreground median
+                parseFloat(p.data[d].foregroundMedian) > parseFloat(peptides[ind - 1].data[d].foregroundMedian) &&
+                parseFloat(p.data[d].foregroundMedian) > parseFloat(peptides[ind + 1].data[d].foregroundMedian) &&
+    
+                // foreground median above configured threshold
+                parseFloat(p.data[d].foregroundMedian) >  fmThreshold)) return null;
+
+                
+            let seq = p.peptideSeq;
+            let pos = p.res_id;
+
+            if (parseFloat(peptides[ind - 1].data[d].foregroundMedian) > fmThreshold
+                && parseFloat(peptides[ind - 1].data[d].foregroundMedian) > incThreshold * p.data[d].foregroundMedian) {
+                seq = peptides[ind-1].peptideSeq.slice(0, config.overlap.amount) + seq;
+                pos = peptides[ind-1].res_id;
+            }
+
+            if (parseFloat(peptides[ind + 1].data[d].foregroundMedian) > fmThreshold
+                && parseFloat(peptides[ind + 1].data[d].foregroundMedian) > incThreshold * p.data[d].foregroundMedian) {
+                seq = seq + peptides[ind+1].peptideSeq.slice(-config.overlap.amount);
+            }
+
+            console.log(seq);
+
+            let e = {};
+            e.peptideSeq = seq;
+            e.res_id = pos;
+            
+
+            let start = full_sequence.indexOf(seq);
+            // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
+            let asa = dssp_json.asa.slice(start, start + seq.length);
+            let ss = dssp_json.ss.slice(start, start + seq.length);
+
+            // secondary structure - get mode of residue assignments
+            e.asa = (asa.reduce((a, b) => a + b, 0)/getMaxASA(seq)).toFixed(dps);
+            let mode_ss = mode(ss);
+            e.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
+            e.data = p.data[d];
+            
+            return e;
+        });
+
+        epitopes = epitopes.filter(p => p !== null);
+
+        let sequences = epitopes.map(p => p.peptideSeq);
+        sequences = sequences.join(",");
+
+        let chemprops_json = JSON.parse(exec('python3 ./components/chemprops_epitopes.py '+ sequences));
+        epitopes = epitopes.map((e, ind) => {
+            e.gravy = chemprops_json.gravy[ind].toFixed(dps);
+            e.pI = chemprops_json.pI[ind].toFixed(dps);
+            return e;
+        })
+    
+        // console.log("----Epitopes----");
+        // console.log(epitopes);
+        // console.log("---end---");
+        epitope_json[peptides[0].data[d].file] = epitopes;
+    }
+
+    // console.log(epitope_json);
+    return epitope_json;
 }
 
 function smoothData(peptideRaw, ma_json) {

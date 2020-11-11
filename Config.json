@@ -46,6 +46,11 @@
         "weightNext": 0.125
     },
 
+    "epitopes": {
+        "foregroundMedianThreshold": 1,
+        "relativeIncludeThreshold": 0.7
+    },
+
     "decimal_places": 3
 
 }
