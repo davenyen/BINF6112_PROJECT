@@ -31,7 +31,7 @@ var app = express();
 // DEPLOY TEST
 if (process.env.NODE_ENV === 'production') {
   console.log("test");
-  app.use(express.static('../client/build'));
+  app.use(express.static('./client/build'));
 }
 
 // view engine setup
