@@ -28,6 +28,12 @@ const PORT = process.env.PORT || 8080;
 
 var app = express();
 
+// DEPLOY TEST
+if (process.env.NODE_ENV === 'production') {
+  console.log("test");
+  app.use(express.static('../client/build'));
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -158,9 +164,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// DEPLOY TEST
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../client/build'));
-}
 
 module.exports = app;
