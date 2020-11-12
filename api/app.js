@@ -23,6 +23,9 @@ const ave = require('./components/multipleAve');
 const fs = require('fs');
 let fileHandler = [];
 
+// DEPLOY TEST
+const PORT = process.env.PORT || 8080;
+
 var app = express();
 
 // view engine setup
@@ -154,5 +157,10 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// DEPLOY TEST
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../client/build'));
+}
 
 module.exports = app;
