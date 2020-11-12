@@ -23,16 +23,13 @@ const ave = require('./components/multipleAve');
 const fs = require('fs');
 let fileHandler = [];
 
-// DEPLOY TEST
-const PORT = process.env.PORT || 8080;
-
 var app = express();
 
 // DEPLOY TEST
-if (process.env.NODE_ENV === 'production') {
-  console.log("test");
-  app.use(express.static('./client/build'));
-}
+const port = process.env.PORT || 5000;
+
+app.use(express.static(path.join(__dirname, './client/build')));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -144,8 +141,8 @@ app.post('/clear', function(req, res) {
   })
 })
 
-app.listen(8000, function() {
-  console.log('App running on port 8000');
+app.listen(port, function() {
+  console.log('App running on port ' + port);
 });
 
 // catch 404 and forward to error handler
@@ -164,5 +161,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+}
 
 module.exports = app;
