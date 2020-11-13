@@ -28,9 +28,6 @@ var app = express();
 // DEPLOY TEST
 const port = process.env.PORT || 5000;
 
-app.use(express.static(path.join(__dirname, './client/build')));
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -41,6 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -140,6 +138,13 @@ app.post('/clear', function(req, res) {
 
   })
 })
+
+/**
+ * Deploy test
+ */
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(port, function() {
   console.log('App running on port ' + port);

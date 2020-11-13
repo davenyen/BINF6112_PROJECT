@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
@@ -20,5 +20,8 @@
     "react-json-to-table": "^0.1.7",
     "read-excel-file": "^4.0.7",
     "xlsx": "^0.16.8"
+  },
+  "engines": {
+    "node": "12.18.3"
   }
 }
