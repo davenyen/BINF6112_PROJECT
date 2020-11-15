@@ -167,7 +167,7 @@ export default class UploadForm extends Component {
     let {data} = this.props
     const {chartType} = this.state;
     if (!data) return {}
-    data = data.peptides;
+    if (this.props.multiple === 0){data = data.peptides}else if(this.props.multiple ==1){data = data.pepData}
     const median = data.map(item => {
       return {
         value: item.aveFM || item.data[0].foregroundMedian,
@@ -263,9 +263,13 @@ export default class UploadForm extends Component {
   isIncludeSRN() {
     let {data} = this.props
     if (!data) return false
-    data = data.peptides;
-    if (data[0].snr) return true
-    if (data[0].data && data[0].data[0].snr !== 'NaN') return true
+    if(this.props.multiple === 0){
+      data = data.peptides;
+      if (data[0].snr) return true
+      if (data[0].data && data[0].data[0].snr !== 'NaN') return true
+    }else if(this.props.multiple === 1){
+      if (data.aveSNR) return true
+    }
     return false
   }
 
@@ -338,7 +342,7 @@ export default class UploadForm extends Component {
                 SNR</Button>}
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
-                            option={this.getChartOption()}/>                        
+                            option={this.getChartOption()}/>
             <p >  Red Colour: ASA is above 0.2;  Grey Colour: ASA is below 0.2</p>
             </>}
           </div>

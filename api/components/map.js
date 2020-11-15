@@ -89,7 +89,7 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
     let epitope_json = {};
     
     for (let d in peptides[0].data) {
-        console.log(peptides[0].data[d].file);
+        //console.log(peptides[0].data[d].file);
         
         let epitopes = peptides.map((p, ind) => {
             if (!(ind !== 0 && ind !== peptides.length - 1 &&
@@ -119,7 +119,7 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
                 seq = seq + peptides[ind+1].peptideSeq.slice(-config.overlap.amount);
             }
 
-            console.log(seq);
+            //console.log(seq);
 
             let e = {};
             e.peptideSeq = seq;
@@ -153,9 +153,9 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             return e;
         })
     
-        console.log("----Epitopes----");
-        console.log(epitopes);
-        console.log("---end---");
+        //console.log("----Epitopes----");
+        //console.log(epitopes);
+        //console.log("---end---");
         epitope_json[peptides[0].data[d].file] = epitopes;
     }
 
@@ -258,7 +258,7 @@ function calculateRatios(mappedData) {
         return peptide;
     });
 
-    console.log(mappedData[0]);
+    //console.log(mappedData[0]);
     return mappedData;
 }
 

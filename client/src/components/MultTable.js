@@ -123,13 +123,86 @@ const MyExportCSV = (props) => {
     );
 };
 
-
+let epitope_columns_base = [{
+  dataField: 'res_id',
+  text: 'ID',
+  sort: true,
+  sortFunc: sortNumerical,
+  headerAlign: "center",
+  headerStyle: {
+      width: "3rem"
+  }
+},{
+    dataField: 'peptideSeq',
+    text: 'Sequence',
+    sort: true,
+    headerStyle: {
+        width: "12rem",
+    },
+    style: {
+        wordBreak: "break-all"
+    }
+  },{
+    dataField: 'asa',
+    text: 'Relative ASA',
+    sort: true,
+    sortFunc: sortNumerical,
+    style: (cell, row, rowIndex, colIndex) => {
+      if (parseFloat(cell) < parseFloat(config.bury_threshold)) {
+        return {
+          backgroundColor: "#cfcfcf"
+        }
+      }
+    }
+  },  {
+    dataField: 'ss',
+    text: 'Secondary Structure',
+    sort: true
+  },{
+    dataField: 'gravy',
+    text: 'GRAVY',
+    hidden: true,
+    sort: true,
+    sortFunc: sortNumerical
+  }, {
+    dataField: 'pI',
+    text: 'Isoelectric Point',
+    hidden: true,
+    sort: true,
+    sortFunc: sortNumerical
+  },{
+    dataField: 'maxFm',
+    text: 'Maximum Foregroud Median',
+    sort: true,
+    sortFunc: sortNumerical
+  },{
+    dataField: 'minFm',
+    text: 'Minimum Foregroud Median',
+    sort: true,
+    sortFunc: sortNumerical
+  },{
+    dataField: 'foregroundMedian',
+    text: 'Average Foregroud Median',
+    sort: true,
+    sortFunc: sortNumerical
+  },{
+    dataField: 'snrC',
+    text: 'Calculated Average SNR',
+    sort: true,
+    sortFunc: sortNumerical
+  },{
+    dataField: 'percentFiles',
+    text: '% of presence',
+    sort: true,
+    sortFunc: sortNumerical
+  }];
 
 
 export default class MultTable extends React.Component {
     render() {
         let columns = columns_base.slice();
-        if (this.props.data[0].hasOwnProperty("pepName") && this.props.data[0].pepName) {
+        let epitopeCols = epitope_columns_base.slice();
+        if (this.props.data.pepData[0].hasOwnProperty("pepName") && this.props.data.pepData[0].pepName) {
           let nameCol = {
             dataField: 'pepName',
             text: 'Peptide Name',
@@ -147,7 +220,7 @@ export default class MultTable extends React.Component {
           columns.splice(1, 0, nameCol)
         }
 
-        if(!(isNaN(parseFloat(this.props.data[0].snr)))){
+        if(!(isNaN(parseFloat(this.props.data.pepData[0].snr)))){
             columns.push({
               dataField: 'snr',
               text: 'Included SNR',
@@ -156,25 +229,48 @@ export default class MultTable extends React.Component {
             })
         }
         return (
-            <ToolkitProvider
-            keyField="peptideSeq"
-            data={ this.props.data }
-            columns={ columns }
-            columnToggle
-            exportCSV
-            >
-                {
-                    props => (
-                        <div>
-                            <MyExportCSV { ...props.csvProps } />
-                            <hr />
-                            <CustomToggleList { ...props.columnToggleProps }  />
-                            <hr />
-                            <BootstrapTable { ...props.baseProps } />
-                        </div>
-                    )
-                }
-            </ToolkitProvider>
+          <div>
+          <h1>Epitope Information</h1>
+          <ToolkitProvider
+          keyField="peptideSeq"
+          data={ this.props.data.epiData}
+          columns={ epitopeCols }
+          columnToggle
+          exportCSV
+          >
+              {
+                  props => (
+                      <div>
+                          <MyExportCSV { ...props.csvProps } />
+                          <hr />
+                          <CustomToggleList { ...props.columnToggleProps }  />
+                          <hr />
+                          <BootstrapTable { ...props.baseProps } />
+                      </div>
+                  )
+              }
+          </ToolkitProvider>
+          <h1>Individual peptide Information</h1>
+          <ToolkitProvider
+          keyField="peptideSeq"
+          data={ this.props.data.pepData}
+          columns={ columns }
+          columnToggle
+          exportCSV
+          >
+              {
+                  props => (
+                      <div>
+                          <MyExportCSV { ...props.csvProps } />
+                          <hr />
+                          <CustomToggleList { ...props.columnToggleProps }  />
+                          <hr />
+                          <BootstrapTable { ...props.baseProps } />
+                      </div>
+                  )
+              }
+          </ToolkitProvider>
+            </div>
         );
 
 
