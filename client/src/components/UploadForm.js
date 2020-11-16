@@ -29,7 +29,7 @@ export default class UploadForm extends Component {
       pdbFile: null,
       chartVisible: false,
       chartType: 'median',//median|snr|include
-      submitted:false
+      //submitted:false
     }
     this.myChart = React.createRef()
     this.onSubmit = this.onSubmit.bind(this);
@@ -50,7 +50,7 @@ export default class UploadForm extends Component {
 
   onSubmit = () => {
     this.refreshFilePreviews()
-    this.setState({submitted:true})
+    //this.setState({submitted:true})
     // If file doesn't exist returns
     if (this.state.fileObjects.length === 0) return;
 
@@ -77,7 +77,7 @@ export default class UploadForm extends Component {
 
   // appends files to objects state
   addFile = (fileObj) => {
-    this.setState({submitted:false})
+    //this.setState({submitted:false})
     //console.log(fileObj.name);
     this.setState(prevState => ({
       fileObjects: [...prevState.fileObjects, fileObj],
@@ -304,7 +304,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".xlsx/.gpr"
-              submitted={this.state.submitted}
+              //submitted={this.state.submitted}
             />
             <UploadField
               className="pdb-form"
@@ -317,7 +317,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".pdb"
-              submitted={this.state.submitted}
+              //submitted={this.state.submitted}
             />
           </div>
           <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>

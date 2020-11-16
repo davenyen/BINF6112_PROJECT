@@ -111,9 +111,9 @@ export default class UploadField extends Component {
       }
 
     render() {
-     if(this.props.submitted){
+     /*if(this.props.submitted){
         this.state.fileNames = [];
-      }
+      }*/
         return (
         <form className={this.props.className}>
             <FormGroup row>
