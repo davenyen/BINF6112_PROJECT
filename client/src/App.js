@@ -20,7 +20,7 @@ export default class App extends Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  
   handleSubmit(json) {
     this.setState({
       processedData: json
@@ -34,12 +34,16 @@ export default class App extends Component {
           <EpitopeTable data={this.state.processedData.epitopesByFile} />
           
           <Table data={this.state.processedData.peptides} caption="Peptides" seqWidth={12}/>
+          <TableFooter />
         </div>
         );
       }else if (this.state.processedData && this.state.processedData.mode === 1){
-        return <MultTable data={this.state.processedData} />
-      }else if(this.state.processedData && this.state.processedData.mode === 2){
-        return <h1>To Do</h1>
+        return (<div>
+                <MultTable data={this.state.processedData} />
+                <TableFooter />
+                </div>)
+      }else{
+        return <div></div>
       }
     }
     return (
@@ -47,20 +51,18 @@ export default class App extends Component {
         <Navbar />
         <Container>
           <div className="analysis-tabs">
-          <Tabs>
+          <Tabs
+            refreshPage={this.handleSubmit}
+          >
             <div label="Single Sample">
               <UploadForm multiple={0} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
             </div>
             <div label="Multiple Sample Analysis">
               <UploadForm multiple={1} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
             </div>
-            <div label="Temporal Data Analysis">
-              <UploadForm multiple={2} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
-            </div>
           </Tabs>
           </div>
           {TableMode()}
-          {this.state.processedData && <TableFooter />}
         </Container>
       </div>
     );

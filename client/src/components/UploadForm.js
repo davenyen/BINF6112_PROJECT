@@ -28,7 +28,8 @@ export default class UploadForm extends Component {
       chosenFileName: "",
       pdbFile: null,
       chartVisible: false,
-      chartType: 'median'//median|snr|include
+      chartType: 'median',//median|snr|include
+      submitted:false
     }
     this.myChart = React.createRef()
     this.onSubmit = this.onSubmit.bind(this);
@@ -44,13 +45,12 @@ export default class UploadForm extends Component {
       return axios.get(apiURL + "/process")
     } else if (this.props.multiple === 1) {
       return axios.get(apiURL + "/processMult")
-    } else if (this.props.multiple === 2) {
-      return axios.get(apiURL + "/processTemp")
     }
   }
 
   onSubmit = () => {
     this.refreshFilePreviews()
+    this.setState({submitted:true})
     // If file doesn't exist returns
     if (this.state.fileObjects.length === 0) return;
 
@@ -77,6 +77,7 @@ export default class UploadForm extends Component {
 
   // appends files to objects state
   addFile = (fileObj) => {
+    this.setState({submitted:false})
     //console.log(fileObj.name);
     this.setState(prevState => ({
       fileObjects: [...prevState.fileObjects, fileObj],
@@ -166,8 +167,8 @@ export default class UploadForm extends Component {
   getChartOption() {
     let {data} = this.props
     const {chartType} = this.state;
-    if (!data) return {}
     if (this.props.multiple === 0){data = data.peptides}else if(this.props.multiple ==1){data = data.pepData}
+    if (!data) return {}
     const median = data.map(item => {
       return {
         value: item.aveFM || item.data[0].foregroundMedian,
@@ -287,7 +288,6 @@ export default class UploadForm extends Component {
         </div>
       )
     })
-
     return (
       <div>
         <div className="form">
@@ -304,6 +304,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".xlsx/.gpr"
+              submitted={this.state.submitted}
             />
             <UploadField
               className="pdb-form"
@@ -316,6 +317,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".pdb"
+              submitted={this.state.submitted}
             />
           </div>
           <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>
