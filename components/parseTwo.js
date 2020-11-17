@@ -1,4 +1,4 @@
-let config = require('../../client/src/Config.json')
+let config = require('../client/src/Config.json')
 const xlsxFile = require('read-excel-file/node');
 //console.log(config)
 var start = exports.parse = async function parseData(file_path){
