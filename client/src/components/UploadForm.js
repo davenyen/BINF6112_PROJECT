@@ -13,7 +13,7 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 let config = require('../Config.json');
 
-const apiURL = "http://localhost:8000";
+const apiURL = "http://localhost:5000";
 
 export default class UploadForm extends Component {
 
