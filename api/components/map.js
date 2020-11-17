@@ -76,7 +76,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     jsonObj.peptides = mappedData;
     
     jsonObj.epitopesByFile = getEpitopes(mappedData, dssp_json, sequence);
-    console.log(jsonObj);
+    // console.log(jsonObj);
     return jsonObj;
 }
 

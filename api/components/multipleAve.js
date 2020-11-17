@@ -32,18 +32,22 @@ exports.aveData = async function aveData(our_json) {
         numFileGivenSNR > 0 ? snr = (snr/numFileGivenSNR).toFixed(3) : snr=NaN
         aveSNR = aveSNR / pep.data.length
         aveFM = aveFM / pep.data.length
-        peptidedata.push({
-            pepName: pep.proteinId,
-            asa: pep.asa,
-            gravy: pep.gravy,
-            pI: pep.pI,
-            peptideSeq: pep.peptideSeq,
-            ss: pep.ss,
-            aveSNR: aveSNR.toFixed(3),
-            aveFM: aveFM.toFixed(3),
-            snr:snr,
-            res_id: pep.res_id
-        })
+        // peptidedata.push({
+        //     pepName: pep.proteinId,
+        //     asa: pep.asa,
+        //     gravy: pep.gravy,
+        //     pI: pep.pI,
+        //     peptideSeq: pep.peptideSeq,
+        //     ss: pep.ss,
+        //     aveSNR: aveSNR.toFixed(3),
+        //     aveFM: aveFM.toFixed(3),
+        //     snr:snr,
+        //     res_id: pep.res_id
+        // })
+        pep.snr = snr;
+        pep.aveSNR = aveSNR.toFixed(3);
+        pep.aveFM = aveFM.toFixed(3);
+        peptidedata.push(pep);
     })
 
     Object.keys(epitopeResIdSorted).forEach(res =>{
