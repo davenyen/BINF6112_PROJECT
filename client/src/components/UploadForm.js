@@ -168,11 +168,15 @@ export default class UploadForm extends Component {
 
   handleData(num = 0) {
     let {data} = this.props
-    if (this.props.multiple === 0){data = data.peptides}else if(this.props.multiple ===1){data = data.pepData}
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
+    }
 
     const median = data.map(item => {
       return {
-        value: item.aveFM || item.data[num].foregroundMedian,
+        value: item.data[num].foregroundMedian,
         ss: item.ss,
         pI: item.pI,
         gravy: item.gravy,
@@ -182,7 +186,7 @@ export default class UploadForm extends Component {
     });
     const snr = data.map(item => {
       return {
-        value: item.aveSNR || item.data[num].SNR_Calculated,
+        value: item.data[num].SNR_Calculated,
         ss: item.ss,
         pI: item.pI,
         gravy: item.gravy,
@@ -191,10 +195,10 @@ export default class UploadForm extends Component {
       }
     });
     let includeSnr
-    if (this.isIncludeSRN(num)) {
+    if (data[0].data[num].snr !== 'NaN') {
       includeSnr = data.map(item => {
         return {
-          value: item.snr || item.data[num].snr.replace(' ', ''),
+          value: item.data[num].snr.replace(' ', ''),
           ss: item.ss,
           pI: item.pI,
           gravy: item.gravy,
@@ -213,20 +217,6 @@ export default class UploadForm extends Component {
     });
     const finalMedian = [], finalSnr = [], finalIncludeSnr = [], finalSeq = []
     let curSeqIndex = 0
-    // for (let i = +(seq[0].value.split('\n')[0]); i < +(seq[seq.length - 1].value.split('\n')[0]); i += 3) {
-    //   if (+(seq[curSeqIndex].value.split('\n')[0]) === i) {
-    //     finalSeq.push(seq[curSeqIndex])
-    //     finalMedian.push(median[curSeqIndex])
-    //     finalSnr.push(snr[curSeqIndex])
-    //     if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
-    //     curSeqIndex += 1
-    //   } else {
-    //     finalSeq.push({value: '-'})
-    //     finalMedian.push(0)
-    //     finalSnr.push(0)
-    //     if (includeSnr) finalIncludeSnr.push(0)
-    //   }
-    // }
     let i = +(seq[0].value.split('\n')[0]);
     while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
       let res_id = +(seq[curSeqIndex].value.split('\n')[0])
@@ -247,17 +237,21 @@ export default class UploadForm extends Component {
       i += config.overlap.amount;
     }
     return {
-      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/')+1).split(".")[0],
+      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/') + 1).split(".")[0],
       seq: finalSeq,
       median: finalMedian,
       snr: finalSnr,
-      includeSnr: finalIncludeSnr
+      includeSnr: includeSnr && finalIncludeSnr
     }
   }
 
   getChartOption() {
     let {data} = this.props
-    if (this.props.multiple === 0){data = data.peptides}else if(this.props.multiple ===1){data = data.pepData}
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
+    }
     const {chartType} = this.state;
     if (!data) return {}
     const options = {
@@ -320,36 +314,52 @@ export default class UploadForm extends Component {
         },
       },
       legend: {
-        data: [this.handleData().name]
+        data: []
       },
-      series: [{
-        name: this.handleData().name,
-        data: chartType === 'include' ? this.handleData().includeSnr : (chartType === 'median' ? this.handleData().median : this.handleData().snr),
-        type: 'line'
-      }]
+      series: []
     }
-    if (data[0].data.length > 1) {
-      options.legend.data.push(this.handleData(1).name)
-      options.series.push({
-        name: this.handleData(1).name,
-        data: chartType === 'include' ? this.handleData(1).includeSnr : (chartType === 'median' ? this.handleData(1).median : this.handleData(1).snr),
-        type: 'line'
-      })
+    const fileLength = data[0].data.length
+    if (chartType === 'include') {
+      for (let i = 0; i < fileLength; i++) {
+        if (!this.handleData(i).includeSnr) continue
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).includeSnr,
+          type: 'line'
+        })
+      }
+    } else if (chartType === 'median') {
+      for (let i = 0; i < fileLength; i++) {
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).median,
+          type: 'line'
+        })
+      }
+    } else {
+      for (let i = 0; i < fileLength; i++) {
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).snr,
+          type: 'line'
+        })
+      }
     }
     return options
   }
 
-  isIncludeSRN(num=0) {
+  isIncludeSRN() {
     let {data} = this.props
     if (!data) return false
-    if(this.props.multiple === 0){
-      data = data.peptides;
-      if (data[0].snr) return true
-      if (data[0].data && data[0].data[num].snr !== 'NaN') return true
-    }else if(this.props.multiple === 1){
-      if (data.aveSNR) return true
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
     }
-    return false
+    return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
   }
 
   render() {
@@ -423,7 +433,7 @@ export default class UploadForm extends Component {
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
                             option={this.getChartOption()}/>
-              <br />
+              <br/>
               <p> Blue: Exposed; Grey: Buried</p>
             </>}
           </div>
