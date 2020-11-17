@@ -174,7 +174,8 @@ export default class UploadForm extends Component {
         ss: item.ss,
         pI: item.pI,
         gravy: item.gravy,
-        asa: item.asa
+        asa: item.asa,
+        pepSeq: item.peptideSeq
       }
     });
     const snr = data.map(item => {
@@ -183,7 +184,8 @@ export default class UploadForm extends Component {
         ss: item.ss,
         pI: item.pI,
         gravy: item.gravy,
-        asa: item.asa
+        asa: item.asa,
+        pepSeq: item.peptideSeq
       }
     });
     let includeSnr
@@ -194,7 +196,8 @@ export default class UploadForm extends Component {
           ss: item.ss,
           pI: item.pI,
           gravy: item.gravy,
-          asa: item.asa
+          asa: item.asa,
+          pepSeq: item.peptideSeq
         }
       });
     }
@@ -208,19 +211,38 @@ export default class UploadForm extends Component {
     });
     const finalMedian = [], finalSnr = [], finalIncludeSnr = [], finalSeq = []
     let curSeqIndex = 0
-    for (let i = +(seq[0].value.split('\n')[0]); i < +(seq[seq.length - 1].value.split('\n')[0]); i += 3) {
-      if (+(seq[curSeqIndex].value.split('\n')[0]) === i) {
+    // for (let i = +(seq[0].value.split('\n')[0]); i < +(seq[seq.length - 1].value.split('\n')[0]); i += 3) {
+    //   if (+(seq[curSeqIndex].value.split('\n')[0]) === i) {
+    //     finalSeq.push(seq[curSeqIndex])
+    //     finalMedian.push(median[curSeqIndex])
+    //     finalSnr.push(snr[curSeqIndex])
+    //     if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
+    //     curSeqIndex += 1
+    //   } else {
+    //     finalSeq.push({value: '-'})
+    //     finalMedian.push(0)
+    //     finalSnr.push(0)
+    //     if (includeSnr) finalIncludeSnr.push(0)
+    //   }
+    // }
+    let i = +(seq[0].value.split('\n')[0]);
+    while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
+      let res_id = +(seq[curSeqIndex].value.split('\n')[0])
+      if (res_id <= i) {
         finalSeq.push(seq[curSeqIndex])
         finalMedian.push(median[curSeqIndex])
         finalSnr.push(snr[curSeqIndex])
         if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
         curSeqIndex += 1
+        i = res_id;
       } else {
         finalSeq.push({value: '-'})
         finalMedian.push(0)
         finalSnr.push(0)
         if (includeSnr) finalIncludeSnr.push(0)
       }
+
+      i += 3
     }
     return {
       name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/')+1).split(".")[0],
@@ -315,7 +337,7 @@ export default class UploadForm extends Component {
     return options
   }
 
-  isIncludeSRN(num=1) {
+  isIncludeSRN(num=0) {
     let {data} = this.props
     if (!data) return false
     if(this.props.multiple === 0){
