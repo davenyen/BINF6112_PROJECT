@@ -1,0 +1,37 @@
+{
+  "name": "project",
+  "version": "3.0.0",
+  "description": "How to use create-react-app with a custom Node API on Heroku",
+  "engines": {
+    "node": "12.18.3"
+  },
+  "scripts": {
+    "start": "node server",
+    "build": "cd client/ && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "http-errors": "^1.8.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "read-excel-file": "^4.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davenyen/BINF6112_PROJECT.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "create-react-app",
+    "react"
+  ],
+  "license": "MIT",
+  "devDependencies": {}
+}

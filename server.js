@@ -1,19 +1,12 @@
 
-// Refactor code soon
-// Save parse data and access via front end with a GET method
-// ALL EXCEL FILES HAVE BEEN MOVED TO 'client/public/uploads'
-// EXCEL UPLOAD FROM FRONT END APPEARS -> 'api/public'
+const  createError = require('http-errors');
+const  cookieParser = require('cookie-parser');
+const  logger = require('morgan');
+const  cors = require('cors');
+const  multer = require('multer')
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors');
-var multer = require('multer')
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const  indexRouter = require('./routes/index');
+const  usersRouter = require('./routes/users');
 
 // MOVE TO DIFFERENT FILE LATER
 const xlsxFile = require('read-excel-file/node');
@@ -21,9 +14,20 @@ const parse = require('./components/parseTwo');
 const map = require('./components/map');
 const ave = require('./components/multipleAve');
 const fs = require('fs');
+
+const express = require('express');
+const path = require('path');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+
+const isDev = process.env.NODE_ENV !== 'production';
+const PORT = process.env.PORT || 5000;
+
+const app = express();
 let fileHandler = [];
 
-var app = express();
+// Priority serve any static files.
+app.use(express.static(path.resolve(__dirname, './client/build')));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,7 +51,7 @@ filename: function (req, file, cb) {
   cb(null, file.originalname )
   fileHandler.push('./public/' + file.originalname);
 }
-})
+});
 
 var upload = multer({ storage: storage }).array('file')
 
@@ -99,7 +103,19 @@ app.get('/processMult', function(req, res, next) {
     console.log('multiple parse in mult');
     parse.parseMultiple(xlFiles)
           .then(json => map.mapData(json, pdbFile))
-          .then(json => ave.aveData(json))
+          .then(json => ave.aveData(json.peptides))
+          .then(json => {
+            return res.status(200).json(json);
+          });
+});
+
+app.get('/processTemp', function(req, res, next) {
+  console.log('processingTemp');
+  let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
+  let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
+    console.log('multiple parse in temp');
+    parse.parseMultiple(xlFiles)
+          .then(json => map.mapData(json, pdbFile))
           .then(json => {
             return res.status(200).json(json);
           });
@@ -107,7 +123,7 @@ app.get('/processMult', function(req, res, next) {
 
 app.post('/clear', function(req, res) {
   console.log('clearing');
-  while (fileHandler.length > 0) { fileHandler.pop() }
+  while (fileHandler.length > 0) fileHandler.pop();
   console.log(fileHandler);
 
   fs.readdir('./public', (err, files) => {
@@ -119,28 +135,20 @@ app.post('/clear', function(req, res) {
         });
       }
     });
-
-  })
-})
-
-app.listen(8000, function() {
-  console.log('App running on port 8000');
+  });
 });
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Answer API requests.
+app.get('/api', function (req, res) {
+  res.set('Content-Type', 'application/json');
+  res.send('{"message":"Hello from the custom server!"}');
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// All remaining requests return the React app, so it can handle routing.
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
 
-module.exports = app;
+app.listen(PORT, function () {
+  console.error(`Node ${isDev ? 'dev server' : 'cluster worker '+process.pid}: listening on port ${PORT}`);
+});
