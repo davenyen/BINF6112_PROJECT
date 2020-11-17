@@ -193,7 +193,7 @@ export default class UploadForm extends Component {
       return {
         value: item.res_id + '\n' + item.peptideSeq.substr(0, 3),
         textStyle: {
-          color: item.asa > 0.2 ? 'red' : 'gray'
+          color: item.asa > 0.2 ? '#447fdb' : 'gray'
         }
       }
     });
@@ -284,7 +284,7 @@ export default class UploadForm extends Component {
         },
       },
       legend: {
-        data: [this.handleData().name]
+        data: [this.handleData().name.split(".")[0]]
       },
       series: [{
         name: this.handleData().name,
@@ -387,7 +387,8 @@ export default class UploadForm extends Component {
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
                             option={this.getChartOption()}/>
-              <p> Red Colour: ASA is above 0.2; Grey Colour: ASA is below 0.2</p>
+              <br />
+              <p> Blue: Exposed; Grey: Buried</p>
             </>}
           </div>
           <div
