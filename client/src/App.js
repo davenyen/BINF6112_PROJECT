@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Container} from 'reactstrap';
 import Navbar from './components/Navbar';
@@ -12,57 +12,49 @@ import EpitopeTable from './components/EpitopeTable';
 
 // const apiURL = "http://localhost:8000";
 
-export default class App extends Component {
-  constructor(){
-    super();
-    this.state={
-        processedData: null
-    }
-    this.handleSubmit = this.handleSubmit.bind(this);
+export default function App() {
+  
+  const [ processedData, setProcessedData ] = useState(null)
+
+  const handleSubmit = (json) => {
+    setProcessedData(json);
   }
 
-  handleSubmit(json) {
-    this.setState({
-      processedData: json
-    })
-  }
-
-  render() {
-    const TableMode = () => {
-      if(this.state.processedData && this.state.processedData.mode === 0) {
-        return (<div>
-          <EpitopeTable data={this.state.processedData.epitopesByFile} />
-          
-          <Table data={this.state.processedData.peptides} caption="Peptides" seqWidth={12}/>
-        </div>
-        );
-      }else if (this.state.processedData && this.state.processedData.mode === 1){
-        return <MultTable data={this.state.processedData} />
-      }else if(this.state.processedData && this.state.processedData.mode === 2){
-        return <h1>To Do</h1>
-      }
-    }
-    return (
-      <div>
-        <Navbar />
-        <Container>
-          <div className="analysis-tabs">
-          <Tabs>
-            <div label="Single Sample">
-              <UploadForm multiple={0} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
-            </div>
-            <div label="Multiple Sample Analysis">
-              <UploadForm multiple={1} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
-            </div>
-            <div label="Temporal Data Analysis">
-              <UploadForm multiple={2} handleSubmit={this.handleSubmit} data={this.state.processedData}/>
-            </div>
-          </Tabs>
-          </div>
-          {TableMode()}
-          {this.state.processedData && <TableFooter />}
-        </Container>
+  const TableMode = () => {
+    if(processedData && processedData.mode === 0) {
+      return (<div>
+        <EpitopeTable data={processedData.epitopesByFile} />
+        <Table data={processedData.peptides} caption="Peptides" seqWidth={12}/>
       </div>
-    );
+      );
+    }else if (processedData && processedData.mode === 1){
+      return <MultTable data={processedData} />
+    }else if(processedData && processedData.mode === 2){
+      return <h1>To Do</h1>
+    }
   }
+
+  return (
+    <div>
+      <Navbar />
+      <Container>
+        <div className="analysis-tabs">
+        <Tabs>
+          <div label="Single Sample">
+            <UploadForm multiple={0} handleSubmit={handleSubmit} data={processedData}/>
+          </div>
+          <div label="Multiple Sample Analysis">
+            <UploadForm multiple={1} handleSubmit={handleSubmit} data={processedData}/>
+          </div>
+          <div label="Temporal Data Analysis">
+            <UploadForm multiple={2} handleSubmit={handleSubmit} data={processedData}/>
+          </div>
+        </Tabs>
+        </div>
+        {TableMode}
+        {processedData && <TableFooter />}
+      </Container>
+    </div>
+  );
+
 }
