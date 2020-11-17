@@ -4,7 +4,7 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
 import './css/Table.css';
 
-let config = require('../frontend_config.json');
+let config = require('../Config.json');
 
 // sort numerically (instead of lexicographically)
 // (as using toFixed() in map.js converts to string)

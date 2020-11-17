@@ -11,6 +11,8 @@ import echarts from 'echarts';
 // import 'echarts/lib/component/tooltip';
 import {ButtonGroup, Button} from 'react-bootstrap'
 
+let config = require('../Config.json');
+
 const apiURL = "http://localhost:8000";
 
 export default class UploadForm extends Component {
@@ -203,7 +205,7 @@ export default class UploadForm extends Component {
     }
     const seq = data.map(item => {
       return {
-        value: item.res_id + '\n' + item.peptideSeq.substr(0, 3),
+        value: item.res_id + '\n' + item.peptideSeq.substr(0, config.overlap.amount),
         textStyle: {
           color: item.asa > 0.2 ? '#447fdb' : 'gray'
         }
@@ -242,7 +244,7 @@ export default class UploadForm extends Component {
         if (includeSnr) finalIncludeSnr.push(0)
       }
 
-      i += 3
+      i += config.overlap.amount;
     }
     return {
       name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/')+1).split(".")[0],

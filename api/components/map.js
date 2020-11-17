@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Parse = require('./parseTwo');
-let config = require('../../Config.json');
+let config = require('../../client/src/Config.json');
 const dps = parseInt(config.decimal_places);
 
 const exec = require('child_process').execSync;

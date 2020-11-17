@@ -35,9 +35,7 @@
 
     },
 
-    "parameters": {
-        "bury_threshold": "N/A"
-    },
+    "bury_threshold": 0.2,
 
     "overlap": {
         "amount": 3,
