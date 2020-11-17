@@ -171,13 +171,19 @@ export default class UploadForm extends Component {
     const median = data.map(item => {
       return {
         value: item.aveFM || item.data[num].foregroundMedian,
-        ss: item.ss
+        ss: item.ss,
+        pI: item.pI,
+        gravy: item.gravy,
+        asa: item.asa
       }
     });
     const snr = data.map(item => {
       return {
         value: item.aveSNR || item.data[num].SNR_Calculated,
-        ss: item.ss
+        ss: item.ss,
+        pI: item.pI,
+        gravy: item.gravy,
+        asa: item.asa
       }
     });
     let includeSnr
@@ -185,7 +191,10 @@ export default class UploadForm extends Component {
       includeSnr = data.map(item => {
         return {
           value: item.snr || item.data[num].snr.replace(' ', ''),
-          ss: item.ss
+          ss: item.ss,
+          pI: item.pI,
+          gravy: item.gravy,
+          asa: item.asa
         }
       });
     }
@@ -214,7 +223,7 @@ export default class UploadForm extends Component {
       }
     }
     return {
-      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/')+1),
+      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/')+1).split(".")[0],
       seq: finalSeq,
       median: finalMedian,
       snr: finalSnr,
@@ -278,13 +287,16 @@ export default class UploadForm extends Component {
         trigger: 'axis',
         formatter(params) {
           const item = params[0];
-          return `${chartType}：${item.data.value}<br />
-                ss：${item.data.ss}
+          // ${dataType}：${item.data.value}<br />
+          return `2° structure：${item.data.ss}<br />
+                  relative ASA: ${item.data.asa}<br />
+                  pI: ${item.data.pI}<br />
+                  gravy: ${item.data.gravy}<br />
                `;
         },
       },
       legend: {
-        data: [this.handleData().name.split(".")[0]]
+        data: [this.handleData().name]
       },
       series: [{
         name: this.handleData().name,
@@ -378,11 +390,11 @@ export default class UploadForm extends Component {
           <div className={'chart-wrap'} id={'vehicleProvince'} style={{backgroundColor: 'white'}}>
             {!!this.props.data && <><ButtonGroup justified>
               <Button active={chartType === 'median'}
-                      onClick={() => this.setState({chartType: 'median'})}>Median</Button>
+                      onClick={() => this.setState({chartType: 'median'})}>Foreground Median</Button>
               <Button active={chartType === 'snr'}
-                      onClick={() => this.setState({chartType: 'snr'})}>calculated SNR</Button>
+                      onClick={() => this.setState({chartType: 'snr'})}>Calculated SNR</Button>
               {this.isIncludeSRN() && <Button active={chartType === 'include'}
-                                              onClick={() => this.setState({chartType: 'include'})}>Include
+                                              onClick={() => this.setState({chartType: 'include'})}>Included
                 SNR</Button>}
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
