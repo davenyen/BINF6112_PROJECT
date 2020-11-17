@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "project",
   "version": "3.0.0",
-  "description": "Heroku Deploy Test",
+  "description": "How to use create-react-app with a custom Node API on Heroku",
   "engines": {
     "node": "10.x"
   },
@@ -16,21 +16,15 @@
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "debug": "~2.6.9",
     "express": "^4.16.4",
-    "express-fileupload": "^1.2.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1",
+    "http-errors": "^1.8.0",
+    "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "nodemon": "^2.0.5",
-    "react-json-to-table": "^0.1.7",
-    "read-excel-file": "^4.0.7",
-    "xlsx": "^0.16.8"
+    "read-excel-file": "^4.1.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mars/heroku-cra-node.git"
+    "url": "https://github.com/davenyen/BINF6112_PROJECT.git"
   },
   "keywords": [
     "node",
