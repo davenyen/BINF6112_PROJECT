@@ -103,7 +103,7 @@ app.get('/processMult', function(req, res, next) {
     console.log('multiple parse in mult');
     parse.parseMultiple(xlFiles)
           .then(json => map.mapData(json, pdbFile))
-          .then(json => ave.aveData(json.peptides))
+          .then(json => ave.aveData(json))
           .then(json => {
             return res.status(200).json(json);
           });
