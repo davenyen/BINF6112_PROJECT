@@ -128,103 +128,105 @@ export default class Table extends React.Component {
     render() {
         let columns = columns_base.slice();
         if (this.props.seqWidth) columns[1].headerStyle.width = this.props.seqWidth+"rem";
-
-        if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
-          let nameCol = {
-            dataField: 'proteinId',
-            text: 'Peptide Name',
-            sort: true,
-            headerStyle: {
-                width: "13rem",
-            },
-            style: {
-                width: "15em",
-                wordBreak: "break-all"
+        if (this.props.data.length > 1) {
+          if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
+            let nameCol = {
+              dataField: 'proteinId',
+              text: 'Peptide Name',
+              sort: true,
+              headerStyle: {
+                  width: "13rem",
+              },
+              style: {
+                  width: "15em",
+                  wordBreak: "break-all"
+              }
             }
+  
+            // insert at index 1
+            columns.splice(1, 0, nameCol)
           }
-
-          // insert at index 1
-          columns.splice(1, 0, nameCol)
-        }
-
-        let file_data = this.props.data[0].data;
-        if (file_data.length > 1) {
-            let ratios = this.props.data[0].ratios
-            let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
-            let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
-            for(let key in ratios) {
-                columns.push({
-                    dataField: 'ratios.'+key+'[0]',
-                    text: _.startCase(key) + ' Ratio '+fileName0+" : "+fileName1,
-                    sort: true,
-                    sortFunc: sortNumerical
-                  },{
-                    dataField: 'ratios.'+key+'[1]',
-                    text: _.startCase(key) + ' Ratio '+fileName1+" : "+fileName0,
-                    hidden: true,
-                    sort: true,
-                    sortFunc: sortNumerical
+  
+          let file_data = this.props.data[0].data;
+          if (file_data.length > 1) {
+              let ratios = this.props.data[0].ratios
+              let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
+              let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
+              for(let key in ratios) {
+                  columns.push({
+                      dataField: 'ratios.'+key+'[0]',
+                      text: _.startCase(key) + ' Ratio '+fileName0+" : "+fileName1,
+                      sort: true,
+                      sortFunc: sortNumerical
+                    },{
+                      dataField: 'ratios.'+key+'[1]',
+                      text: _.startCase(key) + ' Ratio '+fileName1+" : "+fileName0,
+                      hidden: true,
+                      sort: true,
+                      sortFunc: sortNumerical
+                    }
+                  )   
+              }
+  
+              // file data, default state is hidden in table
+              for (let i in file_data) {
+                  let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
+                  columns.push({
+                          dataField: 'data['+i+'].foregroundMedian',
+                          text: fileName+'Foreground Median',
+                          hidden: true,
+                          sort: true,
+                          sortFunc: sortNumerical
+                        },{
+                          dataField: 'data['+i+'].SNR_Calculated',
+                          text: fileName+'SNR Calculated',
+                          hidden: true,
+                          sort: true,
+                          sortFunc: sortNumerical
+                        }
+                  )
+  
+  
+                  if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                    columns.push({
+                      dataField: 'data['+i+'].snr',
+                      text: fileName+'SNR',
+                      hidden: true,
+                      sort: true,
+                      sortFunc: sortNumerical
+                    });
                   }
-                )   
-            }
-
-            // file data, default state is hidden in table
-            for (let i in file_data) {
-                let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
-                columns.push({
-                        dataField: 'data['+i+'].foregroundMedian',
-                        text: fileName+'Foreground Median',
-                        hidden: true,
-                        sort: true,
-                        sortFunc: sortNumerical
-                      },{
-                        dataField: 'data['+i+'].SNR_Calculated',
-                        text: fileName+'SNR Calculated',
-                        hidden: true,
-                        sort: true,
-                        sortFunc: sortNumerical
-                      }
-                )
-
-
-                if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+              }
+  
+          } else {
+              for (let i in file_data) {
+                  let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
                   columns.push({
-                    dataField: 'data['+i+'].snr',
-                    text: fileName+'SNR',
-                    hidden: true,
-                    sort: true,
-                    sortFunc: sortNumerical
-                  });
-                }
-            }
-
-        } else {
-            for (let i in file_data) {
-                let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
-                columns.push({
-                        dataField: 'data['+i+'].foregroundMedian',
-                        text: fileName+'Foreground Median',
-                        sort: true,
-                        sortFunc: sortNumerical
-                      },{
-                        dataField: 'data['+i+'].SNR_Calculated',
-                        text: fileName+'SNR Calculated',
-                        sort: true,
-                        sortFunc: sortNumerical
-                      }
-                )
-                if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
-                  columns.push({
-                    dataField: 'data['+i+'].snr',
-                    text: fileName+'SNR',
-                    sort: true,
-                    sortFunc: sortNumerical
-                  });
-                }
-            }
+                          dataField: 'data['+i+'].foregroundMedian',
+                          text: fileName+'Foreground Median',
+                          sort: true,
+                          sortFunc: sortNumerical
+                        },{
+                          dataField: 'data['+i+'].SNR_Calculated',
+                          text: fileName+'SNR Calculated',
+                          sort: true,
+                          sortFunc: sortNumerical
+                        }
+                  )
+                  if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                    columns.push({
+                      dataField: 'data['+i+'].snr',
+                      text: fileName+'SNR',
+                      sort: true,
+                      sortFunc: sortNumerical
+                    });
+                  }
+              }
+          }
+  
+  
         }
-
-
+        
 
         return (
             <ToolkitProvider

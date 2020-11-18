@@ -146,12 +146,15 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
         let sequences = epitopes.map(p => p.peptideSeq);
         sequences = sequences.join(",");
 
-        let chemprops_json = JSON.parse(exec('python3 ./components/chemprops_epitopes.py '+ sequences));
-        epitopes = epitopes.map((e, ind) => {
-            e.gravy = chemprops_json.gravy[ind].toFixed(dps);
-            e.pI = chemprops_json.pI[ind].toFixed(dps);
-            return e;
-        })
+        if (sequences) {
+            let chemprops_json = JSON.parse(exec('python3 ./components/chemprops_epitopes.py '+ sequences));
+            epitopes = epitopes.map((e, ind) => {
+                e.gravy = chemprops_json.gravy[ind].toFixed(dps);
+                e.pI = chemprops_json.pI[ind].toFixed(dps);
+                return e;
+            })
+
+        }
     
         //console.log("----Epitopes----");
         //console.log(epitopes);
