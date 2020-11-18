@@ -1,3 +1,6 @@
+let config = require('../client/src/Config.json');
+const dps = parseInt(config.decimal_places);
+
 exports.aveData = async function aveData(our_json) {
     console.log("START")
     allEpitopes = [];
@@ -100,16 +103,16 @@ exports.aveData = async function aveData(our_json) {
             peptideSeq: ps, 
             rawMean: rm,
             backgroundMean: bm,
-            foregroundMedian: fm.toFixed(3),
-            snr:sr.toFixed(3),
-            snrC:src.toFixed(3),
+            foregroundMedian: fm.toFixed(dps),
+            snr:sr.toFixed(dps),
+            snrC:src.toFixed(dps),
             ss:ss,
             asa:asa,
             gravy:gravy,
             pI:pI,
-            maxFm:max_fm,
-            minFm:min_fm,
-            percentFiles:percent.toFixed(3)
+            maxFm:max_fm.toFixed(dps),
+            minFm:min_fm.toFixed(dps),
+            percentFiles: Math.round(percent)
         })
     })
     //console.log(epitopeData)

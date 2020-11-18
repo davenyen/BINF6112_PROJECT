@@ -118,7 +118,7 @@ const MyExportCSV = (props) => {
     };
     return (
         <div>
-        <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
+        <button className="btn btn-success" onClick={ handleClick }>Export {props.caption} to CSV</button>
         </div>
     );
 };
@@ -137,7 +137,7 @@ let epitope_columns_base = [{
     text: 'Sequence',
     sort: true,
     headerStyle: {
-        width: "12rem",
+        width: "15rem",
     },
     style: {
         wordBreak: "break-all"
@@ -171,8 +171,8 @@ let epitope_columns_base = [{
     sort: true,
     sortFunc: sortNumerical
   },{
-    dataField: 'maxFm',
-    text: 'Maximum Foregroud Median',
+    dataField: 'percentFiles',
+    text: '% Samples Bound',
     sort: true,
     sortFunc: sortNumerical
   },{
@@ -181,18 +181,20 @@ let epitope_columns_base = [{
     sort: true,
     sortFunc: sortNumerical
   },{
+    dataField: 'maxFm',
+    text: 'Maximum Foregroud Median',
+    sort: true,
+    sortFunc: sortNumerical
+  },{
     dataField: 'foregroundMedian',
     text: 'Average Foregroud Median',
     sort: true,
+    hidden: true,
     sortFunc: sortNumerical
   },{
     dataField: 'snrC',
-    text: 'Calculated Average SNR',
-    sort: true,
-    sortFunc: sortNumerical
-  },{
-    dataField: 'percentFiles',
-    text: '% of presence',
+    text: 'Average Calculated SNR',
+    hidden: true,
     sort: true,
     sortFunc: sortNumerical
   }];
@@ -202,9 +204,9 @@ export default class MultTable extends React.Component {
     render() {
         let columns = columns_base.slice();
         let epitopeCols = epitope_columns_base.slice();
-        if (this.props.data.pepData[0].hasOwnProperty("pepName") && this.props.data.pepData[0].pepName) {
+        if (this.props.data.pepData.length > 0 && this.props.data.pepData[0].hasOwnProperty("proteinId") && this.props.data.pepData[0].proteinId) {
           let nameCol = {
-            dataField: 'pepName',
+            dataField: 'proteinId',
             text: 'Peptide Name',
             sort: true,
             headerStyle: {
@@ -230,7 +232,6 @@ export default class MultTable extends React.Component {
         }
         return (
           <div>
-          <h1>Epitope Information</h1>
           <ToolkitProvider
           keyField="peptideSeq"
           data={ this.props.data.epiData}
@@ -241,16 +242,18 @@ export default class MultTable extends React.Component {
               {
                   props => (
                       <div>
-                          <MyExportCSV { ...props.csvProps } />
                           <hr />
                           <CustomToggleList { ...props.columnToggleProps }  />
                           <hr />
-                          <BootstrapTable { ...props.baseProps } />
+                          <BootstrapTable { ...props.baseProps } caption="Epitope Information"/>
+                          <hr />
+                          <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
+                          <hr />
+                          <br />
                       </div>
                   )
               }
           </ToolkitProvider>
-          <h1>Individual peptide Information</h1>
           <ToolkitProvider
           keyField="peptideSeq"
           data={ this.props.data.pepData}
@@ -261,11 +264,13 @@ export default class MultTable extends React.Component {
               {
                   props => (
                       <div>
-                          <MyExportCSV { ...props.csvProps } />
-                          <hr />
                           <CustomToggleList { ...props.columnToggleProps }  />
                           <hr />
-                          <BootstrapTable { ...props.baseProps } />
+                          <BootstrapTable { ...props.baseProps } caption="Peptide Information"/>
+                          <hr />
+                          <MyExportCSV { ...props.csvProps } caption="Peptide Information"/>
+                          <hr />
+                          <br />
                       </div>
                   )
               }
