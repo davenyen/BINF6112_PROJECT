@@ -23,7 +23,6 @@ export default class UploadForm extends Component {
       isOpen: false,
       dataLoaded: false,
       isFormInvalid: false,
-      excelPreview: false,
       fileObjects: [],
       rowsncols: [],
       cardTorender: "",
@@ -160,9 +159,6 @@ export default class UploadForm extends Component {
 
   // Toggles excel preview for xls file
   ToggleExcelPreview(rowncol) {
-    this.setState((currentState) => ({
-      excelPreview: !currentState.excelPreview,
-    }));
     this.renderExcel(rowncol.name)
   }
 
@@ -415,7 +411,7 @@ export default class UploadForm extends Component {
         {this.state.dataLoaded &&
         <div>
           {renderedButtons}<br/>
-          {this.state.excelPreview && this.state.cardTorender}
+          {this.state.cardTorender}
         </div>
         }
 
