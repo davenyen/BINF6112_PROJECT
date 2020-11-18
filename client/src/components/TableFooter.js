@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './css/Table.css';
 
-let config = require('../frontend_config.json');
+let config = require('../Config.json');
 
 export default class TableFooter extends Component {
 

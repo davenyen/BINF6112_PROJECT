@@ -17,6 +17,7 @@ export default class Tabs extends Component {
   
     onClickTabItem = (tab) => {
       this.setState({ activeTab: tab });
+      this.props.refreshPage(null)
     }
 
     render() {

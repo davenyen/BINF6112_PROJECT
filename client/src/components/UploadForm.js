@@ -11,7 +11,9 @@ import echarts from 'echarts';
 // import 'echarts/lib/component/tooltip';
 import {ButtonGroup, Button} from 'react-bootstrap'
 
-const apiURL = "http://localhost:8000";
+let config = require('../Config.json');
+
+const apiURL = "http://localhost:5000";
 
 export default class UploadForm extends Component {
 
@@ -21,14 +23,14 @@ export default class UploadForm extends Component {
       isOpen: false,
       dataLoaded: false,
       isFormInvalid: false,
-      excelPreview: false,
       fileObjects: [],
       rowsncols: [],
       cardTorender: "",
       chosenFileName: "",
       pdbFile: null,
       chartVisible: false,
-      chartType: 'median'//median|snr|include
+      chartType: 'median',//median|snr|include
+      //submitted:false
     }
     this.myChart = React.createRef()
     this.onSubmit = this.onSubmit.bind(this);
@@ -44,13 +46,12 @@ export default class UploadForm extends Component {
       return axios.get(apiURL + "/process")
     } else if (this.props.multiple === 1) {
       return axios.get(apiURL + "/processMult")
-    } else if (this.props.multiple === 2) {
-      return axios.get(apiURL + "/processTemp")
     }
   }
 
   onSubmit = () => {
     this.refreshFilePreviews()
+    //this.setState({submitted:true})
     // If file doesn't exist returns
     if (this.state.fileObjects.length === 0) return;
 
@@ -77,6 +78,7 @@ export default class UploadForm extends Component {
 
   // appends files to objects state
   addFile = (fileObj) => {
+    //this.setState({submitted:false})
     //console.log(fileObj.name);
     this.setState(prevState => ({
       fileObjects: [...prevState.fileObjects, fileObj],
@@ -157,53 +159,104 @@ export default class UploadForm extends Component {
 
   // Toggles excel preview for xls file
   ToggleExcelPreview(rowncol) {
-    this.setState((currentState) => ({
-      excelPreview: !currentState.excelPreview,
-    }));
     this.renderExcel(rowncol.name)
   }
 
-  getChartOption() {
+  handleData(num = 0) {
     let {data} = this.props
-    const {chartType} = this.state;
-    if (!data) return {}
-    data = data.peptides;
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
+    }
+
     const median = data.map(item => {
       return {
-        value: item.aveFM || item.data[0].foregroundMedian,
-        ss: item.ss
+        value: item.data[num].foregroundMedian,
+        ss: item.ss,
+        pI: item.pI,
+        gravy: item.gravy,
+        asa: item.asa,
+        pepSeq: item.peptideSeq
       }
     });
     const snr = data.map(item => {
       return {
-        value: item.aveSNR || item.data[0].SNR_Calculated,
-        ss: item.ss
+        value: item.data[num].SNR_Calculated,
+        ss: item.ss,
+        pI: item.pI,
+        gravy: item.gravy,
+        asa: item.asa,
+        pepSeq: item.peptideSeq
       }
     });
     let includeSnr
-    if (this.isIncludeSRN()) {
+    if (data[0].data[num].snr !== 'NaN') {
       includeSnr = data.map(item => {
         return {
-          value: item.snr || item.data[0].snr.replace(' ', ''),
-          ss: item.ss
+          value: item.data[num].snr.replace(' ', ''),
+          ss: item.ss,
+          pI: item.pI,
+          gravy: item.gravy,
+          asa: item.asa,
+          pepSeq: item.peptideSeq
         }
       });
     }
     const seq = data.map(item => {
       return {
-        value: item.res_id + '\n' + item.peptideSeq.substr(0, 3),
+        value: item.res_id + '\n' + item.peptideSeq.substr(0, config.overlap.amount),
         textStyle: {
-          color: item.asa > 0.2 ? 'red' : 'gray'
+          color: item.asa > 0.2 ? '#447fdb' : 'gray'
         }
       }
     });
+    const finalMedian = [], finalSnr = [], finalIncludeSnr = [], finalSeq = []
+    let curSeqIndex = 0
+    let i = +(seq[0].value.split('\n')[0]);
+    while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
+      let res_id = +(seq[curSeqIndex].value.split('\n')[0])
+      if (res_id <= i) {
+        finalSeq.push(seq[curSeqIndex])
+        finalMedian.push(median[curSeqIndex])
+        finalSnr.push(snr[curSeqIndex])
+        if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
+        curSeqIndex += 1
+        i = res_id;
+      } else {
+        finalSeq.push({value: '-'})
+        finalMedian.push(0)
+        finalSnr.push(0)
+        if (includeSnr) finalIncludeSnr.push(0)
+      }
+
+      i += config.overlap.amount;
+    }
     return {
+      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/') + 1).split(".")[0],
+      seq: finalSeq,
+      median: finalMedian,
+      snr: finalSnr,
+      includeSnr: includeSnr && finalIncludeSnr
+    }
+  }
+
+  getChartOption() {
+    let {data} = this.props
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
+    }
+    const {chartType} = this.state;
+    if (!data) return {}
+    const options = {
       toolbox: {
         show: true,
         feature: {
           myFull: {
             show: true,
-            title: '全屏查看',
+            title: 'Full Screen',
             icon: 'path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891',
             onclick: () => {
               const element = document.getElementById('vehicleProvince');
@@ -230,7 +283,7 @@ export default class UploadForm extends Component {
         axisLabel: {
           interval: 0,
         },
-        data: seq
+        data: this.handleData().seq
       },
       dataZoom: [{
         type: 'slider',
@@ -239,7 +292,7 @@ export default class UploadForm extends Component {
         left: '9%',
         bottom: -5,
         start: 0,
-        end: 14,
+        end: 10,
       }],
       yAxis: {
         type: 'value'
@@ -248,25 +301,61 @@ export default class UploadForm extends Component {
         trigger: 'axis',
         formatter(params) {
           const item = params[0];
-          return `${chartType}：${item.data.value}<br />
-                ss：${item.data.ss}
+          // ${dataType}：${item.data.value}<br />
+          return `2° structure：${item.data.ss}<br />
+                  relative ASA: ${item.data.asa}<br />
+                  pI: ${item.data.pI}<br />
+                  gravy: ${item.data.gravy}<br />
                `;
         },
       },
-      series: [{
-        data: chartType === 'include' ? includeSnr : (chartType === 'median' ? median : snr),
-        type: 'line'
-      }]
+      legend: {
+        data: []
+      },
+      series: []
     }
+    const fileLength = data[0].data.length
+    if (chartType === 'include') {
+      for (let i = 0; i < fileLength; i++) {
+        if (!this.handleData(i).includeSnr) continue
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).includeSnr,
+          type: 'line'
+        })
+      }
+    } else if (chartType === 'median') {
+      for (let i = 0; i < fileLength; i++) {
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).median,
+          type: 'line'
+        })
+      }
+    } else {
+      for (let i = 0; i < fileLength; i++) {
+        options.legend.data.push(this.handleData(i).name)
+        options.series.push({
+          name: this.handleData(i).name,
+          data: this.handleData(i).snr,
+          type: 'line'
+        })
+      }
+    }
+    return options
   }
 
   isIncludeSRN() {
     let {data} = this.props
     if (!data) return false
-    data = data.peptides;
-    if (data[0].snr) return true
-    if (data[0].data && data[0].data[0].snr !== 'NaN') return true
-    return false
+    if (this.props.multiple === 0) {
+      data = data.peptides
+    } else if (this.props.multiple === 1) {
+      data = data.pepData
+    }
+    return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
   }
 
   render() {
@@ -283,7 +372,6 @@ export default class UploadForm extends Component {
         </div>
       )
     })
-
     return (
       <div>
         <div className="form">
@@ -300,6 +388,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".xlsx/.gpr"
+              //submitted={this.state.submitted}
             />
             <UploadField
               className="pdb-form"
@@ -312,6 +401,7 @@ export default class UploadForm extends Component {
               clearFiles={this.clearFiles}
               refreshPreview={this.refreshFilePreviews}
               name=".pdb"
+              //submitted={this.state.submitted}
             />
           </div>
           <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>
@@ -321,7 +411,7 @@ export default class UploadForm extends Component {
         {this.state.dataLoaded &&
         <div>
           {renderedButtons}<br/>
-          {this.state.excelPreview && this.state.cardTorender}
+          {this.state.cardTorender}
         </div>
         }
 
@@ -330,16 +420,17 @@ export default class UploadForm extends Component {
           <div className={'chart-wrap'} id={'vehicleProvince'} style={{backgroundColor: 'white'}}>
             {!!this.props.data && <><ButtonGroup justified>
               <Button active={chartType === 'median'}
-                      onClick={() => this.setState({chartType: 'median'})}>Median</Button>
+                      onClick={() => this.setState({chartType: 'median'})}>Foreground Median</Button>
               <Button active={chartType === 'snr'}
-                      onClick={() => this.setState({chartType: 'snr'})}>calculated SNR</Button>
+                      onClick={() => this.setState({chartType: 'snr'})}>Calculated SNR</Button>
               {this.isIncludeSRN() && <Button active={chartType === 'include'}
-                                              onClick={() => this.setState({chartType: 'include'})}>Include
+                                              onClick={() => this.setState({chartType: 'include'})}>Included
                 SNR</Button>}
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
-                            option={this.getChartOption()}/>                        
-            <p >  Red Colour: ASA is above 0.2;  Grey Colour: ASA is below 0.2</p>
+                            option={this.getChartOption()}/>
+              <br/>
+              <p> Blue: Exposed; Grey: Buried</p>
             </>}
           </div>
           <div
@@ -354,6 +445,7 @@ export default class UploadForm extends Component {
     )
   }
 }
+
 
 
 

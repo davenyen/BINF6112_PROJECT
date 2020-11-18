@@ -49,7 +49,7 @@ var storage = multer.diskStorage({
 },
 filename: function (req, file, cb) {
   cb(null, file.originalname )
-  fileHandler.push('./public/' + file.originalname);
+  fileHandler.push( './public/' + file.originalname);
 }
 });
 
@@ -58,9 +58,7 @@ var upload = multer({ storage: storage }).array('file')
 app.post('/submit',function(req, res) {
   //console.log(fileHandler);
   upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err)
-        } else if (err) {
+        if (err instanceof multer.MulterError || err) {
             return res.status(500).json(err)
         }
   return res.status(200).send(req.file)
@@ -103,7 +101,7 @@ app.get('/processMult', function(req, res, next) {
     console.log('multiple parse in mult');
     parse.parseMultiple(xlFiles)
           .then(json => map.mapData(json, pdbFile))
-          .then(json => ave.aveData(json.peptides))
+          .then(json => ave.aveData(json))
           .then(json => {
             return res.status(200).json(json);
           });
@@ -130,8 +128,8 @@ app.post('/clear', function(req, res) {
     files.forEach(f => {
       if (f.match(/.gpr$/) || f.match(/.xlsx$/) || f.match(/.pdb$/)) {
         console.log('heaya'+f);
-        fs.unlink('./public/'+f, (err) => {
-          if (err) throw err;
+        fs.unlink('./public/'+f, (error) => {
+          if (error) throw error;
         });
       }
     });
