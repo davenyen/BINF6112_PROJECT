@@ -129,7 +129,7 @@ var start = exports.parse = async function parseData(file_path){
 
     Object.keys(duplicatesort).forEach(key =>{
         let ps = ""; let pi = "";let rm =0;let bm=0; let fm=0; let sr=0; let srfl=0; 
-        let cols = new Array(config.excel["column-regex"].length).fill(0);
+        let cols = new Array(duplicatesort[key][0].columns.length).fill(0);
         duplicatesort[key].forEach(data =>{
             if (config.calculateSNR) {
                 rm += data.rawMean;
@@ -172,6 +172,7 @@ var start = exports.parse = async function parseData(file_path){
 
     })
     //console.log(tripleAveragedData)
+    // tripleAveragedData.forEach(pep => console.log(pep.data[0].columns))
     return tripleAveragedData;
 }
 

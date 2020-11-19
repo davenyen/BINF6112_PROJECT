@@ -34,7 +34,6 @@
 
         "sequence": "ID",
         "name":  "",
-        "foregroundMedian": "F(\\d)* Median - B(\\d)*",
         "snr": "SNR",
         "rowsToSkip" : 11,
         "Optional Params (For User Reference)": "[SNR]",
