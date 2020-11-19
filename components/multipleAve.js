@@ -58,7 +58,7 @@ exports.aveData = async function aveData(our_json) {
         let max_data = NaN; let min_data = NaN; let ss = "";let asa =0;let gravy=0;
         let pI=0;let minlength = 1000000; let src=0; let res_id =0;
 
-        let averages = new Array(epitopeResIdSorted[res]).fill(0);
+        let averages = new Array(epitopeResIdSorted[res][0].data[0].columns.length).fill(0);
         epitopeResIdSorted[res].forEach(resEpitope =>{
             //Below loop should always run once 
             resEpitope.data.forEach(data =>{
@@ -81,7 +81,7 @@ exports.aveData = async function aveData(our_json) {
                 //     if(parseFloat(data.foregroundMedian) > max_fm){  max_fm = parseFloat(data.foregroundMedian)}
                 // }
     
-                if(isNaN(min_data) || parseFloat(data.columns[epitopeDataInd]) > min_data){
+                if(isNaN(min_data) || parseFloat(data.columns[epitopeDataInd]) < min_data){
                     min_data = parseFloat(data.columns[epitopeDataInd]);
                 }
 
@@ -104,14 +104,14 @@ exports.aveData = async function aveData(our_json) {
         })
 
         // for (let c in )
-        rm = rm/epitopeResIdSorted[res].length;
-        bm = bm/epitopeResIdSorted[res].length;
-        fm = fm/epitopeResIdSorted[res].length;
-        src = src/epitopeResIdSorted[res].length;
-        if(srfl!=1){sr = sr/epitopeResIdSorted[res].length;}
+        // rm = rm/epitopeResIdSorted[res].length;
+        // bm = bm/epitopeResIdSorted[res].length;
+        // fm = fm/epitopeResIdSorted[res].length;
+        // src = src/epitopeResIdSorted[res].length;
+        // if(srfl!=1){sr = sr/epitopeResIdSorted[res].length;}
 
         for (let c in averages) {
-            averages[c] = (averages[c]/totalFiles).toFixed(dps);
+            averages[c] = (averages[c]/epitopeResIdSorted[res].length).toFixed(dps);
         }
 
         let percent = ((epitopeResIdSorted[res].length)/totalFiles)*100
@@ -134,7 +134,7 @@ exports.aveData = async function aveData(our_json) {
             percentFiles: Math.round(percent)
         })
     })
-    console.log(epitopeData)
+    //console.log(epitopeData)
     returner.pepData = peptidedata
     returner.epiData = epitopeData
     return returner;
