@@ -1,13 +1,17 @@
 
 .viewport {
+    position: sticky;
     display: flex;
     justify-content: center;
     align-content: center;
     height: 100%;
     width: 100%;
+    overflow-y: scroll;
 }
 
 .protein-image {
+    position: sticky;
     height: 450px;
     width: auto;
+    overflow-y: scroll;
 }

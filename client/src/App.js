@@ -42,12 +42,21 @@ export default function App () {
       );
     }else if (processedData && processedData.mode === 1){
       return (<div>
-              <MultTable data={processedData} />
+              <MultTable 
+              data={processedData} 
+              setSelectedRows={setSelectedRows}
+              selectedRows={selectedRows}
+              />
               <TableFooter />
               </div>)
     }else{
       return <div></div>
     }
+  }
+
+  // Empties the row set
+  function handleClick() {
+    setSelectedRows([])
   }
 
   return (
@@ -61,15 +70,17 @@ export default function App () {
             multiple={0} 
             handleSubmit={handleSubmit} 
             data={processedData}
-            pdbSelections={selectedRows}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
             />
           </div>
-          <div label="Multiple Sample Analysis">
+          <div label="Multiple Sample Analysis" onClick={handleClick}>
             <UploadForm 
             multiple={1} 
             handleSubmit={handleSubmit} 
             data={processedData}
-            pdbSelections={selectedRows}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
             />
           </div>
         </Tabs>

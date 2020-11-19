@@ -3,6 +3,8 @@ import proteinBg from './pdb_bg.png'
 import { NGL } from 'react-ngl'
 import './css/ProteinStructure.css'
 
+// No method of centering on a selected molecule (feature doesn't exist in ngl)
+
 export default function ProteinStructure(props) {
     
   const [ stage, setStage ] = useState(null)
@@ -21,6 +23,7 @@ export default function ProteinStructure(props) {
       setStage(new NGL.Stage("viewport", {backgroundColor: "black"}))
     } else if (stage || props.selectedRows.length) {
       stage.removeAllComponents();
+      //props.setSelectedRows([]); // breaks if uncommented
     }
 
     setPDB(pdbTmp)
@@ -34,8 +37,13 @@ export default function ProteinStructure(props) {
             var selectedResidues = ["red"];
             var resString = "";
             for (var i = 0; i < props.selectedRows.length; i++) {
-              if (i + 1 == props.selectedRows.length) resString += props.selectedRows[i].res_id.toString();
-              else resString += props.selectedRows[i].res_id.toString() + " or ";
+              if (i + 1 === props.selectedRows.length) {
+                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString();
+                else resString += props.selectedRows[i].toString();
+              } else {
+                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString() + " or ";
+                else resString += props.selectedRows[i].toString() + " or ";
+              }
             }
 
             selectedResidues.push(resString);

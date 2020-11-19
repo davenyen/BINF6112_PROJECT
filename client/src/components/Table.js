@@ -124,30 +124,30 @@ export default class Table extends React.Component {
 
     render() {
 
-      const selectRow = {
-        mode: 'checkbox',
-        clickToSelect: true,
-        bgColor: '#00BFFF',
-        hideSelectColumn: true
-      };
-      
-      const rowEvents = {
-        onClick: (e, row, rowIndex) => {
+        const selectRow = {
+          mode: 'checkbox',
+          clickToSelect: true,
+          bgColor: '#00BFFF',
+          hideSelectColumn: true
+        };
+        
+        const rowEvents = {
+          onClick: (e, row, rowIndex) => {
 
-          var tmpArr = [...this.props.selectedRows];
+            var tmpArr = [...this.props.selectedRows];
 
-          // Removes from array
-          if (this.props.selectedRows.includes(this.props.data[rowIndex])) {
-            var delIndex = tmpArr.indexOf(this.props.data[rowIndex]);
-            tmpArr.splice(delIndex, 1);
-          } else {
-            tmpArr.push(this.props.data[rowIndex]);
+            // Removes from array
+            if (this.props.selectedRows.includes(this.props.data[rowIndex])) {
+              var delIndex = tmpArr.indexOf(this.props.data[rowIndex]);
+              tmpArr.splice(delIndex, 1);
+            } else {
+              tmpArr.push(this.props.data[rowIndex]);
+            }
+
+            this.props.setSelectedRows(tmpArr);
+
           }
-
-          this.props.setSelectedRows(tmpArr);
-
         }
-      }
 
         let columns = columns_base.slice();
         if (this.props.seqWidth) columns[1].headerStyle.width = this.props.seqWidth+"rem";

@@ -14,8 +14,6 @@ export default class EpitopeTable extends React.Component {
                     seqWidth={16}
                     setSelectedRows={this.props.setSelectedRows}
                     selectedRows={this.props.selectedRows}
-                    stage={this.props.stage}
-                    setStage={this.props.setStage}
                 />
             </div>);
         }
