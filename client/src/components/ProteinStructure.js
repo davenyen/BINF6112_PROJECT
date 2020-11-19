@@ -88,7 +88,6 @@ export default function ProteinStructure(props) {
         alt="proteinBg" 
         style={{display: pdb ? "none" : "block"}}
         />
-        {props.selectedRows.length > 0 ? pdbFunction() : setTmp(tmp+1)}
       </div>
     </div>
   )

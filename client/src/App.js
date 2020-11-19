@@ -60,9 +60,6 @@ export default function App () {
   }
 
   const renderRows = () => {
-    if (selectedRows.length > 0) {
-      setTmpX(tmpX + 1);
-    }
     return (
       <div>
         {selectedRows}

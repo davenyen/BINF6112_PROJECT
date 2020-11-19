@@ -134,6 +134,10 @@ export default class Table extends React.Component {
         bgColor: '#00BFFF',
         hideSelectColumn: true
       };
+
+      const updateRows = (tmpArr) => {
+        this.props.setSelectedRows(tmpArr);
+      }
       
       const rowEvents = {
         onClick: (e, row, rowIndex) => {
@@ -148,7 +152,7 @@ export default class Table extends React.Component {
             tmpArr.push(this.props.data[rowIndex]);
           }
 
-          this.props.setSelectedRows(tmpArr);
+          updateRows(tmpArr);
           //this.props.setStage(new Stage("viewport", {backgroundColor: "black"}));
 
           console.log(this.props.selectedRows);
