@@ -50,7 +50,7 @@ var start = exports.parse = async function parseData(file_path){
                 backgroundMean:undefined,
                 // foregroundMedian:undefined,
                 // snr: NaN
-                columns: [],
+                columns: new Array(config.excel["column-display-names"].length),
                 columnDisplayNames: config.excel["column-display-names"]
             })
         }
@@ -63,43 +63,36 @@ var start = exports.parse = async function parseData(file_path){
                             MicroArrData[iter].peptideSeq = rows[row][j]
                             iter++;
                         }
-                        continue;
-                    }
-                    
-                    if(String(rows[i][j]).match(new RegExp(config.excel.name,'ig'))){
+                    }else if(String(rows[i][j]).match(new RegExp(config.excel.name,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].proteinId = rows[row][j]
                             iter++;
                         }
-                        continue;
-                    }
-                    
-                    if (config.calculateSNR) {
-                        if(String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.rawMean,'ig'))){
-                            let iter=0;
-                            for(let row=Number(i)+1;row<rows.length; row++){
-                                MicroArrData[iter].rawMean = rows[row][j]
-                                iter++;
-                            }
-                        }else if(String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.backgroundMean,'ig'))){
-                            let iter=0;
-                            for(let row=Number(i)+1;row<rows.length; row++){
-                                MicroArrData[iter].backgroundMean = rows[row][j]
-                                iter++;
-                            }
-                        }
-                        continue;
-                    }
-
-                    for (let reg of config.excel["column-regex"]) {
-                        if (String(rows[i][j]).match(new RegExp(reg,'ig')))
+                    }else if(config.calculateSNR && String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.rawMean,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
-                            MicroArrData[iter].columns.push(rows[row[j]]);
+                            MicroArrData[iter].rawMean = rows[row][j]
                             iter++;
                         }
-                        break;
+                    } else if(config.calculateSNR && String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.backgroundMean,'ig'))){
+                        let iter=0;
+                        for(let row=Number(i)+1;row<rows.length; row++){
+                            MicroArrData[iter].backgroundMean = rows[row][j]
+                            iter++;
+                        }
+                    } else {
+                        for (let c in config.excel["column-regex"]) {
+                            if (String(rows[i][j]).match(new RegExp(config.excel["column-regex"][c],'ig'))) {
+                                let iter=0;
+                                for(let row=Number(i)+1;row<rows.length; row++){
+                                    MicroArrData[iter].columns[c] = rows[row][j];
+                                    iter++;
+                                }
+                                break;
+                            }
+                        }
+
                     }
                     
                     // if(String(rows[i][j]).match(new RegExp(config.excel.foregroundMedian,'ig'))){
@@ -150,15 +143,15 @@ var start = exports.parse = async function parseData(file_path){
             ps = data.peptideSeq;
             pi = data.proteinId;
 
-            if(data.snr !== undefined && (!isNaN(data.snr) && (data.snr != null))){
-                if(srfl == 0){sr += data.snr}
-            }else{sr=NaN;srfl=1;}
+            // if(data.snr !== undefined && (!isNaN(data.snr) && (data.snr != null))){
+            //     if(srfl == 0){sr += data.snr}
+            // }else{sr=NaN;srfl=1;}
 
         })
         rm = rm/duplicatesort[key].length;
         bm = bm/duplicatesort[key].length;
-        fm = fm/duplicatesort[key].length;
-        if(srfl!=1){sr = sr/duplicatesort[key].length;}
+        // fm = fm/duplicatesort[key].length;
+        // if(srfl!=1){sr = sr/duplicatesort[key].length;}
         let averaged_cols = [];
         for (let c in cols) {
             averaged_cols.push(cols[c]/duplicatesort[key].length);
@@ -174,9 +167,8 @@ var start = exports.parse = async function parseData(file_path){
                 // snr:sr 
                 columns: averaged_cols
             } ],
-            columnDisplayNames: data.columnDisplayNames
+            columnDisplayNames: duplicatesort[key][0].columnDisplayNames
         })
-
 
     })
     //console.log(tripleAveragedData)

@@ -63,6 +63,9 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
             peptide.gravy = chemprops_json.gravy[start].toFixed(dps);
 
             let peptideSmoothed = smoothData(peptide, ma_json_raw);
+            if (config.calculateSNR) {
+                peptideSmoothed.columnDisplayNames.push("Calculated SNR");
+            }
 
 
             mappedData.push(peptideSmoothed);
@@ -83,7 +86,8 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
 function getEpitopes(peptides, dssp_json, full_sequence) {
     peptides.sort((a, b) => a.res_id - b.res_id);
 
-    let fmThreshold = parseFloat(config.epitopes.foregroundMedianThreshold);
+    let dataInd = config.epitopes.dataTypeColumnIndex;
+    let dataThreshold = parseFloat(config.epitopes.threshold);
     let incThreshold = parseFloat(config.epitopes.relativeIncludeThreshold);
 
     let epitope_json = {};
@@ -98,24 +102,24 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
                 peptides[ind + 1].res_id - p.res_id === config.overlap.amount &&
     
                 // local maxima with foreground median
-                parseFloat(p.data[d].foregroundMedian) > parseFloat(peptides[ind - 1].data[d].foregroundMedian) &&
-                parseFloat(p.data[d].foregroundMedian) > parseFloat(peptides[ind + 1].data[d].foregroundMedian) &&
+                parseFloat(p.data[d].columns[dataInd]) > parseFloat(peptides[ind - 1].data[d].columns[dataInd]) &&
+                parseFloat(p.data[d].columns[dataInd]) > parseFloat(peptides[ind + 1].data[d].columns[dataInd]) &&
     
                 // foreground median above configured threshold
-                parseFloat(p.data[d].foregroundMedian) >  fmThreshold)) return null;
+                parseFloat(p.data[d].columns[dataInd]) >  dataThreshold)) return null;
 
                 
             let seq = p.peptideSeq;
             let pos = p.res_id;
 
-            if (parseFloat(peptides[ind - 1].data[d].foregroundMedian) > fmThreshold
-                && parseFloat(peptides[ind - 1].data[d].foregroundMedian) > incThreshold * p.data[d].foregroundMedian) {
+            if (parseFloat(peptides[ind - 1].data[d].columns[dataInd]) > dataThreshold
+                && parseFloat(peptides[ind - 1].data[d].columns[dataInd]) > incThreshold * p.data[d].columns[dataInd]) {
                 seq = peptides[ind-1].peptideSeq.slice(0, config.overlap.amount) + seq;
                 // pos = peptides[ind-1].res_id;
             }
 
-            if (parseFloat(peptides[ind + 1].data[d].foregroundMedian) > fmThreshold
-                && parseFloat(peptides[ind + 1].data[d].foregroundMedian) > incThreshold * p.data[d].foregroundMedian) {
+            if (parseFloat(peptides[ind + 1].data[d].columns[dataInd]) > dataThreshold
+                && parseFloat(peptides[ind + 1].data[d].columns[dataInd]) > incThreshold * p.data[d].columns[dataInd]) {
                 seq = seq + peptides[ind+1].peptideSeq.slice(-config.overlap.amount);
             }
 
@@ -137,6 +141,7 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             e.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
             e.data = [];
             e.data.push(p.data[d]);
+            e.columnDisplayNames = p.columnDisplayNames;
             
             return e;
         });

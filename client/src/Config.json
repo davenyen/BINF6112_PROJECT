@@ -67,7 +67,8 @@
     },
 
     "epitopes": {
-        "foregroundMedianThreshold": 1,
+        "dataTypeColumnIndex": 0,
+        "threshold": 1,
         "relativeIncludeThreshold": 0.7
     },
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-import _ from 'lodash';
+// import _ from 'lodash';
 import './css/Table.css';
 
 let config = require('../Config.json');
@@ -153,15 +153,15 @@ export default class Table extends React.Component {
               let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
               let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
               for(let r in ratios) {
-                  
+                  let col_name = this.props.data[0].columnDisplayNames[r];
                   columns.push({
-                      dataField: 'ratios.'+r+'[0]',
-                      text: _.startCase(r) + ' Ratio '+fileName0+" : "+fileName1,
+                      dataField: 'ratios['+r+'][0]',
+                      text: col_name + ' Ratio '+fileName0+" : "+fileName1,
                       sort: true,
                       sortFunc: sortNumerical
                     },{
-                      dataField: 'ratios.'+r+'[1]',
-                      text: _.startCase(r) + ' Ratio '+fileName1+" : "+fileName0,
+                      dataField: 'ratios['+r+'][1]',
+                      text: col_name + ' Ratio '+fileName1+" : "+fileName0,
                       hidden: true,
                       sort: true,
                       sortFunc: sortNumerical
@@ -172,56 +172,71 @@ export default class Table extends React.Component {
               // file data, default state is hidden in table
               for (let i in file_data) {
                   let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
-                  columns.push({
-                          dataField: 'data['+i+'].foregroundMedian',
-                          text: fileName+'Foreground Median',
-                          hidden: true,
-                          sort: true,
-                          sortFunc: sortNumerical
-                        },{
-                          dataField: 'data['+i+'].SNR_Calculated',
-                          text: fileName+'SNR Calculated',
-                          hidden: true,
-                          sort: true,
-                          sortFunc: sortNumerical
-                        }
-                  )
-  
-  
-                  if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                  for (let c in file_data[i].columns) {
+                    let col_name = this.props.data[0].columnDisplayNames[c];
                     columns.push({
-                      dataField: 'data['+i+'].snr',
-                      text: fileName+'SNR',
+                      dataField: 'data['+i+'].columns['+c+']',
+                      text: fileName+col_name,
                       hidden: true,
                       sort: true,
                       sortFunc: sortNumerical
-                    });
+                    }
+                    // ,{
+                    //   dataField: 'data['+i+'].SNR_Calculated',
+                    //   text: fileName+'SNR Calculated',
+                    //   hidden: true,
+                    //   sort: true,
+                    //   sortFunc: sortNumerical
+                    // }
+                    )
+
                   }
+  
+                  // if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                  //   columns.push({
+                  //     dataField: 'data['+i+'].snr',
+                  //     text: fileName+'SNR',
+                  //     hidden: true,
+                  //     sort: true,
+                  //     sortFunc: sortNumerical
+                  //   });
+                  // }
               }
   
           } else {
               for (let i in file_data) {
                   let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
-                  columns.push({
-                          dataField: 'data['+i+'].foregroundMedian',
-                          text: fileName+'Foreground Median',
-                          sort: true,
-                          sortFunc: sortNumerical
-                        },{
-                          dataField: 'data['+i+'].SNR_Calculated',
-                          text: fileName+'SNR Calculated',
-                          sort: true,
-                          sortFunc: sortNumerical
-                        }
-                  )
-                  if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+
+                  for (let c in file_data[i].columns) {
+                    let col_name = this.props.data[0].columnDisplayNames[c];
                     columns.push({
-                      dataField: 'data['+i+'].snr',
-                      text: fileName+'SNR',
+                      dataField: 'data['+i+'].columns['+c+']',
+                      text: fileName+col_name,
                       sort: true,
                       sortFunc: sortNumerical
-                    });
+                    })
                   }
+
+                  // columns.push({
+                  //         dataField: 'data['+i+'].foregroundMedian',
+                  //         text: fileName+'Foreground Median',
+                  //         sort: true,
+                  //         sortFunc: sortNumerical
+                  //       },{
+                  //         dataField: 'data['+i+'].SNR_Calculated',
+                  //         text: fileName+'SNR Calculated',
+                  //         sort: true,
+                  //         sortFunc: sortNumerical
+                  //       }
+                  // )
+                  // if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
+                  //   columns.push({
+                  //     dataField: 'data['+i+'].snr',
+                  //     text: fileName+'SNR',
+                  //     sort: true,
+                  //     sortFunc: sortNumerical
+                  //   });
+                  // }
               }
           }
   

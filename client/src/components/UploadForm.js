@@ -29,7 +29,8 @@ export default class UploadForm extends Component {
       chosenFileName: "",
       pdbFile: null,
       chartVisible: false,
-      chartType: 'median',//median|snr|include
+      chartType: '0'
+      // chartType: 'median',//median|snr|include
       //submitted:false
     }
     this.myChart = React.createRef()
@@ -170,39 +171,53 @@ export default class UploadForm extends Component {
       data = data.pepData
     }
 
-    const median = data.map(item => {
-      return {
-        value: item.data[num].foregroundMedian,
-        ss: item.ss,
-        pI: item.pI,
-        gravy: item.gravy,
-        asa: item.asa,
-        pepSeq: item.peptideSeq
-      }
-    });
-    const snr = data.map(item => {
-      return {
-        value: item.data[num].SNR_Calculated,
-        ss: item.ss,
-        pI: item.pI,
-        gravy: item.gravy,
-        asa: item.asa,
-        pepSeq: item.peptideSeq
-      }
-    });
-    let includeSnr
-    if (data[0].data[num].snr !== 'NaN') {
-      includeSnr = data.map(item => {
+    let columns = [];
+    for (let c in data[num].data[0].columns) {
+      columns.push(data.map(item => {
         return {
-          value: item.data[num].snr.replace(' ', ''),
+          value: item.data[num].columns[c],
           ss: item.ss,
           pI: item.pI,
           gravy: item.gravy,
           asa: item.asa,
           pepSeq: item.peptideSeq
         }
-      });
+      }))
     }
+
+    // const median = data.map(item => {
+    //   return {
+    //     value: item.data[num].foregroundMedian,
+    //     ss: item.ss,
+    //     pI: item.pI,
+    //     gravy: item.gravy,
+    //     asa: item.asa,
+    //     pepSeq: item.peptideSeq
+    //   }
+    // });
+    // const snr = data.map(item => {
+    //   return {
+    //     value: item.data[num].SNR_Calculated,
+    //     ss: item.ss,
+    //     pI: item.pI,
+    //     gravy: item.gravy,
+    //     asa: item.asa,
+    //     pepSeq: item.peptideSeq
+    //   }
+    // });
+    // let includeSnr
+    // if (data[0].data[num].snr !== 'NaN') {
+    //   includeSnr = data.map(item => {
+    //     return {
+    //       value: item.data[num].snr.replace(' ', ''),
+    //       ss: item.ss,
+    //       pI: item.pI,
+    //       gravy: item.gravy,
+    //       asa: item.asa,
+    //       pepSeq: item.peptideSeq
+    //     }
+    //   });
+    // }
     const seq = data.map(item => {
       return {
         value: item.res_id + '\n' + item.peptideSeq.substr(0, config.overlap.amount),
@@ -211,23 +226,35 @@ export default class UploadForm extends Component {
         }
       }
     });
-    const finalMedian = [], finalSnr = [], finalIncludeSnr = [], finalSeq = []
+    // const finalMedian = [], finalSnr = [], finalIncludeSnr = [], 
+    let finalSeq = []
+    // let finalColumns = new Array(columns.length).fill([]);
+    let finalColumns = [];
+    columns.forEach(() => finalColumns.push([]));
     let curSeqIndex = 0
     let i = +(seq[0].value.split('\n')[0]);
     while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
       let res_id = +(seq[curSeqIndex].value.split('\n')[0])
       if (res_id <= i) {
+        for (let c in columns) {
+          finalColumns[c].push(columns[c][curSeqIndex]);
+        }
+        // console.log(finalColumns[0]);
+        // console.log(finalColumns[1]);
         finalSeq.push(seq[curSeqIndex])
-        finalMedian.push(median[curSeqIndex])
-        finalSnr.push(snr[curSeqIndex])
-        if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
+        // finalMedian.push(median[curSeqIndex])
+        // finalSnr.push(snr[curSeqIndex])
+        // if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
         curSeqIndex += 1
         i = res_id;
       } else {
         finalSeq.push({value: '-'})
-        finalMedian.push(0)
-        finalSnr.push(0)
-        if (includeSnr) finalIncludeSnr.push(0)
+        for (let c in columns) {
+          finalColumns[c].push(0);
+        }
+        // finalMedian.push(0)
+        // finalSnr.push(0)
+        // if (includeSnr) finalIncludeSnr.push(0)
       }
 
       i += config.overlap.amount;
@@ -235,9 +262,10 @@ export default class UploadForm extends Component {
     return {
       name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/') + 1).split(".")[0],
       seq: finalSeq,
-      median: finalMedian,
-      snr: finalSnr,
-      includeSnr: includeSnr && finalIncludeSnr
+      // median: finalMedian,
+      // snr: finalSnr,
+      // includeSnr: includeSnr && finalIncludeSnr
+      columns: finalColumns
     }
   }
 
@@ -314,52 +342,64 @@ export default class UploadForm extends Component {
       },
       series: []
     }
+
     const fileLength = data[0].data.length
-    if (chartType === 'include') {
-      for (let i = 0; i < fileLength; i++) {
-        if (!this.handleData(i).includeSnr) continue
-        options.legend.data.push(this.handleData(i).name)
-        options.series.push({
-          name: this.handleData(i).name,
-          data: this.handleData(i).includeSnr,
-          type: 'line'
-        })
-      }
-    } else if (chartType === 'median') {
-      for (let i = 0; i < fileLength; i++) {
-        options.legend.data.push(this.handleData(i).name)
-        options.series.push({
-          name: this.handleData(i).name,
-          data: this.handleData(i).median,
-          type: 'line'
-        })
-      }
-    } else {
-      for (let i = 0; i < fileLength; i++) {
-        options.legend.data.push(this.handleData(i).name)
-        options.series.push({
-          name: this.handleData(i).name,
-          data: this.handleData(i).snr,
-          type: 'line'
-        })
-      }
+    for (let i = 0; i < fileLength; i++) {
+      let d = this.handleData(i);
+      console.log(d);
+      options.legend.data.push(d.name)
+      options.series.push({
+        name: d.name,
+        data: d.columns[chartType],
+        type: 'line'
+      })
     }
+
+    // if (chartType === 'include') {
+    //   for (let i = 0; i < fileLength; i++) {
+    //     if (!this.handleData(i).includeSnr) continue
+    //     options.legend.data.push(this.handleData(i).name)
+    //     options.series.push({
+    //       name: this.handleData(i).name,
+    //       data: this.handleData(i).includeSnr,
+    //       type: 'line'
+    //     })
+    //   }
+    // } else if (chartType === 'median') {
+    //   for (let i = 0; i < fileLength; i++) {
+    //     options.legend.data.push(this.handleData(i).name)
+    //     options.series.push({
+    //       name: this.handleData(i).name,
+    //       data: this.handleData(i).median,
+    //       type: 'line'
+    //     })
+    //   }
+    // } else {
+    //   for (let i = 0; i < fileLength; i++) {
+    //     options.legend.data.push(this.handleData(i).name)
+    //     options.series.push({
+    //       name: this.handleData(i).name,
+    //       data: this.handleData(i).snr,
+    //       type: 'line'
+    //     })
+    //   }
+    // }
     return options
   }
 
-  isIncludeSRN() {
-    let {data} = this.props
-    if (!data) return false
-    if (this.props.multiple === 0) {
-      data = data.peptides
-    } else if (this.props.multiple === 1) {
-      data = data.pepData
-    }
-    return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
-  }
+  // isIncludeSRN() {
+  //   let {data} = this.props
+  //   if (!data) return false
+  //   if (this.props.multiple === 0) {
+  //     data = data.peptides
+  //   } else if (this.props.multiple === 1) {
+  //     data = data.pepData
+  //   }
+  //   return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
+  // }
 
   render() {
-    const {chartType} = this.state;
+    let {chartType} = this.state;
     const renderedButtons = this.state.rowsncols.map(rowncol => {
       let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
       return (
@@ -372,6 +412,22 @@ export default class UploadForm extends Component {
         </div>
       )
     })
+
+    let chartButtons = [];
+    if (this.props.data) {
+      let {data} = this.props
+      if (this.props.multiple === 0) {
+        data = data.peptides
+      } else if (this.props.multiple === 1) {
+        data = data.pepData
+      }
+  
+      for (let c in data[0].columnDisplayNames) {
+        chartButtons.push(<Button active={chartType === c}
+        onClick={() => this.setState({chartType: c})}>{data[0].columnDisplayNames[c]}</Button>)
+      }
+    }
+
     return (
       <div>
         <div className="form">
@@ -380,7 +436,7 @@ export default class UploadForm extends Component {
               className="xlsx/gpr-form"
               fileTypeOne="xlsx"
               fileTypeTwo="gpr"
-              warningOne="Please select a .xlsx/.gpr file only!"
+              warningOne="Please select .xlsx/.gpr files only!"
               warningTwo="Maximum of 2 microarray data files allowed!"
               multipleFiles={this.props.multiple}
               renderFile={this.renderFile}
@@ -418,14 +474,15 @@ export default class UploadForm extends Component {
         {this.state.pdbFile &&
         <div className='visualisation-wrap' style={{display: "flex"}}>
           <div className={'chart-wrap'} id={'vehicleProvince'} style={{backgroundColor: 'white'}}>
-            {!!this.props.data && <><ButtonGroup justified>
-              <Button active={chartType === 'median'}
+            {!!this.props.data && <><ButtonGroup justified> {chartButtons}
+              {/* <Button active={chartType === 'median'}
                       onClick={() => this.setState({chartType: 'median'})}>Foreground Median</Button>
               <Button active={chartType === 'snr'}
                       onClick={() => this.setState({chartType: 'snr'})}>Calculated SNR</Button>
               {this.isIncludeSRN() && <Button active={chartType === 'include'}
                                               onClick={() => this.setState({chartType: 'include'})}>Included
-                SNR</Button>}
+                SNR</Button>
+              } */}
             </ButtonGroup>
               <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
                             option={this.getChartOption()}/>
