@@ -1,36 +1,73 @@
 import React, { useState, useEffect } from 'react'
 import proteinBg from './pdb_bg.png'
-import { Stage } from 'ngl'
+import { NGL } from 'react-ngl'
 import './css/ProteinStructure.css'
+
+// No method of centering on a selected molecule (feature doesn't exist in ngl)
 
 export default function ProteinStructure(props) {
     
   const [ stage, setStage ] = useState(null)
   const [ pdb, setPDB ] = useState(null)
 
-  // lifecycle mounts protein structure
-  useEffect( () => {
+  // On update, show changes to pdb model
+  useEffect(() => {
     pdbFunction()
-  })
+  });
 
   // sets state of stage and pdb for visualisation
   const pdbFunction = () => {
-    var pdb = props.pdbFile
+    var pdbTmp = props.pdbFile
 
     if (!stage) {
-      setStage(new Stage("viewport", {backgroundColor: "black"}))
-    } else stage.removeAllComponents();
+      setStage(new NGL.Stage("viewport", {backgroundColor: "black"}))
+    } else if (stage || props.selectedRows.length) {
+      stage.removeAllComponents();
+      //props.setSelectedRows([]); // breaks if uncommented
+    }
 
-    setPDB(pdb)
+    setPDB(pdbTmp)
     
     if (stage) {
-      setTimeout( () =>
-        stage.loadFile( pdb, { ext: "pdb" } ).then( function(component){
-          component.addRepresentation("ribbon");
-          component.autoView(2500);
-        })
+        
+        // loop through selectedRows and append to string residue ids
+      setTimeout( () => {
+
+        console.log(props.selectedRows);
+
+          if (props.selectedRows.length > 0) {
+            var selectedResidues = ["red"];
+            var resString = "";
+            for (var i = 0; i < props.selectedRows.length; i++) {
+              if (i + 1 === props.selectedRows.length) {
+                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString();
+                else resString += props.selectedRows[i].toString();
+              } else {
+                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString() + " or ";
+                else resString += props.selectedRows[i].toString() + " or ";
+              }
+            }
+
+            selectedResidues.push(resString);
+
+            var schemeID = NGL.ColormakerRegistry.addSelectionScheme([
+              selectedResidues,
+              ["white", "*"]
+              ], "colorscheme pdb");
+          
+            stage.loadFile( pdbTmp, { ext: "pdb" } ).then( function(component){
+              component.addRepresentation("ribbon", {color: schemeID}) ;
+              component.autoView(2500);
+            })
+          } else {
+            stage.loadFile( pdbTmp, { ext: "pdb" } ).then( function(component){
+              component.addRepresentation("ribbon", { color: "white" });
+              component.autoView(2500);
+            })
+          } 
+
+        }
       )
-      //console.log(stage.getParameters())
     }
   }
 

@@ -81,10 +81,16 @@ export default class UploadForm extends Component {
   addFile = (fileObj) => {
     //this.setState({submitted:false})
     //console.log(fileObj.name);
-    this.setState(prevState => ({
-      fileObjects: [...prevState.fileObjects, fileObj],
-      pdbFile: fileObj
-    }));
+    if (fileObj.type === "") {
+      this.setState(prevState => ({
+        fileObjects: [...prevState.fileObjects, fileObj],
+        pdbFile: fileObj
+      }));
+    } else {
+      this.setState(prevState => ({
+        fileObjects: [...prevState.fileObjects, fileObj],
+      }));
+    }
   }
 
   clearFiles = (fileType1, fileType2) => {
@@ -346,7 +352,7 @@ export default class UploadForm extends Component {
     const fileLength = data[0].data.length
     for (let i = 0; i < fileLength; i++) {
       let d = this.handleData(i);
-      console.log(d);
+      //console.log(d);
       options.legend.data.push(d.name)
       options.series.push({
         name: d.name,
@@ -398,8 +404,28 @@ export default class UploadForm extends Component {
   //   return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
   // }
 
+  // set state
+  onChartClick = (...e) => {
+    var tmpArr = [...this.props.selectedRows];
+
+    var tmpStr = e[0].name.toString();
+    var fields = tmpStr.split('\n');
+
+    if (this.props.selectedRows.includes(fields[0])) {
+      var delIndex = tmpArr.indexOf(fields[0]);
+      tmpArr.splice(delIndex, 1);
+    } else {
+      tmpArr.push(fields[0]);
+    }
+
+    this.props.setSelectedRows(tmpArr);
+  }
+
   render() {
-    let {chartType} = this.state;
+    let onEvents = {
+      'click': this.onChartClick
+    }
+    const {chartType} = this.state;
     const renderedButtons = this.state.rowsncols.map(rowncol => {
       let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
       return (
@@ -484,8 +510,14 @@ export default class UploadForm extends Component {
                 SNR</Button>
               } */}
             </ButtonGroup>
-              <ReactEcharts style={{height: '80%', minHeight: 320}} ref={this.myChart} echarts={echarts} notMerge={true}
-                            option={this.getChartOption()}/>
+              <ReactEcharts 
+                style={{height: '80%', minHeight: 320}} 
+                ref={this.myChart} 
+                echarts={echarts} 
+                notMerge={true}
+                option={this.getChartOption()}
+                onEvents={onEvents}
+              />
               <br/>
               <p> Blue: Exposed; Grey: Buried</p>
             </>}
@@ -494,7 +526,11 @@ export default class UploadForm extends Component {
             onMouseEnter={this.changeScroll}
             onMouseLeave={this.changeScroll}
             className={'chart-wrap'}>
-            <ProteinStructure pdbFile={this.state.pdbFile}/>
+            <ProteinStructure 
+            pdbFile={this.state.pdbFile}
+            selectedRows={this.props.selectedRows}
+            setSelectedRows={this.props.setSelectedRows}
+            />
           </div>
         </div>
         }

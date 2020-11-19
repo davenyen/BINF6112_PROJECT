@@ -58,9 +58,7 @@ var upload = multer({ storage: storage }).array('file')
 app.post('/submit',function(req, res) {
   //console.log(fileHandler);
   upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err)
-        } else if (err) {
+        if (err instanceof multer.MulterError || err) {
             return res.status(500).json(err)
         }
   return res.status(200).send(req.file)
@@ -130,8 +128,8 @@ app.post('/clear', function(req, res) {
     files.forEach(f => {
       if (f.match(/.gpr$/) || f.match(/.xlsx$/) || f.match(/.pdb$/)) {
         console.log('heaya'+f);
-        fs.unlink('./public/'+f, (err) => {
-          if (err) throw err;
+        fs.unlink('./public/'+f, (error) => {
+          if (error) throw error;
         });
       }
     });

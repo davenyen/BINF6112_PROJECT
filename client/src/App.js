@@ -15,28 +15,48 @@ import EpitopeTable from './components/EpitopeTable';
 export default function App () {
 
   const [ processedData, setProcessedData ]  = useState(null);
+  const [ selectedRows, setSelectedRows ]  = useState([]);
    
   const handleSubmit = (json) => {
     setProcessedData(json);
   }
 
-  const TableMode = () => {
+  const TableMode = (selected) => {
     if(processedData && processedData.mode === 0) {
       return (
       <div>
-        <EpitopeTable data={processedData.epitopesByFile} />
-        <Table data={processedData.peptides} caption="Peptides" seqWidth={12}/>
+        <EpitopeTable 
+          data={processedData.epitopesByFile} 
+          setSelectedRows={setSelectedRows}
+          selectedRows={selectedRows}
+        />
+        <Table 
+          data={processedData.peptides} 
+          caption="Peptides" 
+          seqWidth={12}
+          setSelectedRows={setSelectedRows}
+          selectedRows={selectedRows}
+        />
         <TableFooter />
       </div>
       );
     }else if (processedData && processedData.mode === 1){
       return (<div>
-              <MultTable data={processedData} />
+              <MultTable 
+              data={processedData} 
+              setSelectedRows={setSelectedRows}
+              selectedRows={selectedRows}
+              />
               <TableFooter />
               </div>)
     }else{
       return <div></div>
     }
+  }
+
+  // Empties the row set
+  function handleClick() {
+    setSelectedRows([])
   }
 
   return (
@@ -46,10 +66,22 @@ export default function App () {
         <div className="analysis-tabs">
         <Tabs refreshPage={handleSubmit}>
           <div label="Single Sample">
-            <UploadForm multiple={0} handleSubmit={handleSubmit} data={processedData}/>
+            <UploadForm 
+            multiple={0} 
+            handleSubmit={handleSubmit} 
+            data={processedData}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            />
           </div>
-          <div label="Multiple Sample Analysis">
-            <UploadForm multiple={1} handleSubmit={handleSubmit} data={processedData}/>
+          <div label="Multiple Sample Analysis" onClick={handleClick}>
+            <UploadForm 
+            multiple={1} 
+            handleSubmit={handleSubmit} 
+            data={processedData}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            />
           </div>
         </Tabs>
         </div>

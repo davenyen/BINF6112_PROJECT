@@ -196,6 +196,31 @@ let epitope_columns_base = [{
 
 export default class MultTable extends React.Component {
     render() {
+
+        const selectRow = {
+          mode: 'checkbox',
+          clickToSelect: true,
+          bgColor: '#00BFFF',
+          hideSelectColumn: true
+        };
+        
+        const rowEvents = {
+          onClick: (e, row, rowIndex) => {
+
+            var tmpArr = [...this.props.selectedRows];
+
+            // Removes from array
+            if (this.props.selectedRows.includes(row)) {
+              var delIndex = tmpArr.indexOf(row);
+              tmpArr.splice(delIndex, 1);
+            } else {
+              tmpArr.push(row);
+            }
+
+            this.props.setSelectedRows(tmpArr);
+          }
+        }
+
         let columns = columns_base.slice();
         let epitopeCols = epitope_columns_base.slice();
         if (this.props.data.pepData.length > 0) {
@@ -281,7 +306,11 @@ export default class MultTable extends React.Component {
                           <hr />
                           <CustomToggleList { ...props.columnToggleProps }  />
                           <hr />
-                          <BootstrapTable { ...props.baseProps } caption={"Epitope Information - # of samples: "+(this.props.data.pepData.length ? this.props.data.pepData[0].data.length : "-")}/>
+                          <BootstrapTable 
+                          rowEvents = { rowEvents } 
+                          selectRow = { selectRow }
+                          { ...props.baseProps } 
+                          caption="Epitope Information"/>
                           <hr />
                           <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
                           <hr />
@@ -302,7 +331,12 @@ export default class MultTable extends React.Component {
                       <div>
                           <CustomToggleList { ...props.columnToggleProps }  />
                           <hr />
-                          <BootstrapTable { ...props.baseProps } caption="Peptide Information"/>
+                          <BootstrapTable 
+                          rowEvents = { rowEvents } 
+                          selectRow = { selectRow }
+                          { ...props.baseProps } 
+                          caption="Peptide Information"
+                          />
                           <hr />
                           <MyExportCSV { ...props.csvProps } caption="Peptide Information"/>
                           <hr />
