@@ -310,7 +310,7 @@ export default class MultTable extends React.Component {
                           rowEvents = { rowEvents } 
                           selectRow = { selectRow }
                           { ...props.baseProps } 
-                          caption="Epitope Information"/>
+                          caption={"Epitope Information - # of samples: "+(this.props.data.pepData.length ? this.props.data.pepData[0].data.length : "-")}/>
                           <hr />
                           <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
                           <hr />
