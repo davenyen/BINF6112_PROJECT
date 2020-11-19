@@ -6,10 +6,17 @@ export default class EpitopeTable extends React.Component {
     render() {
         let tables = [];
         for (let file in this.props.data) {
-            tables.push(<div>
-                <Table data={this.props.data[file]} 
-                        caption={file.split("/").pop().split(".")[0].trim() + " Epitopes"}
-                        seqWidth={16}/>
+            tables.push(
+            <div>
+                <Table 
+                    data={this.props.data[file]} 
+                    caption={file.split("/").pop().split(".")[0].trim() + " Epitopes"}
+                    seqWidth={16}
+                    setSelectedRows={this.props.setSelectedRows}
+                    selectedRows={this.props.selectedRows}
+                    stage={this.props.stage}
+                    setStage={this.props.setStage}
+                />
             </div>);
         }
 

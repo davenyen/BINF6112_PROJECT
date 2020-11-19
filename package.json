@@ -6,7 +6,7 @@
     "node": "12.18.3"
   },
   "scripts": {
-    "start": "node server",
+    "start": "cd client && npm run build && cd .. && node server",
     "build": "cd client/ && npm install && npm run build"
   },
   "cacheDirectories": [

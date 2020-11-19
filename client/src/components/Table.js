@@ -2,6 +2,8 @@ import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
+import { Stage } from 'ngl'
+import { NGL } from 'react-ngl'
 import './css/Table.css';
 
 let config = require('../Config.json');
@@ -113,23 +115,50 @@ const MyExportCSV = (props) => {
     );
 };
 
+ 
 
 export default class Table extends React.Component {
     constructor(props){
         super(props);
-        console.log(this.props.data[0])
-        console.log(this.props.data)
+        //console.log(this.props.data[0])
+        //console.log(this.props)
         if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
         else this.state = {ratio: null}
-
-        
-    }
-
-    options() {
-      onRowClick: console.log("Clicked row");
     }
 
     render() {
+
+      const selectRow = {
+        mode: 'checkbox',
+        clickToSelect: true,
+        bgColor: '#00BFFF',
+        hideSelectColumn: true
+      };
+      
+      const rowEvents = {
+        onClick: (e, row, rowIndex) => {
+
+          var tmpArr = this.props.selectedRows;
+
+          // Removes from array
+          if (this.props.selectedRows.includes(this.props.data[rowIndex])) {
+            var delIndex = tmpArr.indexOf(this.props.data[rowIndex]);
+            tmpArr.splice(delIndex, 1);
+          } else {
+            tmpArr.push(this.props.data[rowIndex]);
+          }
+
+          this.props.setSelectedRows(tmpArr);
+          //this.props.setStage(new Stage("viewport", {backgroundColor: "black"}));
+
+          console.log(this.props.selectedRows);
+
+        },
+        onMouseEnter: (e, row, rowIndex) => {
+          //console.log(`enter on row with index: ${rowIndex}`);
+        },
+      }
+
         let columns = columns_base.slice();
         if (this.props.seqWidth) columns[1].headerStyle.width = this.props.seqWidth+"rem";
         if (this.props.data.length > 1) {
@@ -244,7 +273,12 @@ export default class Table extends React.Component {
                         <div>
                             <br />
                             <CustomToggleList { ...props.columnToggleProps }  />
-                            <BootstrapTable options={this.options()} { ...props.baseProps } caption={this.props.caption}/>
+                            <BootstrapTable 
+                            rowEvents = { rowEvents } 
+                            selectRow = { selectRow } 
+                            { ...props.baseProps } 
+                            caption={this.props.caption}
+                            />
                             <hr />
                             <MyExportCSV { ...props.csvProps } caption={this.props.caption}/>
                             <hr />

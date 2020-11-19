@@ -80,10 +80,17 @@ export default class UploadForm extends Component {
   addFile = (fileObj) => {
     //this.setState({submitted:false})
     //console.log(fileObj.name);
-    this.setState(prevState => ({
-      fileObjects: [...prevState.fileObjects, fileObj],
-      pdbFile: fileObj
-    }));
+    if (fileObj.type == "") {
+      this.setState(prevState => ({
+        fileObjects: [...prevState.fileObjects, fileObj],
+        pdbFile: fileObj
+      }));
+      this.props.setFile(fileObj);
+    } else {
+      this.setState(prevState => ({
+        fileObjects: [...prevState.fileObjects, fileObj],
+      }));
+    }
   }
 
   clearFiles = (fileType1, fileType2) => {
@@ -437,7 +444,12 @@ export default class UploadForm extends Component {
             onMouseEnter={this.changeScroll}
             onMouseLeave={this.changeScroll}
             className={'chart-wrap'}>
-            <ProteinStructure pdbFile={this.state.pdbFile}/>
+            <ProteinStructure 
+            pdbFile={this.state.pdbFile}
+            selectedRows={this.props.pdbSelections}
+            stage={this.props.stage}
+            setStage={this.props.setStage}
+            />
           </div>
         </div>
         }
