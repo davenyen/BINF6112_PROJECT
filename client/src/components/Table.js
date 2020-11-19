@@ -2,8 +2,6 @@ import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import _ from 'lodash';
-import { Stage } from 'ngl'
-import { NGL } from 'react-ngl'
 import './css/Table.css';
 
 let config = require('../Config.json');
@@ -120,8 +118,6 @@ const MyExportCSV = (props) => {
 export default class Table extends React.Component {
     constructor(props){
         super(props);
-        //console.log(this.props.data[0])
-        //console.log(this.props)
         if (this.props.data[0] !== undefined) this.state = {ratio: this.props.data[0].hasOwnProperty("snr")};
         else this.state = {ratio: null}
     }
@@ -134,15 +130,11 @@ export default class Table extends React.Component {
         bgColor: '#00BFFF',
         hideSelectColumn: true
       };
-
-      const updateRows = (tmpArr) => {
-        this.props.setSelectedRows(tmpArr);
-      }
       
       const rowEvents = {
         onClick: (e, row, rowIndex) => {
 
-          var tmpArr = this.props.selectedRows;
+          var tmpArr = [...this.props.selectedRows];
 
           // Removes from array
           if (this.props.selectedRows.includes(this.props.data[rowIndex])) {
@@ -152,15 +144,9 @@ export default class Table extends React.Component {
             tmpArr.push(this.props.data[rowIndex]);
           }
 
-          updateRows(tmpArr);
-          //this.props.setStage(new Stage("viewport", {backgroundColor: "black"}));
+          this.props.setSelectedRows(tmpArr);
 
-          console.log(this.props.selectedRows);
-
-        },
-        onMouseEnter: (e, row, rowIndex) => {
-          //console.log(`enter on row with index: ${rowIndex}`);
-        },
+        }
       }
 
         let columns = columns_base.slice();

@@ -21,7 +21,6 @@
     "react-ngl": "^0.2.0",
     "react-scripts": "^2.1.8",
     "reactstrap": "^8.7.1",
-    "three": "^0.122.0",
     "webpack": "^4.28.3"
   },
   "scripts": {

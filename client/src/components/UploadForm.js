@@ -85,7 +85,6 @@ export default class UploadForm extends Component {
         fileObjects: [...prevState.fileObjects, fileObj],
         pdbFile: fileObj
       }));
-      this.props.setFile(fileObj);
     } else {
       this.setState(prevState => ({
         fileObjects: [...prevState.fileObjects, fileObj],
