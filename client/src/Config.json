@@ -12,29 +12,51 @@
         
         "sequence": "Peptide",
         "name":  "Antigen\/Protein ID",
-        "rawMean" : "Raw Mean",
-        "backgroundMean": "Background Mean",
         "foregroundMedian": "Foreground Median",
         "snr": "snr",
-        "Optional Params (For User Reference)": "[SNR]"
-        
-        
+        "Optional Params (For User Reference)": "[SNR]",
+
+        "column-regex": [
+            "Foreground Median"
+        ],
+
+        "column-display-names": [
+            "Foreground Median"
+        ],
+
+        "calculateSNR": {
+            "rawMean" : "Raw Mean",
+            "backgroundMean": "Background Mean"
+        }
         
     },
     "gpr": {
 
         "sequence": "ID",
         "name":  "",
-        "rawMean" : "F(\\d)* Mean",
-        "backgroundMean":"B(\\d)* Mean",
         "foregroundMedian": "F(\\d)* Median - B(\\d)*",
         "snr": "SNR",
         "rowsToSkip" : 11,
-        "Optional Params (For User Reference)": "[SNR]"
+        "Optional Params (For User Reference)": "[SNR]",
 
+        "column-regex": [
+            "F(\\d)* Median - B(\\d)*",
+            "SNR"
+        ],
+
+        "column-display-names": [
+            "Foreground Median",
+            "SNR"
+        ],
+
+        "calculateSNR": {
+            "rawMean" : "F(\\d)* Mean",
+            "backgroundMean":"B(\\d)* Mean"
+        }
 
     },
 
+    "calculateSNR": true,
     "bury_threshold": 0.2,
 
     "overlap": {

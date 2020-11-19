@@ -152,15 +152,16 @@ export default class Table extends React.Component {
               let ratios = this.props.data[0].ratios
               let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
               let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
-              for(let key in ratios) {
+              for(let r in ratios) {
+                  
                   columns.push({
-                      dataField: 'ratios.'+key+'[0]',
-                      text: _.startCase(key) + ' Ratio '+fileName0+" : "+fileName1,
+                      dataField: 'ratios.'+r+'[0]',
+                      text: _.startCase(r) + ' Ratio '+fileName0+" : "+fileName1,
                       sort: true,
                       sortFunc: sortNumerical
                     },{
-                      dataField: 'ratios.'+key+'[1]',
-                      text: _.startCase(key) + ' Ratio '+fileName1+" : "+fileName0,
+                      dataField: 'ratios.'+r+'[1]',
+                      text: _.startCase(r) + ' Ratio '+fileName1+" : "+fileName0,
                       hidden: true,
                       sort: true,
                       sortFunc: sortNumerical

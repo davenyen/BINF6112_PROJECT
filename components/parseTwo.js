@@ -16,14 +16,28 @@ var start = exports.parse = async function parseData(file_path){
         XLSX.utils.sheet_to_json(ws)
         var xlData = XLSX.utils.sheet_to_json(ws);
         xlData.forEach(data => {
-            MicroArrData.push({ 
+            p = {
                 peptideSeq: data[JSON.parse(JSON.stringify(config.gpr.sequence))],
                 proteinId:data[JSON.parse(JSON.stringify(config.gpr.name))] || "",
-                rawMean:keyMatch(data,new RegExp(config.gpr.rawMean)),
-                backgroundMean:keyMatch(data,new RegExp(config.gpr.backgroundMean)),
-                foregroundMedian:keyMatch(data,new RegExp(config.gpr.foregroundMedian)),
-                snr:keyMatch(data,new RegExp(config.gpr.snr))
+                // rawMean:keyMatch(data,new RegExp(config.gpr.rawMean)),
+                // backgroundMean:keyMatch(data,new RegExp(config.gpr.backgroundMean)),
+                // foregroundMedian:keyMatch(data,new RegExp(config.gpr.foregroundMedian)),
+                // snr:keyMatch(data,new RegExp(config.gpr.snr))
+                columnDisplayNames: config.gpr["column-display-names"]
+            };
+
+            columns = [];
+            config.gpr["column-regex"].forEach(reg => {
+                columns.push(keyMatch(data,new RegExp(reg)))
             })
+            p.columns = columns;
+
+            if (config.calculateSNR) {
+                p.rawMean = keyMatch(data,new RegExp(config.gpr.calculateSNR.rawMean)),
+                p.backgroundMean = keyMatch(data,new RegExp(config.gpr.calculateSNR.backgroundMean))
+            }
+
+            MicroArrData.push(p);
         })
     }else{
         file_type = "xl"
@@ -34,8 +48,10 @@ var start = exports.parse = async function parseData(file_path){
                 proteinId:undefined,
                 rawMean:undefined,
                 backgroundMean:undefined,
-                foregroundMedian:undefined,
-                snr: NaN
+                // foregroundMedian:undefined,
+                // snr: NaN
+                columns: [],
+                columnDisplayNames: config.excel["column-display-names"]
             })
         }
         for(i in rows){
@@ -47,37 +63,58 @@ var start = exports.parse = async function parseData(file_path){
                             MicroArrData[iter].peptideSeq = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(config.excel.name,'ig'))){
+                        continue;
+                    }
+                    
+                    if(String(rows[i][j]).match(new RegExp(config.excel.name,'ig'))){
                         let iter=0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].proteinId = rows[row][j]
                             iter++;
                         }
-                    }else if(String(rows[i][j]).match(new RegExp(config.excel.rawMean,'ig'))){
-                        let iter=0;
-                        for(let row=Number(i)+1;row<rows.length; row++){
-                            MicroArrData[iter].rawMean = rows[row][j]
-                            iter++;
-                        }
-                    }else if(String(rows[i][j]).match(new RegExp(config.excel.backgroundMean,'ig'))){
-                        let iter=0;
-                        for(let row=Number(i)+1;row<rows.length; row++){
-                            MicroArrData[iter].backgroundMean = rows[row][j]
-                            iter++;
-                        }
-                    }else if(String(rows[i][j]).match(new RegExp(config.excel.foregroundMedian,'ig'))){
-                        let iter=0;
-                        for(let row=Number(i)+1;row<rows.length; row++){
-                            MicroArrData[iter].foregroundMedian = rows[row][j]
-                            iter++;
-                        }
-                    }else if(String(rows[i][j]).match(new RegExp(config.excel.snr,'ig'))){
-                        let iter=0;
-                        for(let row=Number(i)+1;row<rows.length; row++){
-                            MicroArrData[iter].snr = rows[row][j]
-                            iter++;
-                        }
+                        continue;
                     }
+                    
+                    if (config.calculateSNR) {
+                        if(String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.rawMean,'ig'))){
+                            let iter=0;
+                            for(let row=Number(i)+1;row<rows.length; row++){
+                                MicroArrData[iter].rawMean = rows[row][j]
+                                iter++;
+                            }
+                        }else if(String(rows[i][j]).match(new RegExp(config.excel.calculateSNR.backgroundMean,'ig'))){
+                            let iter=0;
+                            for(let row=Number(i)+1;row<rows.length; row++){
+                                MicroArrData[iter].backgroundMean = rows[row][j]
+                                iter++;
+                            }
+                        }
+                        continue;
+                    }
+
+                    for (let reg of config.excel["column-regex"]) {
+                        if (String(rows[i][j]).match(new RegExp(reg,'ig')))
+                        let iter=0;
+                        for(let row=Number(i)+1;row<rows.length; row++){
+                            MicroArrData[iter].columns.push(rows[row[j]]);
+                            iter++;
+                        }
+                        break;
+                    }
+                    
+                    // if(String(rows[i][j]).match(new RegExp(config.excel.foregroundMedian,'ig'))){
+                    //     let iter=0;
+                    //     for(let row=Number(i)+1;row<rows.length; row++){
+                    //         MicroArrData[iter].foregroundMedian = rows[row][j]
+                    //         iter++;
+                    //     }
+                    // }else if(String(rows[i][j]).match(new RegExp(config.excel.snr,'ig'))){
+                    //     let iter=0;
+                    //     for(let row=Number(i)+1;row<rows.length; row++){
+                    //         MicroArrData[iter].snr = rows[row][j]
+                    //         iter++;
+                    //     }
+                    // }
                 }
             }
         }
@@ -99,10 +136,17 @@ var start = exports.parse = async function parseData(file_path){
 
     Object.keys(duplicatesort).forEach(key =>{
         let ps = ""; let pi = "";let rm =0;let bm=0; let fm=0; let sr=0; let srfl=0; 
+        let cols = new Array(config.excel["column-regex"].length).fill(0);
         duplicatesort[key].forEach(data =>{
-            rm += data.rawMean;
-            bm += data.backgroundMean;
-            fm += data.foregroundMedian;
+            if (config.calculateSNR) {
+                rm += data.rawMean;
+                bm += data.backgroundMean;
+            }
+
+            for (let c in data.columns) {
+                cols[c] += data.columns[c];
+            }
+            // fm += data.foregroundMedian;
             ps = data.peptideSeq;
             pi = data.proteinId;
 
@@ -115,6 +159,10 @@ var start = exports.parse = async function parseData(file_path){
         bm = bm/duplicatesort[key].length;
         fm = fm/duplicatesort[key].length;
         if(srfl!=1){sr = sr/duplicatesort[key].length;}
+        let averaged_cols = [];
+        for (let c in cols) {
+            averaged_cols.push(cols[c]/duplicatesort[key].length);
+        }
         tripleAveragedData.push({
             peptideSeq: ps,
             proteinId: pi,
@@ -122,9 +170,11 @@ var start = exports.parse = async function parseData(file_path){
                 file: file_path,
                 rawMean: rm,
                 backgroundMean: bm,
-                foregroundMedian: fm,
-                snr:sr 
-            } ]
+                // foregroundMedian: fm,
+                // snr:sr 
+                columns: averaged_cols
+            } ],
+            columnDisplayNames: data.columnDisplayNames
         })
 
 
