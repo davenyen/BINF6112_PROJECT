@@ -13,7 +13,7 @@ export default class TableFooter extends Component {
                     <tbody>
                     <tr>
                         <td>ID</td>
-                        <td>Residue ID from DSSP output - position in protein structure that protein has been mapped to.</td>
+                        <td>Residue ID from DSSP output - position in protein structure that peptide has been mapped to.</td>
                     </tr>
                     <tr>
                         <td>Relative ASA</td>
