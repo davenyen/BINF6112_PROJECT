@@ -13,7 +13,9 @@ import {ButtonGroup, Button} from 'react-bootstrap'
 
 let config = require('../Config.json');
 
-const apiURL = "http://localhost:5000";
+// LOCAL MODE = "http://localhost:5000"
+// HEROKU MODE = ""
+const apiURL = "https://microarray-analysis.herokuapp.com";
 
 export default class UploadForm extends Component {
 
