@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import proteinBg from './pdb_bg.png'
 import { NGL } from 'react-ngl'
 import './css/ProteinStructure.css'
+let config = require('../Config.json');
 
 // No method of centering on a selected molecule (feature doesn't exist in ngl)
 
@@ -36,7 +37,7 @@ export default function ProteinStructure(props) {
         console.log(props.selectedRows);
 
           if (props.selectedRows.length > 0) {
-            var selectedResidues = ["red"];
+            var selectedResidues = [config.protein_structure_coloring.selected];
             var resString = "";
             for (var i = 0; i < props.selectedRows.length; i++) {
               if (i + 1 === props.selectedRows.length) {
@@ -52,7 +53,7 @@ export default function ProteinStructure(props) {
 
             var schemeID = NGL.ColormakerRegistry.addSelectionScheme([
               selectedResidues,
-              ["white", "*"]
+              [config.protein_structure_coloring.main, "*"]
               ], "colorscheme pdb");
           
             stage.loadFile( pdbTmp, { ext: "pdb" } ).then( function(component){
@@ -61,7 +62,7 @@ export default function ProteinStructure(props) {
             })
           } else {
             stage.loadFile( pdbTmp, { ext: "pdb" } ).then( function(component){
-              component.addRepresentation("ribbon", { color: "white" });
+              component.addRepresentation("ribbon", { color: config.protein_structure_coloring.main });
               component.autoView(2500);
             })
           } 

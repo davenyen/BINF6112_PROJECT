@@ -4,17 +4,13 @@
     "Under excel and gpr, you can specify column header names for each category listed",
     "For GPR files, the number of rows to skip from the beginning of file should be specified",
     "Parameter options in parameter section can be modified to suit user",
-    "Headers should be named in regex format (escape backslash needed for special characters)",
-    "More parameters can be passed below! [REMOVE THIS COMMENT AT FINAL ITERATION"
+    "Headers should be named in regex format (escape backslash needed for special characters)"
     ],
     
     "excel" : { 
         
         "sequence": "Peptide",
         "name":  "Antigen\/Protein ID",
-        "foregroundMedian": "Foreground Median",
-        "snr": "snr",
-        "Optional Params (For User Reference)": "[SNR]",
 
         "column-regex": [
             "Foreground Median"
@@ -34,9 +30,7 @@
 
         "sequence": "ID",
         "name":  "",
-        "snr": "SNR",
         "rowsToSkip" : 11,
-        "Optional Params (For User Reference)": "[SNR]",
 
         "column-regex": [
             "F(\\d)* Median - B(\\d)*",
@@ -71,6 +65,11 @@
         "relativeIncludeThreshold": 0.7
     },
 
-    "decimal_places": 3
+    "decimal_places": 3,
+
+    "protein_structure_coloring": {
+        "main": "white",
+        "selected": "red"
+    }
 
 }
