@@ -83,6 +83,9 @@ app.get('/process', function(req, res, next) {
           .then(json => {
             // console.log(json);
             return res.status(200).json(json);
+          }).catch(err => {
+            console.log(err);
+            app.post('/clear');
           });
   } else if (xlFiles.length > 1) {
     console.log('multiple parse');
@@ -90,6 +93,9 @@ app.get('/process', function(req, res, next) {
           .then(json => map.mapData(json, pdbFile))
           .then(json => {
             return res.status(200).json(json);
+          }).catch(err => {
+            console.log(err);
+            app.post('/clear');
           });
   }
 });
@@ -104,6 +110,9 @@ app.get('/processMult', function(req, res, next) {
           .then(json => ave.aveData(json))
           .then(json => {
             return res.status(200).json(json);
+          }).catch(err => {
+            console.log(err);
+            app.post('/clear');
           });
 });
 
