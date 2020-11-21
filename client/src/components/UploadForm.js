@@ -15,7 +15,8 @@ let config = require('../Config.json');
 
 // LOCAL MODE = "http://localhost:5000"
 // HEROKU MODE = "https://microarray-analysis.herokuapp.com"
-const apiURL = "http://localhost:5000";
+// const apiURL = "http://localhost:5000";
+const apiURL = "";
 
 export default class UploadForm extends Component {
 
