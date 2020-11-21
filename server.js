@@ -86,6 +86,7 @@ app.get('/process', function(req, res, next) {
           }).catch(err => {
             console.log(err);
             app.post('/clear');
+            return res.status(500).json({error: err});
           });
   } else if (xlFiles.length > 1) {
     console.log('multiple parse');
@@ -96,6 +97,7 @@ app.get('/process', function(req, res, next) {
           }).catch(err => {
             console.log(err);
             app.post('/clear');
+            return res.status(500).json({error: err});
           });
   }
 });
@@ -113,6 +115,7 @@ app.get('/processMult', function(req, res, next) {
           }).catch(err => {
             console.log(err);
             app.post('/clear');
+            return res.status(500).json({error: err});
           });
 });
 
