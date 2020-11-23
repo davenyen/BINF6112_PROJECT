@@ -12,7 +12,7 @@ import sys
 # print(dssp['A', (' ', 173, ' ')])
 pdbFile = sys.argv[1]
 
-dssp_tup = dssp_dict_from_pdb_file(pdbFile, DSSP="#!/bin/sh\n./mkdssp")
+dssp_tup = dssp_dict_from_pdb_file(pdbFile, DSSP="./mkdssp")
 dssp = dssp_tup[0]
 
 # (dssp index, amino acid, secondary structure, relative ASA, phi, psi,
