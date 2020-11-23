@@ -53,7 +53,7 @@ TH {
 }
 
 .jumbotron-background {
-	background-image: url(https://arborbiosci.com/wp-content/uploads/2017/10/banner-myArray.jpg);
+	background-image: url('banner-myArray.jpg');
 	border-radius: 0rem !important;
 	color: white;
 	margin-bottom: 1rem !important;
