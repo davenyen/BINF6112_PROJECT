@@ -1,11 +1,15 @@
 # BINF6112_PROJECT
-Microanalysis Group Project
+Epitope Microarray Analysis Platform Group Project
 
 ## Packages and Dependencies
-* react-ngl
 * DSSP
-* echarts
-* react-ngl
+
+* Node 12.* and npm
+  * react-ngl
+  * echarts
+
+* Python3
+  * Biopython
 
 ## AUTHORS
 UNSW BINF6112 Team Lee 2020:
@@ -18,7 +22,11 @@ UNSW BINF6112 Team Lee 2020:
 * Need to refresh selected rows/points on graph for protein after
 adding a new pdb file or swapping between analysis modes
 * Need to make model sticky scroll
-* Need to accentuate selected echart point (to differentiate between selected/unselected)
-* Need to delete uploaded files to save space when the app is deployed to a server
+* Need to accentuate selected echart point (to differentiate between selected/unselected) and stop echart rerendering when point clicked
 
 ## Citations
+DSSP:
+A series of PDB-related databanks for everyday needs
+Wouter G. Touw, Coos Baakman, Jon Black, Tim A. H. te Beek,
+ E. Krieger, Robbie P. Joosten and Gert Vriend.
+Nucl. Acids Res. (2015) 43, D364-D368
