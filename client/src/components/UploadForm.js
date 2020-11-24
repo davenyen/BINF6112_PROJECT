@@ -76,8 +76,15 @@ export default class UploadForm extends Component {
             this.props.handleSubmit(json);
             axios.post(apiURL + "/clear")
           })
+          .catch(err => {
+            console.log(err);
+            axios.post(apiURL+"/clear")
+          })
       }
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      console.log(err);
+      axios.post(apiURL+"/clear")
+    })
   }
 
   // appends files to objects state

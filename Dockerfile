@@ -1,4 +1,5 @@
 FROM nikolaik/python-nodejs:python3.9-nodejs12
+ENV NODE_ENV=production
 
 RUN mkdir /project
 WORKDIR /project
@@ -13,7 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm cache clean --force && npm install
 
 COPY . /opt/app
-
+RUN cd client/ && npm cache clean --force && npm install && npm run build
 
 WORKDIR /
 RUN apt-get update
