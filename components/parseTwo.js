@@ -54,10 +54,12 @@ var start = exports.parse = async function parseData(file_path){
                 columnDisplayNames: config.excel["column-display-names"]
             })
         }
+        let data_found = false;
         for(i in rows){
             for(j in rows[i]){
                 if(rows[i][j]!=null){
                     if(String(rows[i][j]).match(new RegExp(config.excel.sequence,'ig'))){
+                        data_found = true;
                         let iter = 0;
                         for(let row=Number(i)+1;row<rows.length; row++){
                             MicroArrData[iter].peptideSeq = rows[row][j]
@@ -110,6 +112,7 @@ var start = exports.parse = async function parseData(file_path){
                     // }
                 }
             }
+            if (data_found) break;
         }
     }
     
