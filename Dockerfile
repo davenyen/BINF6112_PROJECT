@@ -17,7 +17,7 @@ COPY . /opt/app
 RUN cd client/ && npm cache clean --force && npm install && npm run build
 
 WORKDIR /
-RUN apt-get update
+RUN apt-get clean && apt-get update
 RUN apt-get install -y make rsync wget
 RUN apt-get install -y git g++ libboost-all-dev libbz2-dev doxygen xsltproc docbook docbook-xsl docbook-xml autoconf automake autotools-dev
 RUN mkdir -p /deps
