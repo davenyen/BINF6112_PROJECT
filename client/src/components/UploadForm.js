@@ -188,99 +188,59 @@ export default class UploadForm extends Component {
     }
 
     let columns = [];
-    for (let c in data[num].data[0].columns) {
-      columns.push(data.map(item => {
-        return {
-          value: item.data[num].columns[c],
-          ss: item.ss,
-          pI: item.pI,
-          gravy: item.gravy,
-          asa: item.asa,
-          pepSeq: item.peptideSeq
-        }
-      }))
-    }
-
-    // const median = data.map(item => {
-    //   return {
-    //     value: item.data[num].foregroundMedian,
-    //     ss: item.ss,
-    //     pI: item.pI,
-    //     gravy: item.gravy,
-    //     asa: item.asa,
-    //     pepSeq: item.peptideSeq
-    //   }
-    // });
-    // const snr = data.map(item => {
-    //   return {
-    //     value: item.data[num].SNR_Calculated,
-    //     ss: item.ss,
-    //     pI: item.pI,
-    //     gravy: item.gravy,
-    //     asa: item.asa,
-    //     pepSeq: item.peptideSeq
-    //   }
-    // });
-    // let includeSnr
-    // if (data[0].data[num].snr !== 'NaN') {
-    //   includeSnr = data.map(item => {
-    //     return {
-    //       value: item.data[num].snr.replace(' ', ''),
-    //       ss: item.ss,
-    //       pI: item.pI,
-    //       gravy: item.gravy,
-    //       asa: item.asa,
-    //       pepSeq: item.peptideSeq
-    //     }
-    //   });
-    // }
-    const seq = data.map(item => {
-      return {
-        value: item.res_id + '\n' + item.peptideSeq.substr(0, config.overlap.amount),
-        textStyle: {
-          color: item.asa > 0.2 ? '#447fdb' : 'gray'
-        }
-      }
-    });
-    // const finalMedian = [], finalSnr = [], finalIncludeSnr = [], 
     let finalSeq = []
-    // let finalColumns = new Array(columns.length).fill([]);
     let finalColumns = [];
-    columns.forEach(() => finalColumns.push([]));
-    let curSeqIndex = 0
-    let i = +(seq[0].value.split('\n')[0]);
-    while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
-      let res_id = +(seq[curSeqIndex].value.split('\n')[0])
-      if (res_id <= i) {
-        for (let c in columns) {
-          finalColumns[c].push(columns[c][curSeqIndex]);
-        }
-        // console.log(finalColumns[0]);
-        // console.log(finalColumns[1]);
-        finalSeq.push(seq[curSeqIndex])
-        // finalMedian.push(median[curSeqIndex])
-        // finalSnr.push(snr[curSeqIndex])
-        // if (includeSnr) finalIncludeSnr.push(includeSnr[curSeqIndex])
-        curSeqIndex += 1
-        i = res_id;
-      } else {
-        finalSeq.push({value: '-'})
-        for (let c in columns) {
-          finalColumns[c].push(0);
-        }
-        // finalMedian.push(0)
-        // finalSnr.push(0)
-        // if (includeSnr) finalIncludeSnr.push(0)
+    if (data[num]) {
+      for (let c in data[num].data[0].columns) {
+        columns.push(data.map(item => {
+          return {
+            value: item.data[num].columns[c],
+            ss: item.ss,
+            pI: item.pI,
+            gravy: item.gravy,
+            asa: item.asa,
+            pepSeq: item.peptideSeq
+          }
+        }))
       }
 
-      i += config.overlap.amount;
+
+      const seq = data.map(item => {
+        return {
+          value: item.res_id + '\n' + item.peptideSeq.substr(0, config.overlap.amount),
+          textStyle: {
+            color: item.asa > 0.2 ? '#447fdb' : 'gray'
+          }
+        }
+      });
+
+      columns.forEach(() => finalColumns.push([]));
+      let curSeqIndex = 0
+      let i = +(seq[0].value.split('\n')[0]);
+      while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
+        let res_id = +(seq[curSeqIndex].value.split('\n')[0])
+        if (res_id <= i) {
+          for (let c in columns) {
+            finalColumns[c].push(columns[c][curSeqIndex]);
+          }
+          finalSeq.push(seq[curSeqIndex])
+          curSeqIndex += 1
+          i = res_id;
+        } else {
+          finalSeq.push({value: '-'})
+          for (let c in columns) {
+            finalColumns[c].push(0);
+          }
+        }
+  
+        i += config.overlap.amount;
+      }
+
     }
+
     return {
-      name: data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/') + 1).split(".")[0],
+      name: data[0] && data[0].data && data[0].data[num].file.substr(data[0].data[num].file.lastIndexOf('/') + 1).split(".")[0],
       seq: finalSeq,
-      // median: finalMedian,
-      // snr: finalSnr,
-      // includeSnr: includeSnr && finalIncludeSnr
       columns: finalColumns
     }
   }
@@ -359,7 +319,7 @@ export default class UploadForm extends Component {
       series: []
     }
 
-    const fileLength = data[0].data.length
+    const fileLength = data[0] ? data[0].data.length : 0;
     for (let i = 0; i < fileLength; i++) {
       let d = this.handleData(i);
       //console.log(d);
@@ -370,49 +330,8 @@ export default class UploadForm extends Component {
         type: 'line'
       })
     }
-
-    // if (chartType === 'include') {
-    //   for (let i = 0; i < fileLength; i++) {
-    //     if (!this.handleData(i).includeSnr) continue
-    //     options.legend.data.push(this.handleData(i).name)
-    //     options.series.push({
-    //       name: this.handleData(i).name,
-    //       data: this.handleData(i).includeSnr,
-    //       type: 'line'
-    //     })
-    //   }
-    // } else if (chartType === 'median') {
-    //   for (let i = 0; i < fileLength; i++) {
-    //     options.legend.data.push(this.handleData(i).name)
-    //     options.series.push({
-    //       name: this.handleData(i).name,
-    //       data: this.handleData(i).median,
-    //       type: 'line'
-    //     })
-    //   }
-    // } else {
-    //   for (let i = 0; i < fileLength; i++) {
-    //     options.legend.data.push(this.handleData(i).name)
-    //     options.series.push({
-    //       name: this.handleData(i).name,
-    //       data: this.handleData(i).snr,
-    //       type: 'line'
-    //     })
-    //   }
-    // }
     return options
   }
-
-  // isIncludeSRN() {
-  //   let {data} = this.props
-  //   if (!data) return false
-  //   if (this.props.multiple === 0) {
-  //     data = data.peptides
-  //   } else if (this.props.multiple === 1) {
-  //     data = data.pepData
-  //   }
-  //   return !!(data[0].data && data[0].data.some(item => item.snr !== 'NaN'));
-  // }
 
   // set state
   onChartClick = (...e) => {
@@ -450,7 +369,7 @@ export default class UploadForm extends Component {
     })
 
     let chartButtons = [];
-    if (this.props.data) {
+    if (this.props.data && this.props.data[0]) {
       let {data} = this.props
       if (this.props.multiple === 0) {
         data = data.peptides
@@ -511,14 +430,6 @@ export default class UploadForm extends Component {
         <div className='visualisation-wrap' style={{display: "flex"}}>
           <div className={'chart-wrap'} id={'vehicleProvince'} style={{backgroundColor: 'white'}}>
             {!!this.props.data && <><ButtonGroup justified> {chartButtons}
-              {/* <Button active={chartType === 'median'}
-                      onClick={() => this.setState({chartType: 'median'})}>Foreground Median</Button>
-              <Button active={chartType === 'snr'}
-                      onClick={() => this.setState({chartType: 'snr'})}>Calculated SNR</Button>
-              {this.isIncludeSRN() && <Button active={chartType === 'include'}
-                                              onClick={() => this.setState({chartType: 'include'})}>Included
-                SNR</Button>
-              } */}
             </ButtonGroup>
               <ReactEcharts 
                 style={{height: '80%', minHeight: 320}} 

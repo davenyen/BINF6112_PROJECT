@@ -10,7 +10,7 @@ const  usersRouter = require('./routes/users');
 
 // MOVE TO DIFFERENT FILE LATER
 const xlsxFile = require('read-excel-file/node');
-const parse = require('./components/parseTwo');
+const parse = require('./components/parse');
 const map = require('./components/map');
 const ave = require('./components/multipleAve');
 const fs = require('fs');
@@ -66,16 +66,12 @@ app.post('/submit',function(req, res) {
 });
 
 app.get('/process', function(req, res, next) {
-  // var fileHandler = './public/ige.xlsx';
-  // parse.parse(fileHandler)
-  //       .then(json => map.mapData(json))
-  //       .then(json => {
-  //         return res.status(200).json(json)
-  //       });
-  console.log('processing');
+  console.log('Processing Started');
   let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
   let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
+  console.log("---All Files---")
   console.log(fileHandler);
+  console.log("---Microarray Files---")
   console.log(xlFiles);
   if (xlFiles.length === 1) {
     parse.parse(xlFiles[0])
@@ -89,7 +85,7 @@ app.get('/process', function(req, res, next) {
             return res.status(500).json({error: err});
           });
   } else if (xlFiles.length > 1) {
-    console.log('multiple parse');
+    console.log('Parsing Multiple Files');
     parse.parseMultiple(xlFiles)
           .then(json => map.mapData(json, pdbFile))
           .then(json => {
@@ -103,43 +99,29 @@ app.get('/process', function(req, res, next) {
 });
 
 app.get('/processMult', function(req, res, next) {
-  console.log('processingMult');
+  console.log('Multiple Sample Analysis --> Parsing Multiple Files');
   let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
   let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
-    console.log('multiple parse in mult');
-    parse.parseMultiple(xlFiles)
-          .then(json => map.mapData(json, pdbFile))
-          .then(json => ave.aveData(json))
-          .then(json => {
-            return res.status(200).json(json);
-          }).catch(err => {
-            console.log(err);
-            app.post('/clear');
-            return res.status(500).json({error: err});
-          });
-});
-
-app.get('/processTemp', function(req, res, next) {
-  console.log('processingTemp');
-  let xlFiles = fileHandler.filter(a => !a.match(/.pdb$/));
-  let pdbFile = fileHandler.filter(a => a.match(/.pdb$/));
-    console.log('multiple parse in temp');
-    parse.parseMultiple(xlFiles)
-          .then(json => map.mapData(json, pdbFile))
-          .then(json => {
-            return res.status(200).json(json);
-          });
+  parse.parseMultiple(xlFiles)
+        .then(json => map.mapData(json, pdbFile))
+        .then(json => ave.aveData(json))
+        .then(json => {
+          return res.status(200).json(json);
+        }).catch(err => {
+          console.log(err);
+          app.post('/clear');
+          return res.status(500).json({error: err});
+        });
 });
 
 app.post('/clear', function(req, res) {
-  console.log('clearing');
+  console.log('---Clearing Files---');
   while (fileHandler.length > 0) fileHandler.pop();
-  console.log(fileHandler);
 
   fs.readdir('./public', (err, files) => {
     files.forEach(f => {
       if (f.match(/.gpr$/) || f.match(/.xlsx$/) || f.match(/.pdb$/)) {
-        console.log('heaya'+f);
+        console.log('Deleted '+f);
         fs.unlink('./public/'+f, (error) => {
           if (error) throw error;
         });

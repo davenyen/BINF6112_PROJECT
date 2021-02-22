@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Parse = require('./parseTwo');
+const Parse = require('./parse');
 let config = require('../client/src/Config.json');
 const dps = parseInt(config.decimal_places);
 
@@ -12,7 +12,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     // pythonProcess.stdout.on('data', function(data) {
     //     console.log('here');
     // })
-    let data = exec('python3 ./components/dssp.py '+pdbFile)
+    let data = exec('python3 ./components/dssp.py "'+pdbFile+'"')
 
     var dssp_json = JSON.parse(data.toString());
     let sequence = dssp_json.sequence;
@@ -91,7 +91,8 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
     let incThreshold = parseFloat(config.epitopes.relativeIncludeThreshold);
 
     let epitope_json = {};
-    
+    if (!peptides[0] || !peptides[0].data) return epitope_json;
+    // loop through each file
     for (let d in peptides[0].data) {
         //console.log(peptides[0].data[d].file);
         
@@ -123,12 +124,9 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
                 seq = seq + peptides[ind+1].peptideSeq.slice(-config.overlap.amount);
             }
 
-            //console.log(seq);
-
             let e = {};
             e.peptideSeq = seq;
             e.res_id = pos;
-            
 
             let start = full_sequence.indexOf(seq);
             // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
@@ -223,37 +221,6 @@ function smoothData(peptideRaw, ma_json) {
 
             peptide.data[d].columns.push(av/total_weight);
         }
-        // av_foregroundMedian = peptide.data[d].foregroundMedian * config.overlap.weightCurr;
-        // av_snrCalc = calculateSNR(peptide.data[d]) * config.overlap.weightCurr;
-        // if (!isNaN(peptide.data[d].snr)) {
-        //     av_snr = peptide.data[d].snr * config.overlap.weightCurr;
-        // }
-
-        // if (pBefore.length === 1) {
-        //     let p = pBefore[0];
-        //     av_foregroundMedian += p.data[d].foregroundMedian * config.overlap.weightPrev;
-        //     av_snrCalc += calculateSNR(p.data[d]) * config.overlap.weightPrev;
-        //     if (!isNaN(peptide.data[d].snr)) {
-        //         av_snr += p.data[d].snr * config.overlap.weightPrev;
-        //     }
-        //     total_weight += config.overlap.weightPrev;
-        // }
-
-        // if (pAfter.length === 1) {
-        //     let p = pAfter[0];
-        //     av_foregroundMedian += p.data[d].foregroundMedian * config.overlap.weightNext;
-        //     av_snrCalc += calculateSNR(p.data[d]) * config.overlap.weightNext;
-        //     if (!isNaN(peptide.data[d].snr)) {
-        //         av_snr += p.data[d].snr * config.overlap.weightNext;
-        //     }
-        //     total_weight += config.overlap.weightNext;
-        // }
-        
-        // peptide.data[d].foregroundMedian = av_foregroundMedian/total_weight;
-        // peptide.data[d].SNR_Calculated = av_snrCalc/total_weight;
-        // if (!isNaN(peptide.data[d].snr)) {
-        //     peptide.data[d].snr = av_snr / total_weight;
-        // }
 
     }
     return peptide;
@@ -268,11 +235,6 @@ function calculateRatios(mappedData) {
     mappedData = mappedData.map(peptide => {
         // calculate SNR
         for (let d of peptide.data) {
-            // peptide.data[d].foregroundMedian = peptide.data[d].foregroundMedian.toFixed(3);
-            // peptide.data[d].SNR_Calculated = peptide.data[d].SNR_Calculated.toFixed(dps);
-            // if (peptide.data[d].hasOwnProperty("snr")) {
-            //     peptide.data[d].snr = peptide.data[d].snr.toFixed(3)
-            // }
             for (let c in d.columns) {
                 d.columns[c] = d.columns[c].toFixed(dps);
             }
@@ -289,35 +251,12 @@ function calculateRatios(mappedData) {
                 ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
                 peptide.ratios.push( [ratio1, ratio2 ]);
             }
-
-            // let ratio1 = peptide.data[0].foregroundMedian/peptide.data[1].foregroundMedian;
-            // ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
-            // let ratio2 = peptide.data[1].foregroundMedian/peptide.data[0].foregroundMedian;
-            // ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-            // peptide.ratios.foregroundMedian = [ratio1, ratio2 ];
-
-
-            // ratio1 = peptide.data[0].SNR_Calculated/peptide.data[1].SNR_Calculated;
-            // ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
-            // ratio2 = peptide.data[1].SNR_Calculated/peptide.data[0].SNR_Calculated;
-            // ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-
-            // peptide.ratios.SNR_Calculated = [ratio1, ratio2];
-
-            // if (!isNaN(peptide.data[0].snr)) {
-            //     ratio1 = peptide.data[0].snr/peptide.data[1].snr;
-            //     ratio1 = (!isNaN(ratio1)) ? (ratio1).toFixed(dps) : "-";
-            //     ratio2 = peptide.data[1].snr/peptide.data[0].snr;
-            //     ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
-
-            //     peptide.ratios.SNR = [ratio1, ratio2];
             // }
         }
 
         return peptide;
     });
 
-    //console.log(mappedData[0]);
     return mappedData;
 }
 
@@ -388,7 +327,3 @@ ssNames = {
     "T": "H-bonded turn",
     "S": "Bend"
 }
-
-// Parse.parse('./ige.xlsx').then(json => {
-//     this.mapData(json, '../public/3s7i.pdb');
-// });
