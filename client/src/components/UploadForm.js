@@ -7,8 +7,7 @@ import './css/Upform.css'
 import ProteinStructure from './ProteinStructure'
 import ReactEcharts from "echarts-for-react";
 import echarts from 'echarts';
-// import 'echarts/lib/chart/line';
-// import 'echarts/lib/component/tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {ButtonGroup, Button} from 'react-bootstrap'
 
 let config = require('../Config.json');
@@ -32,7 +31,8 @@ export default class UploadForm extends Component {
       chosenFileName: "",
       pdbFile: null,
       chartVisible: false,
-      chartType: '0'
+      chartType: '0',
+      loading: false
       // chartType: 'median',//median|snr|include
       //submitted:false
     }
@@ -59,6 +59,8 @@ export default class UploadForm extends Component {
     // If file doesn't exist returns
     if (this.state.fileObjects.length === 0) return;
 
+    this.setState({loading: true});
+
     const data = new FormData();
     for (var x = 0; x < this.state.fileObjects.length; x++) {
       data.append('file', this.state.fileObjects[x])
@@ -70,6 +72,7 @@ export default class UploadForm extends Component {
           .then(json => {
             //console.log(json);
             this.setState({
+              loading: false,
               dataLoaded: false
             });
             json.mode = this.props.multiple;
@@ -415,9 +418,16 @@ export default class UploadForm extends Component {
               //submitted={this.state.submitted}
             />
           </div>
-          <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>
-            Submit
-          </button>
+          <div style={{display: "flex", flexDirection: "column", width: "10%"}}>
+            <button type="button" className="btn btn-success btn-block formSubmit" onClick={this.onSubmit}>
+              Submit
+            </button>
+            {this.state.loading &&
+              <div style={{padding: "1rem", paddingLeft: "2.5rem", justifyContent: "space-around"}}>
+                <CircularProgress size={30}/>
+              </div>
+            }
+          </div>
         </div>
         {this.state.dataLoaded &&
         <div>

@@ -107,7 +107,7 @@ border-width: 1px 1px 0 1px;
 
 .form .formSubmit {
 	max-height: 3rem;
-	max-width: 10%;
+	width: 100%;
 }
 
 .TEST {
