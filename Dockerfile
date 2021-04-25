@@ -14,6 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm cache clean --force && npm install
 
 COPY . /opt/app
+ENV GENERATE_SOURCEMAP false
 RUN cd client/ && npm cache clean --force && npm install && npm run build
 
 WORKDIR /
