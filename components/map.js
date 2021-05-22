@@ -4,48 +4,35 @@ let config = require('../client/src/Config.json');
 const dps = parseInt(config.decimal_places);
 
 const exec = require('child_process').execSync;
+const { match } = require('assert');
 
 exports.mapData = async function mapData(ma_json, pdbFile) {
-    // const spawn = require("child_process").spawn;
-    // var pythonProcess = spawn('python',['./dssp.py', pdbFile]);
 
-    // pythonProcess.stdout.on('data', function(data) {
-    //     console.log('here');
-    // })
     let data = exec('python3 ./components/dssp.py "'+pdbFile+'"')
 
     var dssp_json = JSON.parse(data.toString());
     let sequence = dssp_json.sequence;
-    // replace ambiguous aa codes so GRAVY won't throw key error
-    // SS bridge Cys location markers --> Cys
+
+    // SS bridge Cys location markers (marked by DSSP with lowercase letters) --> Cys residues
     sequence = sequence.replace(/[a-z]/g, "C");
-    // Asp or Asn -> Asn
-    sequence = sequence.replace(/B/g, "N");
-    // Gln or Glu -> Gln
-    sequence = sequence.replace(/Z/g, "Q");
-    // Leu or Ile -> Leu
-    sequence = sequence.replace(/J/g, "L");
 
     let pep_length = 0;
     for (let peptide of ma_json) {
         pep_length = peptide.peptideSeq.length;
         if (pep_length > 3) break;
     }
-    let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ sequence.toUpperCase() + " "+pep_length).toString());
+    let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ sequence + " "+pep_length).toString());
     
     let ma_json_arr = []
     ma_json.map(peptide => ma_json_arr.push(peptide));
     ma_json = ma_json_arr.filter(peptide => typeof peptide.peptideSeq === "string");
     let ma_json_raw = ma_json.slice();
-    // let peptide = ma_json[145];
-    // console.log(peptide);
-    // console.log(peptide.peptideSeq.slice(3));
     
-
     let mappedData = [];
     for (let peptide of ma_json) {
         if (peptide.peptideSeq.length < 3) continue;
-        let start = sequence.indexOf(peptide.peptideSeq);
+        // let start = sequence.indexOf(peptide.peptideSeq);
+        let start = matchPeptide(sequence, peptide.peptideSeq);
         if (start >= 0) {
             // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
             let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
@@ -67,9 +54,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
                 peptideSmoothed.columnDisplayNames.push("Calculated SNR");
             }
 
-
             mappedData.push(peptideSmoothed);
-            // console.log(peptide);
         }
     }
 
@@ -79,8 +64,38 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     jsonObj.peptides = mappedData;
     
     jsonObj.epitopesByFile = getEpitopes(mappedData, dssp_json, sequence);
-    // console.log(jsonObj);
     return jsonObj;
+}
+
+function matchPeptide(sequence, peptide) {
+    let start = sequence.indexOf(peptide);
+    if (start >= 0) return start;
+
+    if (sequence.match("X")) {
+        sequence = sequence.replace(/X/g, ".");
+        for (let i = 0; i < sequence.length - peptide.length; i++) {
+            if (peptide.match(new RegExp(sequence.substring(i, i + peptide.length)))) {
+                return i;
+            }
+        }
+    }
+
+    if (sequence.match("B")) {
+        peptide = peptide.replace(/D/, "(D|B)");
+        peptide = peptide.replace(/N/, "(N|B)");
+    }
+
+    if (sequence.match("Z")) {
+        peptide = peptide.replace(/E/, "(E|Z)");
+        peptide = peptide.replace(/Q/, "(Q|Z)");
+    }
+
+    if (sequence.match("J")) {
+        peptide = peptide.replace(/I/, "(I|J)");
+        peptide = peptide.replace(/L/, "(L|J)");
+    }
+
+    return sequence.search(new RegExp(peptide));
 }
 
 function getEpitopes(peptides, dssp_json, full_sequence) {
@@ -94,7 +109,6 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
     if (!peptides[0] || !peptides[0].data) return epitope_json;
     // loop through each file
     for (let d in peptides[0].data) {
-        //console.log(peptides[0].data[d].file);
         
         let epitopes = peptides.map((p, ind) => {
             if (!(ind !== 0 && ind !== peptides.length - 1 &&
@@ -159,13 +173,9 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
 
         }
     
-        //console.log("----Epitopes----");
-        //console.log(epitopes);
-        //console.log("---end---");
         epitope_json[peptides[0].data[d].file] = epitopes;
     }
 
-    // console.log(epitope_json);
     return epitope_json;
 }
 
@@ -251,7 +261,6 @@ function calculateRatios(mappedData) {
                 ratio2 = (!isNaN(ratio2)) ? (ratio2).toFixed(dps) : "-";
                 peptide.ratios.push( [ratio1, ratio2 ]);
             }
-            // }
         }
 
         return peptide;

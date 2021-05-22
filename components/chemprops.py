@@ -5,6 +5,12 @@ import sys
 seq = sys.argv[1]
 pep_length = (int) (sys.argv[2])
 
+# replace ambiguous codes to avoid key errors
+seq = seq.replace("X", "S") # most abundant
+seq = seq.replace("B", "N")
+seq = seq.replace("Z", "Q")
+seq = seq.replace("J", "L")
+
 pI = []
 gravy = []
 
