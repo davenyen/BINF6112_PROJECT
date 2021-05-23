@@ -19,10 +19,6 @@ var start = exports.parse = async function parseData(file_path){
             p = {
                 peptideSeq: data[JSON.parse(JSON.stringify(config.gpr.sequence))],
                 proteinId:data[JSON.parse(JSON.stringify(config.gpr.name))] || "",
-                // rawMean:keyMatch(data,new RegExp(config.gpr.rawMean)),
-                // backgroundMean:keyMatch(data,new RegExp(config.gpr.backgroundMean)),
-                // foregroundMedian:keyMatch(data,new RegExp(config.gpr.foregroundMedian)),
-                // snr:keyMatch(data,new RegExp(config.gpr.snr))
                 columnDisplayNames: config.gpr["column-display-names"]
             };
 
@@ -48,8 +44,6 @@ var start = exports.parse = async function parseData(file_path){
                 proteinId:undefined,
                 rawMean:undefined,
                 backgroundMean:undefined,
-                // foregroundMedian:undefined,
-                // snr: NaN
                 columns: new Array(config.excel["column-display-names"].length),
                 columnDisplayNames: config.excel["column-display-names"]
             })
@@ -97,19 +91,6 @@ var start = exports.parse = async function parseData(file_path){
 
                     }
                     
-                    // if(String(rows[i][j]).match(new RegExp(config.excel.foregroundMedian,'ig'))){
-                    //     let iter=0;
-                    //     for(let row=Number(i)+1;row<rows.length; row++){
-                    //         MicroArrData[iter].foregroundMedian = rows[row][j]
-                    //         iter++;
-                    //     }
-                    // }else if(String(rows[i][j]).match(new RegExp(config.excel.snr,'ig'))){
-                    //     let iter=0;
-                    //     for(let row=Number(i)+1;row<rows.length; row++){
-                    //         MicroArrData[iter].snr = rows[row][j]
-                    //         iter++;
-                    //     }
-                    // }
                 }
             }
             if (data_found) break;
@@ -119,14 +100,14 @@ var start = exports.parse = async function parseData(file_path){
 
     //UnAveraged data in cleanedMad
     const cleanedMad = MicroArrData.filter(data => data.peptideSeq != undefined)
-    //console.log(cleanedMad)
+
     //Averaging starts here
     const duplicatesort = cleanedMad.reduce((r, a) => {
         r[a.peptideSeq] = r[a.peptideSeq] || [];
         r[a.peptideSeq].push(a);
         return r;
     }, Object.create({}));
-    //console.log(duplicatesort)
+
     //Variable holding final Averaged data
     const tripleAveragedData = [];
 
@@ -142,19 +123,12 @@ var start = exports.parse = async function parseData(file_path){
             for (let c in data.columns) {
                 cols[c] += data.columns[c];
             }
-            // fm += data.foregroundMedian;
             ps = data.peptideSeq;
             pi = data.proteinId;
-
-            // if(data.snr !== undefined && (!isNaN(data.snr) && (data.snr != null))){
-            //     if(srfl == 0){sr += data.snr}
-            // }else{sr=NaN;srfl=1;}
 
         })
         rm = rm/duplicatesort[key].length;
         bm = bm/duplicatesort[key].length;
-        // fm = fm/duplicatesort[key].length;
-        // if(srfl!=1){sr = sr/duplicatesort[key].length;}
         let averaged_cols = [];
         for (let c in cols) {
             averaged_cols.push(cols[c]/duplicatesort[key].length);
@@ -166,16 +140,13 @@ var start = exports.parse = async function parseData(file_path){
                 file: file_path,
                 rawMean: rm,
                 backgroundMean: bm,
-                // foregroundMedian: fm,
-                // snr:sr 
                 columns: averaged_cols
             } ],
             columnDisplayNames: duplicatesort[key][0].columnDisplayNames
         })
 
     })
-    //console.log(tripleAveragedData)
-    // tripleAveragedData.forEach(pep => console.log(pep.data[0].columns))
+
     return tripleAveragedData;
 }
 
@@ -193,20 +164,13 @@ function keyMatch(o,r){
 };
 
 
-
-//start("./toyige.xlsx") //-> for debugging purposes
-
 var starm = exports.parseMultiple = async function parse_multiple(file_paths) { 
-    
-    // let json1 = await this.parse(file_paths[0]);
-    // let json2 = await this.parse(file_paths[1]);
     
     let m = new Map();
 
     for (let file of file_paths) {
         let json = await this.parse(file);
 
-//the gpr files dont have Id (as in name) so I changed proteinId to peptideSequece
         json.forEach(function(pepA) {
             if (m.has(pepA.peptideSeq)) {
                 m.get(pepA.peptideSeq).data.push(pepA.data[0])
@@ -215,10 +179,9 @@ var starm = exports.parseMultiple = async function parse_multiple(file_paths) {
             }
         });
     }
-    //console.log(Array.from(m.values()))
+
     return Array.from(m.values());
 }
-//starm(["./toyige.xlsx","./toyige.gpr"]); //->Debugging
 
 
 
