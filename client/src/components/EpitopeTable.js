@@ -7,7 +7,7 @@ export default class EpitopeTable extends React.Component {
         let tables = [];
         for (let file in this.props.data) {
             tables.push(
-            <div>
+            <div key={file}>
                 <Table 
                     data={this.props.data[file]} 
                     caption={file.split("/").pop().split(".")[0].trim() + " Epitopes"}

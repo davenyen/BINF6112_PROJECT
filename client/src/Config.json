@@ -70,6 +70,8 @@
     "protein_structure_coloring": {
         "main": "white",
         "selected": "red"
-    }
+    },
+
+    "linker_sequence": "GSGSGSG"
 
 }

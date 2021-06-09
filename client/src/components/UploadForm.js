@@ -358,10 +358,10 @@ export default class UploadForm extends Component {
       'click': this.onChartClick
     }
     const {chartType} = this.state;
-    const renderedButtons = this.state.rowsncols.map(rowncol => {
+    const renderedButtons = this.state.rowsncols.map((rowncol, ind) => {
       let claname = this.state.chosenFileName === rowncol.name ? 'button-item-sel' : 'button-item'
       return (
-        <div>
+        <div key={ind}>
           <button
             className={claname}
             onClick={() => this.ToggleExcelPreview(rowncol)}>
@@ -439,7 +439,7 @@ export default class UploadForm extends Component {
         {this.state.pdbFile &&
         <div className='visualisation-wrap' style={{display: "flex"}}>
           <div className={'chart-wrap'} id={'vehicleProvince'} style={{backgroundColor: 'white'}}>
-            {!!this.props.data && <><ButtonGroup justified> {chartButtons}
+            {!!this.props.data && <><ButtonGroup> {chartButtons}
             </ButtonGroup>
               <ReactEcharts 
                 style={{height: '80%', minHeight: 320}} 

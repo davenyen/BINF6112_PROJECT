@@ -54,8 +54,17 @@ const CustomToggleList = ({
   );
 
 let columns_base = [{
+  dataField: 'id',
+  text: 'ID',
+  sort: true,
+  sortFunc: sortNumerical,
+  headerAlign: "center",
+  headerStyle: {
+      width: "3rem"
+  }
+  },{
     dataField: 'res_id',
-    text: 'ID',
+    text: 'Res ID',
     sort: true,
     sortFunc: sortNumerical,
     headerAlign: "center",
@@ -150,8 +159,9 @@ export default class Table extends React.Component {
         }
 
         let columns = columns_base.slice();
-        if (this.props.seqWidth) columns[1].headerStyle.width = this.props.seqWidth+"rem";
+        if (this.props.seqWidth) columns[2].headerStyle.width = this.props.seqWidth+"rem";
         if (this.props.data.length > 1) {
+          // add peptide name column if available
           if (this.props.data[0].hasOwnProperty("proteinId") && this.props.data[0].proteinId) {
             let nameCol = {
               dataField: 'proteinId',
@@ -166,12 +176,13 @@ export default class Table extends React.Component {
               }
             }
   
-            // insert at index 1
-            columns.splice(1, 0, nameCol)
+            // insert at index 2
+            columns.splice(2, 0, nameCol)
           }
   
           let file_data = this.props.data[0].data;
           if (file_data.length > 1) {
+            // multiple files, add data columns and ratio columns
               let ratios = this.props.data[0].ratios
               let fileName0 = file_data[0].file.split("/").pop().split(".")[0].trim() + ' ';
               let fileName1 = file_data[1].file.split("/").pop().split(".")[0].trim() + ' ';
@@ -188,8 +199,7 @@ export default class Table extends React.Component {
                       hidden: true,
                       sort: true,
                       sortFunc: sortNumerical
-                    }
-                  )   
+                    });   
               }
   
               // file data, default state is hidden in table
@@ -203,30 +213,12 @@ export default class Table extends React.Component {
                       hidden: true,
                       sort: true,
                       sortFunc: sortNumerical
-                    }
-                    // ,{
-                    //   dataField: 'data['+i+'].SNR_Calculated',
-                    //   text: fileName+'SNR Calculated',
-                    //   hidden: true,
-                    //   sort: true,
-                    //   sortFunc: sortNumerical
-                    // }
-                    )
-
+                    })
                   }
-  
-                  // if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
-                  //   columns.push({
-                  //     dataField: 'data['+i+'].snr',
-                  //     text: fileName+'SNR',
-                  //     hidden: true,
-                  //     sort: true,
-                  //     sortFunc: sortNumerical
-                  //   });
-                  // }
               }
   
           } else {
+            // single file, add data columns only
               for (let i in file_data) {
                   let fileName = file_data[i].file.split("/").pop().split(".")[0].trim() + ' ';
 
@@ -239,31 +231,8 @@ export default class Table extends React.Component {
                       sortFunc: sortNumerical
                     })
                   }
-
-                  // columns.push({
-                  //         dataField: 'data['+i+'].foregroundMedian',
-                  //         text: fileName+'Foreground Median',
-                  //         sort: true,
-                  //         sortFunc: sortNumerical
-                  //       },{
-                  //         dataField: 'data['+i+'].SNR_Calculated',
-                  //         text: fileName+'SNR Calculated',
-                  //         sort: true,
-                  //         sortFunc: sortNumerical
-                  //       }
-                  // )
-                  // if (file_data[i].hasOwnProperty("snr") && !isNaN(file_data[i].snr)){
-                  //   columns.push({
-                  //     dataField: 'data['+i+'].snr',
-                  //     text: fileName+'SNR',
-                  //     sort: true,
-                  //     sortFunc: sortNumerical
-                  //   });
-                  // }
               }
           }
-  
-  
         }
 
         return (
