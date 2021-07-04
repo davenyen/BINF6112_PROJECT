@@ -1,5 +1,3 @@
-const fs = require('fs');
-const Parse = require('./parse');
 let config = require('../client/src/Config.json');
 const dps = parseInt(config.decimal_places);
 
@@ -22,7 +20,6 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     }
     
     ma_json = ma_json.filter(peptide => typeof peptide.peptideSeq === "string" && peptide.peptideSeq.length > parseInt(config.overlap.amount));
-    let ma_json_raw = ma_json.slice();
 
     let proteins = groupOverlappingPeptides(ma_json);
 
@@ -61,7 +58,7 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
                 peptide.gravy = chemprops_json.gravy[groupedPepStart].toFixed(dps);
             }
 
-            let peptideSmoothed = smoothData(peptide, ma_json_raw);
+            let peptideSmoothed = smoothData(matchingProtein.peptides, ind);
             if (config.calculateSNR) {
                 peptideSmoothed.columnDisplayNames.push("Calculated SNR");
             }
@@ -131,10 +128,11 @@ function groupOverlappingPeptides(ma_json) {
         }
     }
 
-    peps.forEach(p => console.log(`prot: ${p.peptides[0].proteinId} sequence: ${p.sequence}`));
+    // peps.forEach(p => console.log(`prot: ${p.peptides[0].proteinId} sequence: ${p.sequence}`));
     return peps;
 }
 
+// add start and end of protein around the linker sequences for completeness 
 function addEnds(matchingProtein, allPeptides) {
     let peptideLength = matchingProtein.peptides[0].peptideSeq.length;
     let overlap = peptideLength - parseInt(config.overlap.amount);
@@ -154,14 +152,13 @@ function addEnds(matchingProtein, allPeptides) {
     // XXGSGSGSGNNNNNN // include
     // XXXGSGSGSGNNNNN // include
 
-
+    // get preceding sequence around start linker sequence
     let frontLinkerRegex = new RegExp(`^.{${trailAmountMin},${trailAmountMax}}${config.linker_sequence}.+`);
     while (!matchingProtein.sequence.match(frontLinkerRegex)) {
         let preceding = allPeptides.find(p => p.sequence.slice(-overlap) === matchingProtein.sequence.slice(0, overlap));
         if (!preceding) break;
 
         matchingProtein.sequence = preceding.sequence.slice(0, -overlap) + matchingProtein.sequence;
-
         let end = preceding.peptides.length - 1;
         matchingProtein.peptides = [preceding.peptides[end], ...matchingProtein.peptides];
 
@@ -173,17 +170,13 @@ function addEnds(matchingProtein, allPeptides) {
         }
     }
 
+    // get trailing sequence around end linker sequence
     let backLinkerRegex = new RegExp(`.+${config.linker_sequence}.{${trailAmountMin},${trailAmountMax}}$`);
-    console.log(`evaluating: ${matchingProtein.sequence.match(backLinkerRegex)}`)
     while (!matchingProtein.sequence.match(backLinkerRegex)) {
         let next = allPeptides.find(p => matchingProtein.sequence.slice(-overlap) === p.sequence.slice(0, overlap));
-        console.log(`preceding: ${next ? next.sequence : "none"}`);
         if (!next) break;
-        console.log("here");
 
         matchingProtein.sequence = matchingProtein.sequence + next.sequence.slice(overlap, peptideLength);
-        console.log(matchingProtein.sequence);
-
         matchingProtein.peptides = [...matchingProtein.peptides, next.peptides[0]];
 
         if (next.peptides.length === 1) {
@@ -192,12 +185,12 @@ function addEnds(matchingProtein, allPeptides) {
             next.peptides = next.peptides.slice(1);
             next.sequence = next.sequence.slice(config.overlap.amount);
         }
-        console.log(`evaluating: ${matchingProtein.sequence.match(backLinkerRegex)}`)
     }
 
     return matchingProtein;
 }
 
+// sequence match with adjustments for ambiguous protein codes
 function matchPeptide(sequence, peptide) {
     let start = sequence.indexOf(peptide);
     if (start >= 0) return start;
@@ -230,7 +223,7 @@ function matchPeptide(sequence, peptide) {
 }
 
 function getEpitopes(peptides, dssp_json, full_sequence) {
-    // peptides.sort((a, b) => a.res_id - b.res_id); // peptides already sorted according to microarray data overlaps
+    // peptides already sorted according to microarray data overlaps
 
     let dataInd = config.epitopes.dataTypeColumnIndex;
     let dataThreshold = parseFloat(config.epitopes.threshold);
@@ -243,10 +236,6 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
         
         let epitopes = peptides.map((p, ind) => {
             if (!(ind !== 0 && ind !== peptides.length - 1 &&
-                // has overlapping peptides on either side
-                // p.res_id - peptides[ind - 1].res_id === config.overlap.amount && 
-                // peptides[ind + 1].res_id - p.res_id === config.overlap.amount &&
-    
                 // local maxima with foreground median
                 parseFloat(p.data[d].columns[dataInd]) > parseFloat(peptides[ind - 1].data[d].columns[dataInd]) &&
                 parseFloat(p.data[d].columns[dataInd]) > parseFloat(peptides[ind + 1].data[d].columns[dataInd]) &&
@@ -262,7 +251,6 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
             if (parseFloat(peptides[ind - 1].data[d].columns[dataInd]) > dataThreshold
                 && parseFloat(peptides[ind - 1].data[d].columns[dataInd]) > incThreshold * p.data[d].columns[dataInd]) {
                 seq = peptides[ind-1].peptideSeq.slice(0, config.overlap.amount) + seq;
-                // pos = peptides[ind-1].res_id;
             }
 
             if (parseFloat(peptides[ind + 1].data[d].columns[dataInd]) > dataThreshold
@@ -315,14 +303,14 @@ function getEpitopes(peptides, dssp_json, full_sequence) {
     return epitope_json;
 }
 
-function smoothData(peptideRaw, ma_json) {
+function smoothData(peptides, ind) {
+    let peptideRaw = peptides[ind];
     let snrIncluded = !isNaN(peptideRaw.data[0].snr);
     let peptide = JSON.parse(JSON.stringify(peptideRaw));
     if (!snrIncluded) peptide.data.forEach(d => d.snr = NaN);
 
-    let overlap = parseInt(peptide.peptideSeq.length - config.overlap.amount);
-    let pBefore = ma_json.find(p => p.peptideSeq.slice(-overlap) === peptide.peptideSeq.slice(0, overlap));
-    let pAfter = ma_json.find(p => peptide.peptideSeq.slice(-overlap) === p.peptideSeq.slice(0, overlap));
+    let pBefore = ind ? peptides[ind - 1] : undefined;
+    let pAfter = ind !== peptides.length ? peptides[ind + 1] : undefined;
 
     // iterate over files
     for (let d in peptide.data) {
