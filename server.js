@@ -1,5 +1,3 @@
-
-const  createError = require('http-errors');
 const  cookieParser = require('cookie-parser');
 const  logger = require('morgan');
 const  cors = require('cors');
@@ -8,8 +6,6 @@ const  multer = require('multer')
 const  indexRouter = require('./routes/index');
 const  usersRouter = require('./routes/users');
 
-// MOVE TO DIFFERENT FILE LATER
-const xlsxFile = require('read-excel-file/node');
 const parse = require('./components/parse');
 const map = require('./components/map');
 const ave = require('./components/multipleAve');
@@ -17,8 +13,6 @@ const fs = require('fs');
 
 const express = require('express');
 const path = require('path');
-const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
 
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
