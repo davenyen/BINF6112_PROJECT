@@ -10,14 +10,14 @@ exports.aveData = async function aveData(our_json) {
     }
     let totalFiles = Object.keys(our_json.epitopesByFile).length
     const epitopeResIdSorted = allEpitopes.reduce((r, a) => {
-        r[a.res_id] = r[a.res_id] || [];
-        r[a.res_id].push(a);
+        r[a.id] = r[a.id] || [];
+        r[a.id].push(a);
         return r;
     }, Object.create({}))
     
-    returner = {}
-    peptidedata = []
-    epitopeData = []
+    let returner = {}
+    let peptidedata = []
+    let epitopeData = []
     our_json.peptides.forEach(pep => {
 
         let averages = new Array(pep.data[0].columns.length).fill(0);
@@ -37,9 +37,9 @@ exports.aveData = async function aveData(our_json) {
 
     Object.keys(epitopeResIdSorted).forEach(res =>{
         //Variables for final Array of Objects
-        let ps = ""; let pi = "";let rm =0;let bm=0; let fm=0; let sr=0; let srfl=0; 
+        let ps = ""; 
         let max_data = NaN; let min_data = NaN; let ss = "";let asa =0;let gravy=0;
-        let pI=0;let minlength = 1000000; let src=0; let res_id =0;
+        let pI=0;let minlength = 1000000; let res_id =0;
 
         let averages = new Array(epitopeResIdSorted[res][0].data[0].columns.length).fill(0);
         epitopeResIdSorted[res].forEach(resEpitope =>{
@@ -67,6 +67,7 @@ exports.aveData = async function aveData(our_json) {
                 pI=resEpitope.pI;
                 minlength = resEpitope.peptideSeq.length;
                 res_id = resEpitope.res_id;
+                id = resEpitope.id;
             }
         })
 
@@ -77,6 +78,7 @@ exports.aveData = async function aveData(our_json) {
         let percent = ((epitopeResIdSorted[res].length)/totalFiles)*100
         epitopeData.push({
             res_id: res_id,
+            id: id,
             peptideSeq: ps, 
             averages: averages,
             columnDisplayNames: allEpitopes[0].columnDisplayNames,

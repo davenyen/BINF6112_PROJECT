@@ -53,7 +53,7 @@ const CustomToggleList = ({
     </div>
   );
 
-let columns_base = [{
+export const peptide_columns_base = [{
   dataField: 'id',
   text: 'ID',
   sort: true,
@@ -75,11 +75,9 @@ let columns_base = [{
     dataField: 'peptideSeq',
     text: 'Sequence',
     sort: true,
-    headerStyle: {
-        width: "12rem",
-    },
+    headerStyle: {},
     style: {
-        wordBreak: "break-all"
+        width: "15em",
     }
   },{
     dataField: 'asa',
@@ -158,7 +156,7 @@ export default class Table extends React.Component {
           }
         }
 
-        let columns = columns_base.slice();
+        let columns = peptide_columns_base.slice();
         if (this.props.seqWidth) columns[2].headerStyle.width = this.props.seqWidth+"rem";
         if (this.props.data.length > 1) {
           // add peptide name column if available

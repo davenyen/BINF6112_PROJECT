@@ -46,6 +46,7 @@ export default function App () {
               data={processedData} 
               setSelectedRows={setSelectedRows}
               selectedRows={selectedRows}
+              seqWidth={12}
               />
               <TableFooter />
               </div>)

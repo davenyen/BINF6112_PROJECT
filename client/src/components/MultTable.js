@@ -1,7 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-//import _ from 'lodash';
+import { peptide_columns_base } from './Table';
 import '../App.css';
 
 let config = require('../Config.json');
@@ -53,67 +53,6 @@ const CustomToggleList = ({
     </div>
   );
 
-let columns_base = [{
-  dataField: 'res_id',
-  text: 'ID',
-  sort: true,
-  sortFunc: sortNumerical,
-  headerAlign: "center",
-  headerStyle: {
-      width: "3rem"
-  }
-},{
-    dataField: 'peptideSeq',
-    text: 'Sequence',
-    sort: true,
-    headerStyle: {
-        width: "12rem",
-    },
-    style: {
-        wordBreak: "break-all"
-    }
-  },{
-    dataField: 'asa',
-    text: 'Relative ASA',
-    sort: true,
-    sortFunc: sortNumerical,
-    style: (cell, row, rowIndex, colIndex) => {
-      if (parseFloat(cell) < parseFloat(config.bury_threshold)) {
-        return {
-          backgroundColor: "#cfcfcf"
-        }
-      }
-    }
-  },  {
-    dataField: 'ss',
-    text: 'Secondary Structure',
-    sort: true
-  },{
-    dataField: 'gravy',
-    text: 'GRAVY',
-    hidden: true,
-    sort: true,
-    sortFunc: sortNumerical
-  }, {
-    dataField: 'pI',
-    text: 'Isoelectric Point',
-    hidden: true,
-    sort: true,
-    sortFunc: sortNumerical
-  }
-  // ,{
-  //   dataField: 'aveSNR',
-  //   text: 'Average calculated SNR',
-  //   sort: true,
-  //   sortFunc: sortNumerical
-  // },{
-  //   dataField: 'aveFM',
-  //   text: 'Average Foregroud Median',
-  //   sort: true,
-  //   sortFunc: sortNumerical
-  // }
-];
-
 const MyExportCSV = (props) => {
     const handleClick = () => {
         props.onExport();
@@ -126,8 +65,17 @@ const MyExportCSV = (props) => {
 };
 
 let epitope_columns_base = [{
-  dataField: 'res_id',
+  dataField: 'id',
   text: 'ID',
+  sort: true,
+  sortFunc: sortNumerical,
+  headerAlign: "center",
+  headerStyle: {
+      width: "3rem"
+  }
+  },{
+  dataField: 'res_id',
+  text: 'Res ID',
   sort: true,
   sortFunc: sortNumerical,
   headerAlign: "center",
@@ -178,19 +126,6 @@ let epitope_columns_base = [{
     sort: true,
     sortFunc: sortNumerical
   }
-  // ,{
-  //   dataField: 'foregroundMedian',
-  //   text: 'Average Foregroud Median',
-  //   sort: true,
-  //   hidden: true,
-  //   sortFunc: sortNumerical
-  // },{
-  //   dataField: 'snrC',
-  //   text: 'Average Calculated SNR',
-  //   hidden: true,
-  //   sort: true,
-  //   sortFunc: sortNumerical
-  // }
 ];
 
 
@@ -221,7 +156,8 @@ export default class MultTable extends React.Component {
           }
         }
 
-        let columns = columns_base.slice();
+        let columns = peptide_columns_base.slice();
+        if (this.props.seqWidth) columns[2].headerStyle.width = this.props.seqWidth+"rem";
         let epitopeCols = epitope_columns_base.slice();
         if (this.props.data.pepData.length > 0) {
 
@@ -239,8 +175,8 @@ export default class MultTable extends React.Component {
               }
             }
 
-            // insert at index 1
-            columns.splice(1, 0, nameCol)
+            // insert at index 2
+            columns.splice(2, 0, nameCol)
           }
 
           for (let c in this.props.data.pepData[0].averages) {
@@ -253,15 +189,6 @@ export default class MultTable extends React.Component {
             })
           }
         }
-
-        // if(!(isNaN(parseFloat(this.props.data.pepData[0].snr)))){
-        //     columns.push({
-        //       dataField: 'snr',
-        //       text: 'Included SNR',
-        //       sort: true,
-        //       sortFunc: sortNumerical
-        //     })
-        // }
 
 
         if (this.props.data.epiData.length > 0) {
@@ -290,6 +217,8 @@ export default class MultTable extends React.Component {
             })
           }
         }
+
+        console.log(this.props.data.epiData);
 
         return (
           <div>
