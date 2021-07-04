@@ -159,9 +159,9 @@ export default class MultTable extends React.Component {
         let columns = peptide_columns_base.slice();
         if (this.props.seqWidth) columns[2].headerStyle.width = this.props.seqWidth+"rem";
         let epitopeCols = epitope_columns_base.slice();
-        if (this.props.data.pepData.length > 0) {
+        if (this.props.data.peptides.length > 0) {
 
-          if (this.props.data.pepData[0].hasOwnProperty("proteinId") && this.props.data.pepData[0].proteinId) {
+          if (this.props.data.peptides[0].hasOwnProperty("proteinId") && this.props.data.peptides[0].proteinId) {
             let nameCol = {
               dataField: 'proteinId',
               text: 'Peptide Name',
@@ -179,8 +179,8 @@ export default class MultTable extends React.Component {
             columns.splice(2, 0, nameCol)
           }
 
-          for (let c in this.props.data.pepData[0].averages) {
-            let col_name = this.props.data.pepData[0].columnDisplayNames[c];
+          for (let c in this.props.data.peptides[0].averages) {
+            let col_name = this.props.data.peptides[0].columnDisplayNames[c];
             columns.push({
               dataField: 'averages['+c+']',
               text: "Average "+col_name,
@@ -206,7 +206,7 @@ export default class MultTable extends React.Component {
             sortFunc: sortNumerical
           });
 
-          for (let c in this.props.data.pepData[0].averages) {
+          for (let c in this.props.data.peptides[0].averages) {
             let col_name = this.props.data.epiData[0].columnDisplayNames[c];
             epitopeCols.push({
               dataField: 'averages['+c+']',
@@ -217,8 +217,6 @@ export default class MultTable extends React.Component {
             })
           }
         }
-
-        console.log(this.props.data.epiData);
 
         return (
           <div>
@@ -239,7 +237,7 @@ export default class MultTable extends React.Component {
                           rowEvents = { rowEvents } 
                           selectRow = { selectRow }
                           { ...props.baseProps } 
-                          caption={"Epitope Information - # of samples: "+(this.props.data.pepData.length ? this.props.data.pepData[0].data.length : "-")}/>
+                          caption={"Epitope Information - # of samples: "+(this.props.data.peptides.length ? this.props.data.peptides[0].data.length : "-")}/>
                           <hr />
                           <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
                           <hr />
@@ -250,7 +248,7 @@ export default class MultTable extends React.Component {
           </ToolkitProvider>
           <ToolkitProvider
           keyField="peptideSeq"
-          data={ this.props.data.pepData}
+          data={ this.props.data.peptides}
           columns={ columns }
           columnToggle
           exportCSV

@@ -92,7 +92,7 @@ exports.aveData = async function aveData(our_json) {
         })
     })
 
-    returner.pepData = peptidedata
+    returner.peptides = peptidedata
     returner.epiData = epitopeData
     return returner;
 }

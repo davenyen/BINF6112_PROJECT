@@ -25,11 +25,7 @@ export default class Chart extends Component {
 
   handleData(num = 0) {
     let {data} = this.props
-    if (this.props.multiple === 0) {
-      data = data.peptides
-    } else if (this.props.multiple === 1) {
-      data = data.pepData
-    }
+    data = data.peptides;
 
     let columns = [];
     let finalSeq = []
@@ -66,27 +62,6 @@ export default class Chart extends Component {
         finalSeq.push(s);
       })
 
-    //   let curSeqIndex = 0
-    //   let i = +(seq[0].value.split('\n')[0]);
-    //   while (i < +(seq[seq.length - 1].value.split('\n')[0])) {
-    //     let res_id = +(seq[curSeqIndex].value.split('\n')[0])
-    //     if (res_id <= i) {
-    //       for (let c in columns) {
-    //         finalColumns[c].push(columns[c][curSeqIndex]);
-    //       }
-    //       finalSeq.push(seq[curSeqIndex])
-    //       curSeqIndex += 1
-    //       i = res_id;
-    //     } else {
-    //       finalSeq.push({value: '-'})
-    //       for (let c in columns) {
-    //         finalColumns[c].push(0);
-    //       }
-    //     }
-  
-    //     i += config.overlap.amount;
-    //   }
-
     }
 
     return {
@@ -97,12 +72,9 @@ export default class Chart extends Component {
   }
 
   getChartOption() {
-    let {data} = this.props
-    if (this.props.multiple === 0) {
-      data = data.peptides
-    } else if (this.props.multiple === 1) {
-      data = data.pepData
-    }
+    let {data} = this.props;
+    data = data.peptides;
+
     const {chartType} = this.state;
     if (!data) return {}
     const options = {
@@ -209,23 +181,20 @@ export default class Chart extends Component {
     const {chartType} = this.state;
 
     let chartButtons = [];
-    if (this.props.data && this.props.data[0]) {
-      let {data} = this.props
-      if (this.props.multiple === 0) {
-        data = data.peptides
-      } else if (this.props.multiple === 1) {
-        data = data.pepData
-      }
+    if (this.props.data.peptides && this.props.data.peptides[0]) {
+      let {data} = this.props;
+      data = data.peptides;
   
+      console.log(data[0].columnDisplayNames);
       for (let c in data[0].columnDisplayNames) {
-        chartButtons.push(<Button active={chartType === c}
+        chartButtons.push(<Button active={chartType === c} key={c} variant="light"
         onClick={() => this.setState({chartType: c})}>{data[0].columnDisplayNames[c]}</Button>)
       }
     }
 
     return (
         <>
-        <ButtonGroup> {chartButtons}</ButtonGroup>
+        <ButtonGroup size="sm"> {chartButtons}</ButtonGroup>
         <ReactEcharts 
             style={{height: '80%', minHeight: 320}} 
             ref={this.myChart} 
@@ -235,7 +204,7 @@ export default class Chart extends Component {
             onEvents={onEvents}
         />
         <br/>
-        <p> Blue: Exposed; Grey: Buried</p>
+        <p> Blue: Exposed; Grey: Buried/No data</p>
         </>
     )
   }
