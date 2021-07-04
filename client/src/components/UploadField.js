@@ -14,7 +14,8 @@ export default class UploadField extends Component {
             fileLimitExceeded: false,
             rows: null,
             cols: null,
-            processedData: null
+            processedData: null,
+            fileNames: []
         }
         this.fileHandler = this.fileHandler.bind(this);
         this.toggle = this.toggle.bind(this);
