@@ -27,46 +27,50 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     let proteins = groupOverlappingPeptides(ma_json);
 
     let matchingProtein = proteins.find(prot => prot.peptides.find(p => matchPeptide(sequence, p.peptideSeq) >= 0));
-    console.log(`FOUND prot: ${matchingProtein.peptides[0].proteinId} sequence: ${matchingProtein.sequence}`)
-
-    let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ matchingProtein.sequence + " "+pep_length).toString());
-    
     let mappedData = [];
-    matchingProtein.peptides.forEach((peptide, ind) => {
-        if (peptide.peptideSeq.length < 3) return;
 
-        // find a mapping from the microarray peptide sequence to the protein sequence provided by structure
-        let structureStart = matchPeptide(sequence, peptide.peptideSeq);
-        if (structureStart >= 0) {
-            let start = structureStart;
-            // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
-            let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
-            let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
-            // Residue ID from dssp output
-            peptide.res_id = dssp_json.res_id[start];
+    if (matchingProtein) {
+        console.log(`FOUND prot: ${matchingProtein.peptides[0].proteinId} sequence: ${matchingProtein.sequence}`);
+        matchingProtein = addEnds(matchingProtein, proteins);
 
-            // secondary structure - get mode of residue assignments
-            peptide.asa = (asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq)).toFixed(dps);
-            let mode_ss = mode(ss);
-            peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
-        }
+        let chemprops_json = JSON.parse(exec('python3 ./components/chemprops.py '+ matchingProtein.sequence + " "+pep_length).toString());
+        
+        matchingProtein.peptides.forEach((peptide, ind) => {
+            if (peptide.peptideSeq.length < 3) return;
 
-        let groupedPepStart = matchingProtein.sequence.indexOf(peptide.peptideSeq);
-        if (groupedPepStart >= 0) {
-            // gravy and isoelectric point
-            peptide.pI = chemprops_json.pI[groupedPepStart].toFixed(dps);
-            peptide.gravy = chemprops_json.gravy[groupedPepStart].toFixed(dps);
-        }
+            // find a mapping from the microarray peptide sequence to the protein sequence provided by structure
+            let structureStart = matchPeptide(sequence, peptide.peptideSeq);
+            if (structureStart >= 0) {
+                let start = structureStart;
+                // get accessible surface area (ASA) and secondary structure assignments for residues in peptide
+                let asa = dssp_json.asa.slice(start, start + peptide.peptideSeq.length);
+                let ss = dssp_json.ss.slice(start, start + peptide.peptideSeq.length);
+                // Residue ID from dssp output
+                peptide.res_id = dssp_json.res_id[start];
 
-        let peptideSmoothed = smoothData(peptide, ma_json_raw);
-        if (config.calculateSNR) {
-            peptideSmoothed.columnDisplayNames.push("Calculated SNR");
-        }
+                // secondary structure - get mode of residue assignments
+                peptide.asa = (asa.reduce((a, b) => a + b, 0)/getMaxASA(peptide.peptideSeq)).toFixed(dps);
+                let mode_ss = mode(ss);
+                peptide.ss = ssNames.hasOwnProperty(mode_ss) ? ssNames[mode_ss] : "-";
+            }
 
-        peptideSmoothed.id = ind + 1;
+            let groupedPepStart = matchingProtein.sequence.indexOf(peptide.peptideSeq);
+            if (groupedPepStart >= 0) {
+                // gravy and isoelectric point
+                peptide.pI = chemprops_json.pI[groupedPepStart].toFixed(dps);
+                peptide.gravy = chemprops_json.gravy[groupedPepStart].toFixed(dps);
+            }
 
-        mappedData.push(peptideSmoothed);
-    })
+            let peptideSmoothed = smoothData(peptide, ma_json_raw);
+            if (config.calculateSNR) {
+                peptideSmoothed.columnDisplayNames.push("Calculated SNR");
+            }
+
+            peptideSmoothed.id = ind + 1;
+
+            mappedData.push(peptideSmoothed);
+        })
+    }
 
     mappedData = calculateRatios(mappedData);
 
@@ -77,27 +81,11 @@ exports.mapData = async function mapData(ma_json, pdbFile) {
     return jsonObj;
 }
 
-// /* Randomize array in-place using Durstenfeld shuffle algorithm */
-// function shuffleArray(array) {
-//     for (var i = array.length - 1; i > 0; i--) {
-//         var j = Math.floor(Math.random() * (i + 1));
-//         var temp = array[i];
-//         array[i] = array[j];
-//         array[j] = temp;
-//     }
-// }
-
 // separate the overlapping peptides by the protein they are part of
 // proteins separated by a linker sequence (in config) 
 function groupOverlappingPeptides(ma_json) {
 
-    // shuffleArray(ma_json);
-
     let peps = ma_json.map(peptide => ({sequence: peptide.peptideSeq, peptides: [peptide]}));
-    
-    // need:
-    // overlap of 1 (or less than 3?) included
-    // for ends: after finding which protein matches sequence, find overlaps from sequences with linkers
 
     let frontLinkerRegex = new RegExp(`.+${config.linker_sequence}.*`);
     let backLinkerRegex = new RegExp(`.*${config.linker_sequence}.+`)
@@ -111,6 +99,7 @@ function groupOverlappingPeptides(ma_json) {
             let existingSeq =  prot.sequence;
             let overlap = prot.peptides[0].peptideSeq.length - parseInt(config.overlap.amount);
 
+            // check if peptide overlaps at end of sequence
             let newPeptideAfter = peps.find(p => existingSeq.slice(-overlap) === p.sequence.slice(0, overlap));
             if (newPeptideAfter) {
                 if (!newPeptideAfter.sequence.match(backLinkerRegex)) {
@@ -123,6 +112,7 @@ function groupOverlappingPeptides(ma_json) {
                     changeOccurred = true;
                 }
             } else {
+                // check if peptide overlaps at start of sequence
                 let newPeptideBefore = peps.find(p => p.sequence.slice(-overlap) === existingSeq.slice(0, overlap));
                 if (newPeptideBefore) {
                     if (!newPeptideBefore.sequence.match(frontLinkerRegex)) {
@@ -143,6 +133,69 @@ function groupOverlappingPeptides(ma_json) {
 
     peps.forEach(p => console.log(`prot: ${p.peptides[0].proteinId} sequence: ${p.sequence}`));
     return peps;
+}
+
+function addEnds(matchingProtein, allPeptides) {
+    let peptideLength = matchingProtein.peptides[0].peptideSeq.length;
+    let overlap = peptideLength - parseInt(config.overlap.amount);
+
+    let trailAmountMin = peptideLength - config.linker_sequence.length - config.overlap.amount;
+    let trailAmountMax = peptideLength - config.linker_sequence.length - 1;
+
+    // PRECEDING
+    // BBBBBGSGSGSGXXX // include
+    // BBBBBBGSGSGSGXX // include
+    // BBBBBBBGSGSGSGX // include
+    // BBBBBBBBGSGSGSG // don't include
+
+    // TRAILING
+    // GSGSGSGNNNNNNNN // don't include
+    // XGSGSGSGNNNNNNN // include
+    // XXGSGSGSGNNNNNN // include
+    // XXXGSGSGSGNNNNN // include
+
+
+    let frontLinkerRegex = new RegExp(`^.{${trailAmountMin},${trailAmountMax}}${config.linker_sequence}.+`);
+    while (!matchingProtein.sequence.match(frontLinkerRegex)) {
+        let preceding = allPeptides.find(p => p.sequence.slice(-overlap) === matchingProtein.sequence.slice(0, overlap));
+        if (!preceding) break;
+
+        matchingProtein.sequence = preceding.sequence.slice(0, -overlap) + matchingProtein.sequence;
+
+        let end = preceding.peptides.length - 1;
+        matchingProtein.peptides = [preceding.peptides[end], ...matchingProtein.peptides];
+
+        if (preceding.peptides.length === 1) {
+            allPeptides = allPeptides.filter(p => p !== preceding);
+        } else {
+            preceding.peptides = preceding.peptides.slice(0, end);
+            preceding.sequence = preceding.sequence.slice(0, -config.overlap.amount);
+        }
+    }
+
+    let backLinkerRegex = new RegExp(`.+${config.linker_sequence}.{${trailAmountMin},${trailAmountMax}}$`);
+    console.log(`evaluating: ${matchingProtein.sequence.match(backLinkerRegex)}`)
+    while (!matchingProtein.sequence.match(backLinkerRegex)) {
+        let next = allPeptides.find(p => matchingProtein.sequence.slice(-overlap) === p.sequence.slice(0, overlap));
+        console.log(`preceding: ${next ? next.sequence : "none"}`);
+        if (!next) break;
+        console.log("here");
+
+        matchingProtein.sequence = matchingProtein.sequence + next.sequence.slice(overlap, peptideLength);
+        console.log(matchingProtein.sequence);
+
+        matchingProtein.peptides = [...matchingProtein.peptides, next.peptides[0]];
+
+        if (next.peptides.length === 1) {
+            allPeptides = allPeptides.filter(p => p !== next);
+        } else {
+            next.peptides = next.peptides.slice(1);
+            next.sequence = next.sequence.slice(config.overlap.amount);
+        }
+        console.log(`evaluating: ${matchingProtein.sequence.match(backLinkerRegex)}`)
+    }
+
+    return matchingProtein;
 }
 
 function matchPeptide(sequence, peptide) {
