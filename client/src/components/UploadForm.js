@@ -83,7 +83,7 @@ export default class UploadForm extends Component {
 
   // appends files to objects state
   addFile = (fileObj) => {
-    if (fileObj.type === "") {
+    if (fileObj.type === "" || fileObj.name.match(/.pdb$/)) {
       this.setState(prevState => ({
         fileObjects: [...prevState.fileObjects, fileObj],
         pdbFile: fileObj
