@@ -156,6 +156,10 @@ export default class UploadForm extends Component {
         </Card>
       })
     }
+
+    if (this.state.pdbFile !== prevState.pdbFile) {
+      this.props.setSelectedRows([]);
+    }
   }
 
   refreshFilePreviews = () => {

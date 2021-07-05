@@ -129,36 +129,38 @@ let epitope_columns_base = [{
 ];
 
 
-export default class MultTable extends React.Component {
+export class MultTablePeptide extends React.Component {
     render() {
 
         const selectRow = {
-          mode: 'checkbox',
+          mode: 'radio',
           clickToSelect: true,
           bgColor: '#00BFFF',
-          hideSelectColumn: true
+          hideSelectColumn: true,
+          selected: this.props.selectedRows.map(s => s.peptideSeq),
+          nonSelectable: this.props.data.peptides.filter(p => !p.res_id).map(p => p.peptideSeq)
         };
-        
+
         const rowEvents = {
           onClick: (e, row, rowIndex) => {
 
-            var tmpArr = [...this.props.selectedRows];
+            if (!row.res_id) return;
 
+            let tmpArr = [];
             // Removes from array
-            if (this.props.selectedRows.includes(row)) {
-              var delIndex = tmpArr.indexOf(row);
-              tmpArr.splice(delIndex, 1);
+            if (this.props.selectedRows.find(d => d.res_id === row.res_id)) {
+              tmpArr.length = 0;
             } else {
               tmpArr.push(row);
             }
 
             this.props.setSelectedRows(tmpArr);
+
           }
         }
 
         let columns = peptide_columns_base.slice();
         if (this.props.seqWidth) columns[2].headerStyle.width = this.props.seqWidth+"rem";
-        let epitopeCols = epitope_columns_base.slice();
         if (this.props.data.peptides.length > 0) {
 
           if (this.props.data.peptides[0].hasOwnProperty("proteinId") && this.props.data.peptides[0].proteinId) {
@@ -190,62 +192,7 @@ export default class MultTable extends React.Component {
           }
         }
 
-
-        if (this.props.data.epiData.length > 0) {
-
-          epitopeCols.push({
-            dataField: 'minData',
-            text: 'Minimum '+this.props.data.epiData[0].columnDisplayNames[config.epitopes.dataTypeColumnIndex],
-            sort: true,
-            sortFunc: sortNumerical
-          });
-          epitopeCols.push({
-            dataField: 'maxData',
-            text: 'Maximum '+this.props.data.epiData[0].columnDisplayNames[config.epitopes.dataTypeColumnIndex],
-            sort: true,
-            sortFunc: sortNumerical
-          });
-
-          for (let c in this.props.data.peptides[0].averages) {
-            let col_name = this.props.data.epiData[0].columnDisplayNames[c];
-            epitopeCols.push({
-              dataField: 'averages['+c+']',
-              text: "Average "+col_name,
-              hidden: true,
-              sort: true,
-              sortFunc: sortNumerical
-            })
-          }
-        }
-
         return (
-          <div>
-          <ToolkitProvider
-          keyField="peptideSeq"
-          data={ this.props.data.epiData}
-          columns={ epitopeCols }
-          columnToggle
-          exportCSV
-          >
-              {
-                  props => (
-                      <div>
-                          <hr />
-                          <CustomToggleList { ...props.columnToggleProps }  />
-                          <hr />
-                          <BootstrapTable 
-                          rowEvents = { rowEvents } 
-                          selectRow = { selectRow }
-                          { ...props.baseProps } 
-                          caption={"Epitope Information - # of samples: "+(this.props.data.peptides.length ? this.props.data.peptides[0].data.length : "-")}/>
-                          <hr />
-                          <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
-                          <hr />
-                          <br />
-                      </div>
-                  )
-              }
-          </ToolkitProvider>
           <ToolkitProvider
           keyField="peptideSeq"
           data={ this.props.data.peptides}
@@ -272,10 +219,102 @@ export default class MultTable extends React.Component {
                   )
               }
           </ToolkitProvider>
-            </div>
         );
 
 
         
     }
+}
+
+export class MultTableEpitope extends React.Component {
+  render() {
+
+      const selectRow = {
+        mode: 'radio',
+        clickToSelect: true,
+        bgColor: '#00BFFF',
+        hideSelectColumn: true,
+        selected: this.props.selectedRows.map(s => s.peptideSeq),
+        nonSelectable: this.props.data.epiData.filter(p => !p.res_id).map(p => p.peptideSeq)
+      };
+
+      const rowEvents = {
+        onClick: (e, row, rowIndex) => {
+
+          if (!row.res_id) return;
+
+          let tmpArr = [];
+          // Removes from array
+          if (this.props.selectedRows.includes(row)) {
+            tmpArr.length = 0;
+          } else {
+            tmpArr.push(row);
+          }
+
+          this.props.setSelectedRows(tmpArr);
+
+        }
+      }
+
+      let epitopeCols = epitope_columns_base.slice();
+
+      if (this.props.data.epiData.length > 0) {
+
+        epitopeCols.push({
+          dataField: 'minData',
+          text: 'Minimum '+this.props.data.epiData[0].columnDisplayNames[config.epitopes.dataTypeColumnIndex],
+          sort: true,
+          sortFunc: sortNumerical
+        });
+        epitopeCols.push({
+          dataField: 'maxData',
+          text: 'Maximum '+this.props.data.epiData[0].columnDisplayNames[config.epitopes.dataTypeColumnIndex],
+          sort: true,
+          sortFunc: sortNumerical
+        });
+
+        for (let c in this.props.data.peptides[0].averages) {
+          let col_name = this.props.data.epiData[0].columnDisplayNames[c];
+          epitopeCols.push({
+            dataField: 'averages['+c+']',
+            text: "Average "+col_name,
+            hidden: true,
+            sort: true,
+            sortFunc: sortNumerical
+          })
+        }
+      }
+
+      return (
+        <ToolkitProvider
+        keyField="peptideSeq"
+        data={ this.props.data.epiData}
+        columns={ epitopeCols }
+        columnToggle
+        exportCSV
+        >
+            {
+                props => (
+                    <div>
+                        <hr />
+                        <CustomToggleList { ...props.columnToggleProps }  />
+                        <hr />
+                        <BootstrapTable 
+                        rowEvents = { rowEvents } 
+                        selectRow = { selectRow }
+                        { ...props.baseProps } 
+                        caption={"Epitope Information - # of samples: "+(this.props.data.peptides.length ? this.props.data.peptides[0].data.length : "-")}/>
+                        <hr />
+                        <MyExportCSV { ...props.csvProps } caption="Epitope Information"/>
+                        <hr />
+                        <br />
+                    </div>
+                )
+            }
+        </ToolkitProvider>
+      );
+
+
+      
+  }
 }

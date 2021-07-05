@@ -24,7 +24,7 @@ export default function ProteinStructure(props) {
       setStage(new NGL.Stage("viewport", {backgroundColor: "black"}))
     } else if (stage || props.selectedRows.length) {
       stage.removeAllComponents();
-      //props.setSelectedRows([]); // breaks if uncommented
+      // props.setSelectedRows([]); // breaks if uncommented
     }
 
     setPDB(pdbTmp)
@@ -39,13 +39,27 @@ export default function ProteinStructure(props) {
           if (props.selectedRows.length > 0) {
             var selectedResidues = [config.protein_structure_coloring.selected];
             var resString = "";
-            for (var i = 0; i < props.selectedRows.length; i++) {
-              if (i + 1 === props.selectedRows.length) {
-                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString();
-                else resString += props.selectedRows[i].toString();
+            let peptide = props.selectedRows[0]; // radio selection, only one peptide selected at a time
+            if (peptide) {
+              let pepLength; let start;
+              if (typeof peptide === "string") {
+                pepLength = 15;
+                start = +peptide;
               } else {
-                if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString() + " or ";
-                else resString += props.selectedRows[i].toString() + " or ";
+                pepLength = peptide.peptideSeq.length;
+                start = peptide.res_id;
+              }
+
+              for (var i = 0; i < pepLength; i++) {
+                if (i + 1 === pepLength) {
+                  resString += (start + i).toString()
+                  // if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString();
+                  // else resString += props.selectedRows[i].toString();
+                } else {
+                  resString += (start + i).toString() + " or ";
+                  // if (props.selectedRows[i].res_id) resString += props.selectedRows[i].res_id.toString() + " or ";
+                  // else resString += props.selectedRows[i].toString() + " or ";
+                }
               }
             }
 

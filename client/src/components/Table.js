@@ -132,23 +132,28 @@ export default class Table extends React.Component {
     render() {
 
         const selectRow = {
-          mode: 'checkbox',
+          mode: 'radio',
           clickToSelect: true,
           bgColor: '#00BFFF',
-          hideSelectColumn: true
+          hideSelectColumn: true,
+          selected: this.props.selectedRows.map(s => s.peptideSeq),
+          nonSelectable: this.props.data.filter(p => !p.res_id).map(p => p.peptideSeq)
         };
-        
+
         const rowEvents = {
           onClick: (e, row, rowIndex) => {
 
-            var tmpArr = [...this.props.selectedRows];
+            if (!row.res_id) return;
 
+            let tmpArr = [];
             // Removes from array
-            if (this.props.selectedRows.includes(this.props.data[rowIndex])) {
-              var delIndex = tmpArr.indexOf(this.props.data[rowIndex]);
-              tmpArr.splice(delIndex, 1);
+            if (this.props.selectedRows.find(d => d.res_id === row.res_id)) {
+              // var delIndex = tmpArr.indexOf(this.props.data[rowIndex]);
+              // tmpArr.splice(delIndex, 1);
+              tmpArr.length = 0;
             } else {
-              tmpArr.push(this.props.data[rowIndex]);
+              tmpArr.push(row);
+              // tmpArr = [this.props.data[rowIndex]];
             }
 
             this.props.setSelectedRows(tmpArr);
